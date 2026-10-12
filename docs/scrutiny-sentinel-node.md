@@ -31,7 +31,7 @@
 | FC-1 | Problem | The PhilHealth claims-auditor writeup is the product direction. | Unverified; needs check | README.md states it as the recommended build. The team owner has not confirmed it. | Fatal |
 | FC-2 | Technical/Feasibility | The entry must run on Nebius Token Factory or Nebius AI Cloud and use at least one NVIDIA open model such as Nemotron. | Verified | HACKATHON.md section 4, retrieved 2026-09-28 | Fatal |
 | FC-3 | Solution | The product name for this track is Sentinel Node. | Verified | README.md, 2026. The "(claims)" subtitle is not part of this claim. | Significant |
-| FC-4 | Technical/Feasibility | The submission needs a public repo, an OSI license, and a working demo URL. | Verified | HACKATHON.md section 6, retrieved 2026-09-28 | Fatal |
+| FC-4 | Technical/Feasibility | The submission needs a public repo, an OSI license, and a working demo URL. The repo is public and the license is MIT. The demo URL is still [FILL]. | Verified | HACKATHON.md section 6, retrieved 2026-09-28, and LICENSE (MIT, 2026) | Fatal |
 | FC-5 | Technical/Feasibility | The submission deadline is Oct 30, 2026, 10:00 AM PT (Oct 31, 1:00 AM PHT). | Verified | HACKATHON.md section 1, retrieved 2026-09-28 | Significant |
 
 ### 2.1 References Integrity
@@ -98,7 +98,7 @@
 | Regulated activity (license, franchise, permit, sector rule) | N until the direction is confirmed | CLR §7 if it becomes Y |
 | AI component with untrusted input or tools | Y. The submission must call an NVIDIA open model. | SDD §8.1, QAD, and AIA after the gate clears |
 | Security-critical paths (auth, money, deletes) | N until the direction is confirmed | SDD §5 and QAD if it becomes Y |
-| Public deploy | Y. The repo is to go public and the submission needs a demo URL. | OPS and CLR after the gate clears |
+| Public deploy | Y. The repo is public under the MIT license. The submission still needs a demo URL. | OPS and CLR after the gate clears |
 
 ---
 

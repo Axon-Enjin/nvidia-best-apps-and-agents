@@ -36,7 +36,7 @@
 
 | # | Capability | Core to the one thing? |
 |---|------------|------------------------|
-| 1 | A working submission on Nebius Token Factory or Nebius AI Cloud that uses at least one NVIDIA open model (Nemotron), plus a public repo, an OSI license, and a working demo URL | yes, as a hackathon rule |
+| 1 | A working submission on Nebius Token Factory or Nebius AI Cloud that uses at least one NVIDIA open model (Nemotron). The repo is public under the MIT license. A working demo URL is still [FILL]. | yes, as a hackathon rule |
 | 2 | The product behavior inside that demo | [FILL] |
 
 **Explicitly out of scope (v0):** Application code in this docs pass. Real personal or health records. Treating the claims-auditor writeup as decided.

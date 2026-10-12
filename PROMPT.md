@@ -1,7 +1,7 @@
 # TRACK 2: Best Apps & Agents. Deep Research Meta-Prompt
 
 > **Operator notes (do not paste this block)**
-> - Runs in Gemini Deep Research, ChatGPT Deep Research, Perplexity Deep Research, Claude Research, or a agent pipeline pipeline run.
+> - Runs in Gemini Deep Research, ChatGPT Deep Research, Perplexity Deep Research, Claude Research, or a research then review pipeline run.
 > - Copy everything below the `=== PROMPT START ===` line.
 > - Fill in `{{OPTIONAL_FOCUS}}` (for example a vertical: "PH MSMEs", "healthcare admin", "logistics") or leave it blank to allow an open scan.
 > - This is the broadest track, so Phase A0 (vertical selection) is added before the problem screen.

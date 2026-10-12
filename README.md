@@ -8,7 +8,7 @@ Track repo for the Nebius x NVIDIA Global AI Hackathon. This folder is the whole
 
 ## Recommended build
 
-**Sentinel Node (claims)** — a nightly headless auditor that checks PhilHealth CF4 claims before the 60-day filing window closes. The report's weighted score is 8.80, ahead of ClaimCheck (5.45) and PARD Advocate (6.15).
+**Sentinel Node (claims):** a nightly headless auditor that checks PhilHealth CF4 claims before the 60-day filing window closes. The report's weighted score is 8.80, ahead of ClaimCheck (5.45) and PARD Advocate (6.15).
 
 Philippine SOM in the report is about $500k ARR (50 hospitals at $10,000). This is not the Physical AI trap that another report also nicknames Sentinel Node. Pivot back to ClaimCheck if billing managers refuse background automation.
 

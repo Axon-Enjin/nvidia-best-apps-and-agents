@@ -11,6 +11,7 @@ class Settings:
     embedded_worker: bool = True
     auto_migrate: bool = True
     environment: str = "development"
+    network_mode: str = "offline"
     access_token: str = ""
     allowed_hosts: tuple[str, ...] = ("localhost", "127.0.0.1", "testserver")
     nebius_api_key: str = ""
@@ -30,6 +31,7 @@ class Settings:
             embedded_worker=os.getenv("EMBEDDED_WORKER", "true").lower() == "true",
             auto_migrate=os.getenv("AUTO_MIGRATE", "true").lower() == "true",
             environment=os.getenv("APP_ENV", "development"),
+            network_mode=os.getenv("NETWORK_MODE", "offline").strip().lower(),
             access_token=os.getenv("APP_ACCESS_TOKEN", ""),
             allowed_hosts=tuple(h.strip() for h in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",") if h.strip()),
             nebius_api_key=os.getenv("NEBIUS_API_KEY", ""),
@@ -40,6 +42,8 @@ class Settings:
         return settings
 
     def validate(self):
+        if self.network_mode not in {"offline", "online"}:
+            raise ValueError("NETWORK_MODE must be offline or online.")
         if self.environment not in {"development", "production"}:
             raise ValueError("APP_ENV must be development or production.")
         if self.environment == "production":

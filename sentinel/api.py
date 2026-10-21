@@ -155,7 +155,8 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
 
     @app.get("/api/config")
     def config():
-        return {"model_configured": bool(settings.nebius_api_key), "model": settings.nebius_model,
+        return {"model_configured": settings.network_mode == "online" and bool(settings.nebius_api_key),
+                "network_mode": settings.network_mode, "model": settings.nebius_model,
                 "protected": bool(settings.access_token), "format": "SentinelClaim v1",
                 "rule_version": "sentinel-bundle/1.0"}
 
@@ -211,6 +212,8 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
                     "history": [job_summary(job) for job in history]}
 
     async def receive_bundle(claim_file, chart_file, use_model, claim_id=None):
+        if use_model and settings.network_mode != "online":
+            raise HTTPException(409, "Remote review is disabled offline. Local checks remain available.")
         if use_model and not settings.nebius_api_key:
             raise HTTPException(409, "Nebius is not configured. Use local checks or configure the server API key.")
         if not (claim_file.filename or "").lower().endswith(".xml"):

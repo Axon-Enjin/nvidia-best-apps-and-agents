@@ -42,7 +42,16 @@ def process_one(db: Database, settings: Settings) -> bool:
         try:
             result = audit_bundle(job.xml_text, job.chart_text, job.chart_error)
             if job.use_model:
-                if result["outcome"] == "incomplete":
+                if settings.network_mode != "online":
+                    result["model_status"] = "not_run_offline"
+                    result["outcome"] = "incomplete"
+                    result["checks"].append({"label": "Remote evidence review", "status": "incomplete"})
+                    result["findings"].append({"id": "model_offline", "code": "model_offline",
+                                              "category": "completeness", "severity": "blocking",
+                                              "title": "Remote review did not run offline",
+                                              "explanation": "Local checks are saved. No automated narrative clearance was issued.",
+                                              "claim_quote": "", "chart_quote": "", "rule": "offline-coverage/1.0"})
+                elif result["outcome"] == "incomplete":
                     result["model_status"] = "skipped_incomplete"
                 else:
                     try:

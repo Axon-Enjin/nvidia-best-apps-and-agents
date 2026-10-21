@@ -58,6 +58,7 @@ No further product approval is required to continue the already authorized tasks
 | D6 | Local prototype precedes deployed evaluation A and operational pilot B | Human direction; later release gates retained |
 | D7 | Owner resumed implementation and authorized project commits/branch on 2026-10-21 | Latest explicit instruction supersedes pause |
 | D8 | Offline default; online inference requires explicit opt-in plus credentials | Agent implementation choice under offline-first instruction; tests in Task 1 |
+| D9 | Two-app layout: `apps/api` executed, `apps/web` reserved; shared fixtures and browser acceptance at the repository root | Human direction in `prompts/organize-repository.md`; record in `docs/changes/repository-organization/` |
 
 ## 6. Context exclusions
 

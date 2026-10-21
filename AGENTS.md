@@ -16,7 +16,7 @@
 
 ## 1. How to Build From These Docs
 
-At session start, read root `HANDOFF.md`, `docs/state.md`, then the active change's `docs/changes/offline-prototype/tasks.md` and `verify.md`. Product scope is already accepted and the owner explicitly resumed implementation on 2026-10-21. Work on `feat/offline-prototype`. Draft release/assurance documents record pending evidence; they do not reinstate the earlier owner pause.
+At session start, read root `HANDOFF.md`, `docs/state.md`, then the active change's `docs/changes/offline-prototype/tasks.md` and `verify.md`. Product scope is already accepted and the owner explicitly resumed implementation on 2026-10-21. Work on `feat/offline-prototype`. Draft release/assurance documents record pending evidence; they do not reinstate the earlier owner pause. Repository layout and path moves are recorded in `docs/changes/repository-organization/`.
 
 For behavior use PRD and the active change's delta spec; for architecture use SDD; for UI use DSD; for tests use QAD. The task list owns progress. When a Locked artifact must change, write and propagate a Change Record. Preserve existing source/results through additive migrations.
 
@@ -32,7 +32,7 @@ Work inline. Test new behavior before implementing it, run the affected tests th
 
 ## 3. Stack Currency & Deprecations
 
-`uv.lock` is the exact dependency source. The versions below were observed in the installed environment on 2026-10-21, not selected from memory. Framework conventions must be checked against primary documentation before implementing a new sensitive path.
+`apps/api/uv.lock` is the exact dependency source. The versions below were observed in the installed environment on 2026-10-21, not selected from memory. Framework conventions must be checked against primary documentation before implementing a new sensitive path.
 
 | Layer | Installed version | Verified date | Primary reference |
 |---|---|---|---|
@@ -54,13 +54,13 @@ Windows printed OCR is verified with Tesseract 5.5.3.20260724 and English tessda
 
 ## 4. Golden-Path Patterns
 
-Verified 2026-10-21 against the installed stack: use `TestClient(create_app(settings, database))` as a context manager so lifespan runs; inject a temporary database/settings explicitly. The real examples are `tests/test_workflow.py` and `tests/test_offline.py`.
+Verified 2026-10-21 against the installed stack: use `TestClient(create_app(settings, database))` as a context manager so lifespan runs; inject a temporary database/settings explicitly. The real examples are `apps/api/tests/test_workflow.py` and `apps/api/tests/test_offline.py`.
 
 For remote adapters, test the transport boundary with `httpx.MockTransport` and assert no request was sent offline. Test doubles are test-only; never expose their output as runtime findings. Runtime retains explicit unavailable AI coverage. P07 uses source-backed manual comparison and a different supervisor acknowledgement; no fabricated automated result is substituted.
 
 ## 5. Conventions & Guardrails
 
-When creating, moving or renaming files, read `.cursor/rules/repository-structure.mdc`. It owns file placement, naming and migration safeguards. The proposed `apps/web` and `apps/api` layout is a migration target; existing application paths remain authoritative until their moves are executed and verified. Use `prompts/organize-repository.md` for the full reorganization procedure.
+When creating, moving or renaming files, read `.cursor/rules/repository-structure.mdc`. It owns file placement, naming and migration safeguards. The FastAPI app, migrations, Python manifests and backend tests live under `apps/api/` (installed from `apps/api/src/sentinel`); browser acceptance is `tests/e2e/`; shared synthetic evidence is `tests/fixtures/`. `apps/web/` is reserved for the Next.js app and is created with it, not before. Relative `data/...` settings resolve against the workspace root (`WORKSPACE_ROOT`, else the repository root), so root and app-directory starts share one private data directory. Use `prompts/organize-repository.md` for the full reorganization procedure.
 
 Use existing focused modules; introduce account, bundle/storage, review and report modules only as their tasks require. Server transactions own case revisions and completion. UI state cannot authorize operations. Original evidence and published review snapshots are immutable; decisions append events.
 
@@ -71,9 +71,9 @@ Closeout re-verifies encrypted original hashes in the same transaction as the cu
 Task verification:
 
 ```powershell
-uv sync --locked
-uv run --locked pytest tests/test_offline.py -q
-uv run --offline --locked pytest -q
+uv sync --project apps/api --locked
+uv run --project apps/api --offline --locked pytest apps/api/tests/test_offline.py -q
+./scripts/verify.ps1
 git diff --check
 ```
 
@@ -81,7 +81,7 @@ Run the task-specific tests in `tasks.md` when they exist. A passing legacy suit
 
 ## 5.1 Change Workflow
 
-The active change is `docs/changes/offline-prototype/`. Keep proposal, design, tasks, delta spec and verification coherent. Validate using the external engine's `scripts/change.py validate offline-prototype docs/`. Archive only after the change is actually verified; uncompleted tasks remain unchecked.
+The active product change is `docs/changes/offline-prototype/`; `docs/changes/repository-organization/` records the layout migration and does not close that change's runtime gates. Keep proposal, design, tasks, delta spec and verification coherent. Validate using the external engine's `scripts/change.py validate <slug> docs/`. Archive only after the change is actually verified; uncompleted tasks remain unchecked.
 
 ## 5.2 Public Surface and Crawler Policy
 

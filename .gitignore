@@ -10,3 +10,7 @@ data/
 *.db-wal
 test-results/
 playwright-report/
+# Build outputs: wheels from apps/api, and the Next.js app when apps/web exists.
+dist/
+node_modules/
+.next/

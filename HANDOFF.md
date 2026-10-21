@@ -12,6 +12,11 @@ Implementation remains authorized. The owner requested Tasks 4 through 10. Work 
 2. docs/changes/offline-prototype/tasks.md and verify.md, which own progress and evidence.
 3. The active delta spec/design, PRD P01-P10 and SDD; DSD/QAD for UI and evaluation.
 4. LOCAL-SETUP.md for launch, provisioning, backup and isolated restore; OCR-NOTICES.md for pinned local OCR.
+5. docs/changes/repository-organization/ and .cursor/rules/repository-structure.mdc for where files live.
+
+## Repository layout
+
+The API is `apps/api/` (package `src/sentinel`, `migrations/`, `tests/`, `pyproject.toml`, `uv.lock`, `Dockerfile`). Browser acceptance is `tests/e2e/`; shared synthetic evidence is `tests/fixtures/`. `apps/web/` does not exist yet and is created with the Next.js app. Run `./scripts/verify.ps1` from the repository root for lint, API tests and browser acceptance. Relative `data/` settings resolve against the repository root, so the private `data/` directory is the same from any working directory. Older change records keep the paths that were true when they were written.
 
 ## Implemented and verified locally
 

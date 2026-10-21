@@ -17,10 +17,10 @@ Initial scope is adult general medical inpatient claims before initial submissio
 Install the locked environment and provision named accounts from a private terminal:
 
 ```powershell
-uv sync --locked
-uv run --locked python -m sentinel account-create reviewer --roles reviewer
-uv run --locked python -m sentinel account-create supervisor --roles supervisor
-uv run --locked python -m sentinel serve
+uv sync --project apps/api --locked
+uv run --project apps/api --locked python -m sentinel account-create reviewer --roles reviewer
+uv run --project apps/api --locked python -m sentinel account-create supervisor --roles supervisor
+uv run --project apps/api --locked python -m sentinel serve
 ```
 
 Open `http://127.0.0.1:8000/login`. Password prompts do not echo. Supervisor/admin provisioning displays a fresh secret for a local TOTP authenticator and requires its code before saving. No shared or default password exists. Supervisor assignment can claim historical unassigned cases; administrator status alone cannot view records.
@@ -32,6 +32,21 @@ Sessions expire after eight hours or twenty idle minutes. HTTP on loopback uses 
 The old shared token works only with explicit `AUTH_MODE=legacy` in development and a configured token of at least 24 characters. This migration mode has no named accountability; use named mode for the new workflow. The full evidence workbench is still under construction.
 
 Versioned imports are available through the authenticated API: create a case with facility, encounter, claim and patient anchors at `POST /api/cases`, then upload files plus a typed SHA-256 manifest and expected revision at `/api/claims/{id}/bundles` with an `Idempotency-Key`. Get immutable membership and current extraction coverage at `/api/claims/{id}/bundles/{version}`; authorized original downloads use `/api/documents/{id}/content`. Original objects are encrypted beneath `SOURCE_STORAGE_ROOT` and require the local key. These import APIs do not yet establish complete review or finalization.
+
+## Repository layout
+
+| Path | Owns |
+|---|---|
+| `apps/api/` | FastAPI app (`src/sentinel`, including the current static UI), Alembic `migrations/`, Python manifests and `uv.lock`, backend `tests/`, API-only `scripts/`, `Dockerfile` |
+| `apps/web/` | Reserved for the Next.js frontend; created with it |
+| `tests/e2e/` | Real-browser acceptance across the running app |
+| `tests/fixtures/` | The single copy of shared synthetic evidence and locked manifests |
+| `scripts/` | Cross-app commands: `verify.ps1`, `local.ps1` |
+| `compose.yaml` | Local multi-service entry point |
+| `docs/`, `prompts/` | Canonical documents and change records; reusable prompts |
+| `data/` | Ignored private runtime state; start from the repository root or `apps/api/` and the same directory is used |
+
+Run lint, the API tests and the browser acceptance suite with `./scripts/verify.ps1`. The placement policy is [.cursor/rules/repository-structure.mdc](.cursor/rules/repository-structure.mdc).
 
 ## Project context
 

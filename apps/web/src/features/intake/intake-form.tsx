@@ -29,16 +29,23 @@ const ROW_STATUS: Record<RowStatus, { tone: Tone; text: string }> = {
   duplicate: { tone: "blocking", text: "Selected twice" },
 };
 
-function StepHeading({ id, step, children }: { id: string; step: string; children: string }) {
+function StepHeading({ id, step, nested, children }: { id: string; step: string; nested: boolean; children: string }) {
+  const Heading = nested ? "h3" : "h2";
   return (
-    <h2 id={id} className="flex items-baseline gap-3 border-t border-ink pt-3 text-lg">
+    <Heading id={id} className={`flex items-baseline gap-3 pt-3 ${nested ? "border-t border-rule text-base" : "border-t border-ink text-lg"}`}>
       <span className="doc-ref text-ink-muted">{step}</span>
       {children}
-    </h2>
+    </Heading>
   );
 }
 
-export function IntakeForm(props: { mode: "new" } | { mode: "replace"; claim: CaseRecord }) {
+type IntakeProps = ({ mode: "new" } | { mode: "replace"; claim: CaseRecord }) & {
+  /** Inside the Import phase the form sits under its own heading and is not the page's primary action. */
+  nested?: boolean;
+};
+
+export function IntakeForm(props: IntakeProps) {
+  const nested = props.nested ?? false;
   const router = useRouter();
   const { request } = useSession();
   const { announce } = useStatus();
@@ -147,7 +154,7 @@ export function IntakeForm(props: { mode: "new" } | { mode: "replace"; claim: Ca
   return (
     <form ref={form} onSubmit={submit} className="grid max-w-3xl gap-8" noValidate>
       <section aria-labelledby="step-manifest" className="grid gap-4">
-        <StepHeading id="step-manifest" step="01">
+        <StepHeading id="step-manifest" step="01" nested={nested}>
           Manifest
         </StepHeading>
         <p className="text-ink-muted">
@@ -177,7 +184,7 @@ export function IntakeForm(props: { mode: "new" } | { mode: "replace"; claim: Ca
       </section>
 
       <section aria-labelledby="step-originals" className="grid gap-4">
-        <StepHeading id="step-originals" step="02">
+        <StepHeading id="step-originals" step="02" nested={nested}>
           Originals
         </StepHeading>
         <Field id="original-files" label="Original documents" help="Limits: 25 MB per file, 100 MB per version, 150 pages, 30 files.">
@@ -194,7 +201,7 @@ export function IntakeForm(props: { mode: "new" } | { mode: "replace"; claim: Ca
 
       {manifest && match ? (
         <section aria-labelledby="step-check" className="grid gap-3">
-          <StepHeading id="step-check" step="03">
+          <StepHeading id="step-check" step="03" nested={nested}>
             Check the selection
           </StepHeading>
           <ul aria-label="Documents named in the manifest" className="divide-y divide-rule-faint border-y border-rule bg-surface">
@@ -226,7 +233,7 @@ export function IntakeForm(props: { mode: "new" } | { mode: "replace"; claim: Ca
         <div className="flex flex-wrap items-center gap-4">
           <button
             type="submit"
-            className="btn btn-primary"
+            className={`btn ${nested ? "btn-secondary" : "btn-primary"}`}
             aria-disabled={blocked || pending ? "true" : undefined}
             aria-describedby={blocked ? "import-blocked" : undefined}
           >

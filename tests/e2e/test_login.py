@@ -5,10 +5,10 @@ import time
 import uvicorn
 from playwright.sync_api import sync_playwright
 
+from e2e.account_setup import PASSWORD, provision_reviewer
 from sentinel.api import create_app
 from sentinel.config import Settings
 from sentinel.db import Database
-from tests.account_helpers import PASSWORD, provision_reviewer
 
 
 def test_local_login_is_responsive_and_creates_a_named_session(tmp_path):

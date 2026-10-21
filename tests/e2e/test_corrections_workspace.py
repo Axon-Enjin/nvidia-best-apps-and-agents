@@ -1,6 +1,6 @@
 from playwright.sync_api import expect
 
-from tests.browser.test_review_workspace import FIXTURE, login
+from e2e.test_review_workspace import FIXTURE, login
 
 
 def test_saved_correction_controls_survive_browser_reload(live_workspace):

@@ -3,9 +3,9 @@ import json
 
 from playwright.sync_api import expect
 
+from e2e.test_offline_acceptance import import_ui
+from e2e.test_review_workspace import login
 from sentinel.samples import development_bundle
-from tests.browser.test_offline_acceptance import import_ui
-from tests.browser.test_review_workspace import login
 
 
 def test_manual_review_records_actual_multipage_source_anchor(live_workspace,tmp_path):

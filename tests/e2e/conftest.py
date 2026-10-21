@@ -6,10 +6,10 @@ import pytest
 import uvicorn
 from playwright.sync_api import sync_playwright
 
+from e2e.account_setup import provision_reviewer
 from sentinel.api import create_app
 from sentinel.config import Settings
 from sentinel.db import Database
-from tests.account_helpers import provision_reviewer
 
 
 @pytest.fixture

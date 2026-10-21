@@ -9,11 +9,11 @@ from pathlib import Path
 import httpx
 from playwright.sync_api import expect, sync_playwright
 
+from e2e.account_setup import PASSWORD, provision_reviewer
+from e2e.fixture_paths import FIXTURES
 from sentinel.accounts import SecretBox, create_local_account, totp_code
 from sentinel.config import Settings, migrate
 from sentinel.db import Database
-from tests.account_helpers import PASSWORD, provision_reviewer
-from tests.fixture_paths import FIXTURES
 
 ROOT = FIXTURES/"evaluation"/"heldout-01"
 TOTP = "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ"
@@ -67,7 +67,7 @@ def test_local_correction_manual_supervision_exports_and_process_restart_with_ne
     base = f"http://127.0.0.1:{port}"
     def start():
         log = server_log.open("ab")
-        process = subprocess.Popen([sys.executable,"-m","tests.offline_server",str(config),str(port),str(network_log)],stdout=log,stderr=log)
+        process = subprocess.Popen([sys.executable,"-I",str(Path(__file__).with_name("offline_server.py")),str(config),str(port),str(network_log)],stdout=log,stderr=log)
         log.close()
         deadline = time.monotonic()+15
         while time.monotonic()<deadline:

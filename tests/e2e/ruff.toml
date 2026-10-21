@@ -1,0 +1,2 @@
+extend = "../../apps/api/pyproject.toml"
+src = ["..", "../../apps/api/src"]

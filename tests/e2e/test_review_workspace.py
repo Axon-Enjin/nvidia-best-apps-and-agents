@@ -2,8 +2,8 @@ from pathlib import Path
 
 from playwright.sync_api import expect
 
-from tests.account_helpers import PASSWORD
-from tests.fixture_paths import FIXTURES
+from e2e.account_setup import PASSWORD
+from e2e.fixture_paths import FIXTURES
 
 FIXTURE = FIXTURES / 'development' / 'discrepant'
 

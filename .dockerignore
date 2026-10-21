@@ -1,8 +1,9 @@
 *
-!sentinel/**
-!migrations/**
-!pyproject.toml
-!uv.lock
-!alembic.ini
+!apps/api/pyproject.toml
+!apps/api/uv.lock
+!apps/api/alembic.ini
+!apps/api/src/**
+!apps/api/migrations/**
 !OCR-NOTICES.md
 !LICENSE
+**/__pycache__

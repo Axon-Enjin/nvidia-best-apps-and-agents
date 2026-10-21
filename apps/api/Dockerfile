@@ -10,11 +10,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends tesseract-ocr=5
     && mkdir -p /data/sources /backups /opt/tessdata
 RUN python -c "import urllib.request,hashlib,pathlib; b=urllib.request.urlopen('https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/4.1.0/eng.traineddata',timeout=60).read(); assert hashlib.sha256(b).hexdigest()=='7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2'; pathlib.Path('/opt/tessdata/eng.traineddata').write_bytes(b)"
 WORKDIR /app
-COPY pyproject.toml uv.lock ./
-RUN uv sync --locked --no-dev
-COPY sentinel ./sentinel
-COPY migrations ./migrations
-COPY alembic.ini OCR-NOTICES.md LICENSE ./
+COPY apps/api/pyproject.toml apps/api/uv.lock ./
+RUN uv sync --locked --no-dev --no-install-project
+COPY apps/api/src ./src
+COPY apps/api/migrations ./migrations
+COPY apps/api/alembic.ini ./
+COPY OCR-NOTICES.md LICENSE ./
+# A wheel install, not an editable one: the image then runs the packaged static assets and migrations.
+RUN uv sync --locked --no-dev --no-editable
 RUN chown -R sentinel:sentinel /data /backups
 USER 10001:10001
 EXPOSE 8000

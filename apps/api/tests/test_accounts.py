@@ -244,9 +244,11 @@ def test_additive_account_migration_keeps_existing_records_and_sources(tmp_path)
     from alembic.config import Config
     from sqlalchemy import text
 
-    from sentinel.config import migrate
+    from sentinel.config import alembic_resources, migrate
     url = f"sqlite:///{tmp_path / 'migration.db'}"
-    config = Config("alembic.ini")
+    ini, scripts = alembic_resources()
+    config = Config(str(ini))
+    config.set_main_option("script_location", str(scripts))
     config.attributes["database_url"] = url
     command.upgrade(config, "0001")
     db = Database(url)

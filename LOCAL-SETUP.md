@@ -16,7 +16,7 @@ docker compose --env-file data/container.env run --rm web python -m sentinel acc
 docker compose --env-file data/container.env run --rm web python -m sentinel account-create supervisor --roles supervisor
 ```
 
-Privileged provisioning requires enrollment in a local TOTP authenticator. Keep the generated database password, `/data/account.key` and the separately generated recovery key private and backed up. There is no default account. Open `http://127.0.0.1:8000`; import a fixture folder's `manifest.json` and all originals under `tests/fixtures/development`. Use `discrepant`, then `corrected` as the next version of the same case. All required artifacts remain mandatory. The narrative comparison needs a reviewer and a different supervisor; the AI status remains not run offline.
+Privileged provisioning requires enrollment in a local TOTP authenticator. Keep the generated database password, `/data/account.key` and the separately generated recovery key private and backed up. There is no default account. Open `http://127.0.0.1:8000`; import a fixture folder's `manifest.json` and all originals under `tests/fixtures/development` (shared at the repository root). Use `discrepant`, then `corrected` as the next version of the same case. All required artifacts remain mandatory. The narrative comparison needs a reviewer and a different supervisor; the AI status remains not run offline.
 
 Compose publishes only loopback port 8000 and uses an internal network for web, worker and database. Download images, Python dependencies, OCR English data and browser test binaries before disconnecting. No provider credential or remote identity service is selected. LAN publication requires an explicit Compose/allowed-host change; hosted HTTPS/private access remains outside this local milestone.
 
@@ -36,7 +36,7 @@ The backup script stops web/worker before creating an encrypted database/source/
 For a PostgreSQL restore, create a **new empty isolated database** with the same supported PostgreSQL major and no public port. Stop the target app processes. Mount the encrypted checkpoint, recovery key and the newest retirement ledger. Use the installed `pg_restore` client and:
 
 ```powershell
-uv run --locked python -m sentinel.recovery restore --services-stopped --backup data/backups/first-checkpoint.backup --backup-key data/backups/recovery.key --target data/restore-drill --restore-database-url 'postgresql+psycopg://USER:PASSWORD@127.0.0.1:5432/EMPTY_RESTORE_DATABASE' --deletion-ledger data/current-retirement-ledger
+uv run --project apps/api --locked python -m sentinel.recovery restore --services-stopped --backup data/backups/first-checkpoint.backup --backup-key data/backups/recovery.key --target data/restore-drill --restore-database-url 'postgresql+psycopg://USER:PASSWORD@127.0.0.1:5432/EMPTY_RESTORE_DATABASE' --deletion-ledger data/current-retirement-ledger
 ```
 
 The target directory must not exist and a PostgreSQL target must have no tables. An explicitly supplied retirement-ledger directory must exist, even if empty; a missing mount/typo stops restore before target creation. Restore never drops an existing database. It validates original hashes, revokes all old sessions, resets interrupted leases and reconciles newer retirement tombstones before reopening. Configure the isolated app using the generated private `restore-settings.json`; keep it isolated until named login, history, source access, pending-job completion and report provenance have been checked. The PostgreSQL/container drill remains unrun on this host.
@@ -48,29 +48,31 @@ The target directory must not exist and a PostgreSQL target must have no tables.
 SQLite is a direct-development convenience. Its successful tests do not establish PostgreSQL concurrency or deployment suitability.
 
 ```powershell
-uv sync --locked
-uv run --locked python scripts/install_ocr.py
-uv run --locked python -m sentinel migrate
-uv run --locked python -m sentinel account-create reviewer --roles reviewer
-uv run --locked python -m sentinel account-create supervisor --roles supervisor
-uv run --offline --locked python -m sentinel serve
+uv sync --project apps/api --locked
+uv run --project apps/api --locked python apps/api/scripts/install_ocr.py
+uv run --project apps/api --locked python -m sentinel migrate
+uv run --project apps/api --locked python -m sentinel account-create reviewer --roles reviewer
+uv run --project apps/api --locked python -m sentinel account-create supervisor --roles supervisor
+uv run --project apps/api --offline --locked python -m sentinel serve
 ```
 
 Default binding is loopback and the embedded worker is enabled for this path. Windows OCR installation extracts verified binaries into `data/tools`, with no administrator/PATH changes; see [OCR-NOTICES.md](OCR-NOTICES.md). Stop the server before a checkpoint:
 
 ```powershell
-uv run --locked python -c "from sentinel.accounts import SecretBox; SecretBox.from_file('data/recovery.key', create=True)"
-uv run --offline --locked python -m sentinel.recovery backup --services-stopped --backup-key data/recovery.key --target data/backups/development.backup
-uv run --offline --locked python -m sentinel.recovery restore --services-stopped --backup-key data/recovery.key --backup data/backups/development.backup --target data/isolated-restore --deletion-ledger data/sources/deletions
+uv run --project apps/api --locked python -c "from sentinel.accounts import SecretBox; SecretBox.from_file('data/recovery.key', create=True)"
+uv run --project apps/api --offline --locked python -m sentinel.recovery backup --services-stopped --backup-key data/recovery.key --target data/backups/development.backup
+uv run --project apps/api --offline --locked python -m sentinel.recovery restore --services-stopped --backup-key data/recovery.key --backup data/backups/development.backup --target data/isolated-restore --deletion-ledger data/sources/deletions
 ```
 
 ## Verification
 
 ```powershell
-uv run --locked playwright install chromium
-uv run --offline --locked ruff check sentinel tests migrations scripts
+uv run --project apps/api --locked playwright install chromium
+cd apps/api
+uv run --offline --locked ruff check src tests migrations scripts
 uv run --offline --locked pytest -q --tb=short
 uv run --offline --locked pytest tests/test_recovery.py tests/browser/test_offline_acceptance.py -q
+cd ../..
 ```
 
-Set `TEST_DATABASE_URL` to an empty disposable PostgreSQL database to run `tests/test_postgres.py`. The default local run explicitly skips it when absent. Run a full container correction loop and the isolated PostgreSQL restore before claiming the first prototype accepted. Browser request blocking and Python socket checks are not a whole-machine firewall; final container/OS isolation acceptance remains required.
+Set `TEST_DATABASE_URL` to an empty disposable PostgreSQL database to run `apps/api/tests/test_postgres.py`. The default local run explicitly skips it when absent. Run a full container correction loop and the isolated PostgreSQL restore before claiming the first prototype accepted. Browser request blocking and Python socket checks are not a whole-machine firewall; final container/OS isolation acceptance remains required.

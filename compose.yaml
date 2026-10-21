@@ -1,6 +1,8 @@
 name: sentinel-claims
 x-app: &app
-  build: .
+  build:
+    context: .
+    dockerfile: apps/api/Dockerfile
   image: sentinel-claims:offline
   environment: &environment
     DATABASE_URL: postgresql+psycopg://sentinel:${POSTGRES_PASSWORD:?Run scripts/local.ps1 init first}@db:5432/sentinel

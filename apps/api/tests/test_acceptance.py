@@ -1,14 +1,14 @@
 import hashlib
 import json
 from collections import Counter
-from pathlib import Path
 
 import pytest
 
 from sentinel.document_parser import extract
 from sentinel.profile import evaluate_profile
+from tests.fixture_paths import FIXTURES
 
-ROOT = Path(__file__).parent/"fixtures"/"evaluation"
+ROOT = FIXTURES/"evaluation"
 LOCK = json.loads((ROOT/"locked-manifest.json").read_text())
 
 

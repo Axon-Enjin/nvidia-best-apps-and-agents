@@ -1,12 +1,12 @@
-from pathlib import Path
 
 import pytest
 
 from tests.bundle_helpers import create_case, import_files
+from tests.fixture_paths import FIXTURES
 from tests.review_helpers import action
 from tests.test_workflow import context as context
 
-SCANS = Path(__file__).parent / "fixtures" / "scans"
+SCANS = FIXTURES / "scans"
 
 
 @pytest.mark.parametrize("suffix", ["png", "pdf"])

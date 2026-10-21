@@ -13,8 +13,9 @@ from sentinel.accounts import SecretBox, create_local_account, totp_code
 from sentinel.config import Settings, migrate
 from sentinel.db import Database
 from tests.account_helpers import PASSWORD, provision_reviewer
+from tests.fixture_paths import FIXTURES
 
-ROOT = Path(__file__).parents[1]/"fixtures"/"evaluation"/"heldout-01"
+ROOT = FIXTURES/"evaluation"/"heldout-01"
 TOTP = "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ"
 
 

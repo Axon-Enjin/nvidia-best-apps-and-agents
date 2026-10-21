@@ -5,6 +5,46 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
+def workspace_root() -> Path:
+    """Directory that relative settings (``data/...``) resolve against, whatever the working directory.
+
+    ``WORKSPACE_ROOT`` wins; a source checkout uses the repository root; an installed package uses the
+    current directory (containers and other installs configure absolute paths).
+    """
+    explicit = os.getenv("WORKSPACE_ROOT")
+    if explicit:
+        return Path(explicit).resolve()
+    checkout = Path(__file__).resolve().parents[4]
+    if (checkout / "apps" / "api" / "src" / "sentinel" / "config.py").is_file():
+        return checkout
+    return Path.cwd()
+
+
+def _absolute(value: str) -> bool:
+    return Path(value).is_absolute() or value.startswith(("/", "\\"))
+
+
+def _workspace_path(value: str) -> str:
+    return value if _absolute(value) else str(workspace_root() / value)
+
+
+def _workspace_database_url(url: str) -> str:
+    prefix = "sqlite:///"
+    path = url.removeprefix(prefix)
+    if url.startswith(prefix) and path and not path.startswith(":memory:") and not _absolute(path):
+        return prefix + (workspace_root() / path).as_posix()
+    return url
+
+
+def alembic_resources() -> tuple[Path, Path]:
+    """Return ``(alembic.ini, migrations)`` from the installed package, else the source checkout."""
+    package = Path(__file__).resolve().parent / "_alembic"
+    if (package / "alembic.ini").is_file():
+        return package / "alembic.ini", package / "migrations"
+    project = Path(__file__).resolve().parents[2]
+    return project / "alembic.ini", project / "migrations"
+
+
 @dataclass(frozen=True)
 class Settings:
     database_url: str = "sqlite:///data/sentinel.db"
@@ -23,6 +63,11 @@ class Settings:
     nebius_api_key: str = ""
     nebius_base_url: str = "https://api.tokenfactory.nebius.com/v1"
     nebius_model: str = "nvidia/nemotron-3-super-120b-a12b"
+
+    def __post_init__(self):
+        object.__setattr__(self, "database_url", _workspace_database_url(self.database_url))
+        object.__setattr__(self, "secret_key_file", _workspace_path(self.secret_key_file))
+        object.__setattr__(self, "source_storage_root", _workspace_path(self.source_storage_root))
 
     @classmethod
     def from_env(cls):
@@ -79,8 +124,9 @@ def migrate(database_url: str):
 
     if database_url.startswith("sqlite:///"):
         Path(database_url.removeprefix("sqlite:///")).parent.mkdir(parents=True, exist_ok=True)
-    config = Config(str(Path(__file__).resolve().parent.parent / "alembic.ini"))
-    config.set_main_option("script_location", str(Path(__file__).resolve().parent.parent / "migrations"))
+    ini, scripts = alembic_resources()
+    config = Config(str(ini))
+    config.set_main_option("script_location", str(scripts))
     # Pass via attributes so passwords containing '%' are not ConfigParser interpolation.
     config.attributes["database_url"] = database_url
     command.upgrade(config, "head")

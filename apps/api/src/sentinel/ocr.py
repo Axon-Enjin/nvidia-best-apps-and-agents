@@ -4,8 +4,8 @@ import os
 import shutil
 import subprocess
 import sys
-from pathlib import Path
 
+from sentinel.config import workspace_root
 from sentinel.document_parser import detect_type
 from sentinel.documents import extract_original
 
@@ -13,7 +13,7 @@ ENGLISH_SHA256 = "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170
 
 
 def ocr_binary():
-    return os.getenv("OCR_BINARY") or shutil.which("tesseract") or str(Path("data/tools/tesseract/tesseract.exe").resolve())
+    return os.getenv("OCR_BINARY") or shutil.which("tesseract") or str(workspace_root() / "data" / "tools" / "tesseract" / "tesseract.exe")
 
 
 def extract_document(source, limits=None, *, binary=None, expected_version=None):

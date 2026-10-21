@@ -3,8 +3,9 @@ from pathlib import Path
 from playwright.sync_api import expect
 
 from tests.account_helpers import PASSWORD
+from tests.fixture_paths import FIXTURES
 
-FIXTURE = Path(__file__).parents[1] / 'fixtures' / 'development' / 'discrepant'
+FIXTURE = FIXTURES / 'development' / 'discrepant'
 
 
 def login(page, base):

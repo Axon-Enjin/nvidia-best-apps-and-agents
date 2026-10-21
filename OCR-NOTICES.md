@@ -1,6 +1,6 @@
 # Local printed OCR
 
-Windows development uses Tesseract 5.5.3.20260724 from the official Tesseract release, extracted into ignored `data/tools/tesseract`. Run `uv run --locked python scripts/install_ocr.py` while connected, then disconnect. The script verifies pinned SHA-256 values before executing the archive tools and never runs an installer. No administrator access or PATH change is needed. Set `OCR_BINARY` for another installed binary and `OCR_EXPECTED_VERSION` to its pinned version.
+Windows development uses Tesseract 5.5.3.20260724 from the official Tesseract release, extracted into ignored `data/tools/tesseract`. Run `uv run --project apps/api --locked python apps/api/scripts/install_ocr.py` while connected, then disconnect. The script verifies pinned SHA-256 values before executing the archive tools and never runs an installer. No administrator access or PATH change is needed. Set `OCR_BINARY` for another installed binary and `OCR_EXPECTED_VERSION` to its pinned version.
 
 The English model is `tessdata_fast` tag 4.1.0, SHA-256 `7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2`. OCR checks the model hash before every extraction. Linux packaging selects Debian Tesseract 5.5.0-1 and the same model; its execution is a separate acceptance gate.
 

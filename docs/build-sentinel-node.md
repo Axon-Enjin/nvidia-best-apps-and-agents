@@ -56,6 +56,8 @@ For remote adapters, test the transport boundary with `httpx.MockTransport` and 
 
 ## 5. Conventions & Guardrails
 
+When creating, moving or renaming files, read `.cursor/rules/repository-structure.mdc`. It owns file placement, naming and migration safeguards. The proposed `apps/web` and `apps/api` layout is a migration target; existing application paths remain authoritative until their moves are executed and verified. Use `prompts/organize-repository.md` for the full reorganization procedure.
+
 Use existing focused modules; introduce account, bundle/storage, review and report modules only as their tasks require. Server transactions own case revisions and completion. UI state cannot authorize operations. Original evidence and published review snapshots are immutable; decisions append events.
 
 Synthetic patient records only. Keep the environment indication and export provenance. Credentials alone cannot enable remote calls; `NETWORK_MODE=online` is an explicit opt-in. Keep all core UI assets local and default server binding to loopback. Named authorization, encrypted credentials/secrets, bounded uploads and reliable coverage remain necessary even for an offline prototype.

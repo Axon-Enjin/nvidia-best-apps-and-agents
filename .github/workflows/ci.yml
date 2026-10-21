@@ -38,5 +38,6 @@ jobs:
           python -c "import urllib.request,hashlib,pathlib; b=urllib.request.urlopen('https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/4.1.0/eng.traineddata').read(); assert hashlib.sha256(b).hexdigest()=='7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2'; pathlib.Path('/opt/tessdata/eng.traineddata').write_bytes(b)"
       - run: uv sync --locked
       - run: uv run --locked playwright install --with-deps chromium
-      - run: uv run --offline --locked ruff check src tests migrations scripts
+      - run: uv run --offline --locked ruff check src tests migrations scripts ../../tests/e2e
       - run: uv run --offline --locked pytest -q --tb=short
+      - run: uv run --offline --locked pytest ../../tests/e2e -q --tb=short

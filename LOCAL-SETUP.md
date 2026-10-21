@@ -68,11 +68,11 @@ uv run --project apps/api --offline --locked python -m sentinel.recovery restore
 
 ```powershell
 uv run --project apps/api --locked playwright install chromium
-cd apps/api
-uv run --offline --locked ruff check src tests migrations scripts
-uv run --offline --locked pytest -q --tb=short
-uv run --offline --locked pytest tests/test_recovery.py tests/browser/test_offline_acceptance.py -q
-cd ../..
+./scripts/verify.ps1
+uv run --project apps/api --offline --locked pytest apps/api/tests/test_recovery.py -q
+uv run --project apps/api --offline --locked pytest tests/e2e/test_offline_acceptance.py -q
 ```
+
+`scripts/verify.ps1` syncs the locked API environment, lints the API and `tests/e2e`, then runs the API tests and the browser acceptance suite as separate pytest sessions (`-SkipE2E` omits the browser suite). The API suite lives in `apps/api/tests`; cross-app browser flows live in `tests/e2e`; shared synthetic evidence is `tests/fixtures`.
 
 Set `TEST_DATABASE_URL` to an empty disposable PostgreSQL database to run `apps/api/tests/test_postgres.py`. The default local run explicitly skips it when absent. Run a full container correction loop and the isolated PostgreSQL restore before claiming the first prototype accepted. Browser request blocking and Python socket checks are not a whole-machine firewall; final container/OS isolation acceptance remains required.

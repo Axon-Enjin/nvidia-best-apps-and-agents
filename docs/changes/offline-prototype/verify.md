@@ -3,7 +3,7 @@
 **Date:** 2026-10-21
 **Overall:** FAIL
 
-FAIL means the complete prototype is not finished. Tasks 1-3 are verified; Tasks 4-10 remain pending. Do not archive or report the entire change complete.
+FAIL means the complete prototype is not finished. Tasks 1-4 are verified; Tasks 5-10 remain pending. Do not archive or report the entire change complete.
 
 ## Completeness
 
@@ -70,3 +70,12 @@ FAIL means the complete prototype is not finished. Tasks 1-3 are verified; Tasks
 - Ruling: preserve oversized aggregate-page versions in quarantine with `limits_exceeded` and explicit page counts; never truncate. They cannot establish complete coverage. Cost if wrong: tighten admission before version publication, retaining the quarantined originals.
 - Assignment now advances revision, and import CAS checks both revision and assignment. Legacy rerun cannot replace a versioned case. Lease-fenced publication writes all extraction outcomes together; unsupported content receives no invented fields.
 - Limit: the import job evaluates content/membership only. Full P01-P10 evaluation is Task 4; every new version remains incomplete until the remaining review workflow is implemented. OCR, end-to-end browser review and PostgreSQL/container/restore acceptance are pending.
+
+## Task 4 evidence
+
+- RED: 22 profile scenarios failed for the absent profile and development-bundle contract. GREEN: all 22 pass. Full suite: 91 passed with the existing Starlette warning.
+- Seven-artifact complete/discrepant/incomplete/corrected bundles are saved under tests/fixtures/development. SampleESOA v1 is an internal synthetic contract, not official compatibility.
+- Content checks cover adult scope, required source fields, identity, chronology/disposition, Decimal PHP 0.01 tolerance, unsupported finance and core-artifact non-waiver. All findings carry immutable bundle/document/hash/page anchors.
+- P07/P08 remain manual obligations; P10 remains transactional closeout work. Supervisor-only P09 withdrawal is evaluated in the profile and will be authorized through stored events in Task 6.
+- Ruling: isolate the accepted profile in profile.py, re-exported through audit.py, preserving legacy audit records/contracts. Cost if wrong: relocate the implementation without changing its interface.
+- Primary references checked: [SQLAlchemy DML](https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html), [Python Decimal](https://docs.python.org/3/library/decimal.html) and [FastAPI static files](https://fastapi.tiangolo.com/tutorial/static-files/).

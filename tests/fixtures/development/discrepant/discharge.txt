@@ -1,0 +1,18 @@
+Facility ID: SYN-FACILITY
+Encounter Ref: SYN-ENCOUNTER-1
+Claim Ref: SYN-CLAIM-1
+Patient ID: SYN-PATIENT-1
+Scope: adult medical inpatient
+DOB: 1980-04-12
+Admission Date: 2026-10-10
+Discharge Date: 2026-10-15
+Diagnosis: Synthetic pneumonia
+Diagnosis Code: J18.9
+Disposition: Discharged
+Admission Reason: Synthetic fever
+Course: Improved
+Treatment: Sample treatment
+Outcome: Improved
+Mark: Fictional sample mark
+Printed Name: Sample Signatory
+Signed Date: 2026-10-14

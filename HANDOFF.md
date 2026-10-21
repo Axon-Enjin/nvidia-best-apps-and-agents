@@ -41,7 +41,7 @@ Task 2 now implements named local accounts, Argon2id passwords, encrypted TOTP f
 
 Task 3 now adds JSON case creation (`POST /api/cases`), versioned manifests, private encrypted originals and durable quarantined parsing jobs. Eleven bundle tests cover idempotency, immutable versions, identity, ambiguity, limits, protected source access, concurrency and damage. Case assignment advances revision. Legacy rerun cannot replace a versioned case. Worker child parsing has time/memory bounds; profile completion is not inferred from successful extraction.
 
-Next task is **Task 4: deterministic profile and complete synthetic bundles**. Tasks 4-10 remain unchecked. The change's overall verification is FAIL because the complete prototype is unfinished. Evidence workbench assets, full correction workflow, PostgreSQL/container/OCR/restore acceptance remain pending.
+Task 4 is verified with 22 new profile scenarios and 91 passing full-suite tests. Next task is **Task 5: evidence workbench**. Tasks 5-10 remain unchecked. The change's overall verification is FAIL because the complete prototype is unfinished. Evidence workbench assets, full correction workflow, PostgreSQL/container/OCR/restore acceptance remain pending.
 
 ## Product boundaries already accepted
 

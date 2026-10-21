@@ -55,3 +55,39 @@ def bundle_zip() -> bytes:
             archive.writestr(f"{folder}/corrected/claim.xml", bundle["corrected_xml"])
             archive.writestr(f"{folder}/corrected/chart.txt", bundle["corrected_chart"])
     return buffer.getvalue()
+def development_bundle(label="complete"):
+    """Seven-artifact internal sample contract; never official eClaims compatibility."""
+    import hashlib
+    from xml.etree.ElementTree import Element, SubElement, tostring
+
+    anchors = {"facility_id": "SYN-FACILITY", "encounter_ref": "SYN-ENCOUNTER-1", "claim_ref": "SYN-CLAIM-1", "patient_id": "SYN-PATIENT-1"}
+    common = {"Facility ID": anchors["facility_id"], "Encounter Ref": anchors["encounter_ref"],
+              "Claim Ref": anchors["claim_ref"], "Patient ID": anchors["patient_id"],
+              "Scope": "adult medical inpatient", "DOB": "1980-04-12", "Admission Date": "2026-10-10",
+              "Discharge Date": "2026-10-14", "Diagnosis": "Synthetic pneumonia", "Diagnosis Code": "J18.9",
+              "Disposition": "Discharged", "Admission Reason": "Synthetic fever", "Course": "Improved",
+              "Treatment": "Sample treatment", "Outcome": "Improved", "Mark": "Fictional sample mark",
+              "Printed Name": "Sample Signatory", "Signed Date": "2026-10-14"}
+    files, members = [], []
+    for kind in ("cf2", "cf4", "cf5", "esoa", "discharge", "csf", "eligibility"):
+        values = dict(common)
+        if label == "discrepant" and kind == "discharge":
+            values["Discharge Date"] = "2026-10-15"
+        if label == "incomplete" and kind == "cf4":
+            values.pop("Course")
+        if kind == "esoa":
+            root = Element("SampleESOA", version="1")
+            for name, value in values.items():
+                SubElement(root, name.replace(" ", "")).text = value
+            SubElement(root, "Currency").text = "PHP"
+            line = SubElement(SubElement(root, "Lines"), "Line")
+            SubElement(line, "Gross").text = "100.00"
+            SubElement(line, "Discount").text = "10.00"
+            SubElement(root, "Total").text = "90.00"
+            name, content = "esoa.xml", tostring(root)
+        else:
+            name, content = f"{kind}.txt", "".join(f"{key}: {value}\n" for key, value in values.items()).encode()
+        files.append((name, content))
+        members.append({"type": kind, "filename": name, "sha256": hashlib.sha256(content).hexdigest()})
+    return files, {**anchors, "documents": members}
+

@@ -6,6 +6,8 @@ from decimal import Decimal, InvalidOperation
 
 from defusedxml import ElementTree
 
+from sentinel.profile import evaluate_profile as evaluate_profile
+
 RULE_VERSION = "sentinel-bundle/1.0"
 FIELDS = {
     "ClaimId": "claim_id", "PatientId": "patient_id", "AdmissionDate": "admission_date",
@@ -99,3 +101,4 @@ def outcome_for(findings: list[dict]) -> str:
     if any(f["severity"] == "blocking" for f in findings):
         return "incomplete"
     return "needs_review" if findings else "no_findings"
+

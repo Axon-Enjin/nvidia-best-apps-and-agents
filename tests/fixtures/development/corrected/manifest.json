@@ -1,0 +1,43 @@
+{
+  "facility_id": "SYN-FACILITY",
+  "encounter_ref": "SYN-ENCOUNTER-1",
+  "claim_ref": "SYN-CLAIM-1",
+  "patient_id": "SYN-PATIENT-1",
+  "documents": [
+    {
+      "type": "cf2",
+      "filename": "cf2.txt",
+      "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62"
+    },
+    {
+      "type": "cf4",
+      "filename": "cf4.txt",
+      "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62"
+    },
+    {
+      "type": "cf5",
+      "filename": "cf5.txt",
+      "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62"
+    },
+    {
+      "type": "esoa",
+      "filename": "esoa.xml",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c"
+    },
+    {
+      "type": "discharge",
+      "filename": "discharge.txt",
+      "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62"
+    },
+    {
+      "type": "csf",
+      "filename": "csf.txt",
+      "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62"
+    },
+    {
+      "type": "eligibility",
+      "filename": "eligibility.txt",
+      "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62"
+    }
+  ]
+}

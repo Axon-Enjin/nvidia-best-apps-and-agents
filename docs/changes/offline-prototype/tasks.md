@@ -69,10 +69,10 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 **Files:** extend `samples.py`, `audit.py`, `documents.py`; add `tests/fixtures/development/`, `tests/test_profile.py`.
 **Interfaces:** Produce `evaluate_profile(bundle, confirmed_extractions, rule_version) -> CheckRun`, with P01-P10 IDs, per-check status, blocking reasons and current-version evidence anchors. Financial calculations use Decimal.
 
-- [ ] 4.1 Write failing parameterized tests for every P01-P10 completion rule, PHP 0.01 tolerance, ambiguous extraction, missing core forms and the sole P09 supervisor exception.
-- [ ] 4.2 Add complete/discrepant/incomplete/corrected development bundles containing the seven required artifact types. Label internal eSOA schema as a sample contract, never official compatibility.
-- [ ] 4.3 Implement content-derived checks and source anchors. P07/P08 remain explicit manual obligations offline; unavailable automation does not pass them.
-- [ ] 4.4 Run `uv run --locked pytest tests/test_profile.py -q` and the full suite. Expected seeded issues and coverage statuses match fixture labels. Commit `feat: evaluate the bounded claim review profile`.
+- [x] 4.1 Write failing parameterized tests for every P01-P10 completion rule, PHP 0.01 tolerance, ambiguous extraction, missing core forms and the sole P09 supervisor exception.
+- [x] 4.2 Add complete/discrepant/incomplete/corrected development bundles containing the seven required artifact types. Label internal eSOA schema as a sample contract, never official compatibility.
+- [x] 4.3 Implement content-derived checks and source anchors. P07/P08 remain explicit manual obligations offline; unavailable automation does not pass them.
+- [x] 4.4 Run `uv run --locked pytest tests/test_profile.py -q` and the full suite. Expected seeded issues and coverage statuses match fixture labels. Commit `feat: evaluate the bounded claim review profile`.
 
 ## Task 5: Working queue, import and evidence workbench
 

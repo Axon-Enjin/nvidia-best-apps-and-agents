@@ -1,0 +1,6 @@
+# pnpm settings for this single-package app (no workspace packages).
+# unrs-resolver's postinstall only fetches a native binding when the platform
+# package is missing; pnpm already installs the platform binding as an
+# optional dependency, so the script stays disabled and installs stay offline-safe.
+allowBuilds:
+  unrs-resolver: false

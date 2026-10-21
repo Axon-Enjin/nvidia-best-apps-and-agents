@@ -2,13 +2,13 @@
 
 **Project slug:** `sentinel-node`
 **Owner:** Yushin
-**Last updated:** 2026-10-21
+**Last updated:** 2026-10-22
 
 ## 1. Position
 
-**Current milestone:** Implement, entered 2026-10-21. **Next milestone:** Verify the first offline prototype.
+**Current milestone:** Verify, entered 2026-10-22. **Next milestone:** Accept the first offline prototype after standard-runtime and isolation gates pass.
 **Exit condition:** Complete the local import, evidence review, correction, revised-source review, guarded closeout/export, local OCR and recovery tasks; execute disconnected browser acceptance.
-**Current blocker:** No owner pause remains. Docker is absent from the current command path, so container/PostgreSQL verification must wait for an available runtime; it does not block the next account/domain tasks.
+**Current blocker:** Docker engine, WSL, Podman and PostgreSQL are unavailable on this host. Local implementation and SQLite browser/recovery tests run; container build, PostgreSQL workflow/restore, Linux OCR, OS/container isolation and hosted CI execution remain unverified. No owner pause remains.
 **Product:** Hospital PhilHealth reviewers reconcile prepared adult medical inpatient claims and source corrections before submission through the existing hospital system.
 **Engagement:** Hospital readiness first; local offline prototype before hosted evaluation. **Vault status:** none.
 
@@ -65,17 +65,18 @@ The old nightly/revenue proposal and old prototype plan are historical. Keep loc
 
 ## 7. Next actions
 
-1. Task 4 verified: content-derived P01-P10 coverage and four synthetic development bundles; 91 tests pass.
-2. Tasks 5-6 verified: local workbench and revision-safe correction/manual events; 99 tests pass. Task 7 guarded reports is next.
-3. Tasks 8-10: local OCR, PostgreSQL packaging/recovery, then disconnected acceptance.
+1. Start a working Linux-container runtime and execute the commands in LOCAL-SETUP.md, including PostgreSQL correction, OCR and isolated restore acceptance. Compose configuration alone does not pass this gate.
+2. Execute the prepared CI workflow before claiming established L1 practice. No push or hosted run occurred in this session.
+3. Repeat browser acceptance with OS/container egress isolation and inspect traffic. The current test independently blocks browser external origins and Python server non-loopback sockets; it is not a whole-machine firewall.
+4. Retain hosted release, live-model quality and hospital qualification as later gates.
 
-Task 1 is complete at `08b0c09`: dependency resolution restored; six offline tests RED to GREEN; 37 tests pass with one deprecation warning. This verifies the foundation, not the full prototype.
+Tasks 1-8 are implemented and verified. Tasks 4-8 added the bounded profile, evidence workspace, correction/manual review events, guarded reports and real printed OCR. Task 9 adds encrypted checkpoints, isolated SQLite restore, retirement-ledger reconciliation, bounded worker retries and container/CI artifacts. Its PostgreSQL/container gate remains open.
 
-Task 2 is implemented: named CLI-provisioned accounts, encrypted privileged TOTP, expiring/revocable sessions, assignment and child-resource authorization. Twenty account scenarios and a real Chromium desktop/mobile login check pass. Login is working; the evidence workbench is pending. Default named mode denies old tokens. Explicit development migration mode remains available. Keep the local encryption key private and backed up; full PostgreSQL/recovery evidence remains Task 9.
+Task 10 locks 40 independently authored evaluation cases (20 discrepancies, 10 clean, 10 incomplete/adversarial), 20 corrected pairs and printed equivalents. A real browser exercises import through correction, manual comparison, separate privileged acknowledgement, export and process restart, including denied second-account access. This is deterministic synthetic acceptance, not a clinical/model benchmark or hospital study.
 
-Task 3 is implemented: versioned manifests and private encrypted original objects, quarantined durable import jobs, bounded process-isolated extraction, identity/ambiguity states, idempotent retries and case-revision fencing. Eleven bundle scenarios pass; the full suite passes 69 tests with one existing deprecation warning. Parsing/membership does not establish P01-P10 completion. JSON case creation uses `/api/cases` while legacy multipart imports retain `/api/claims`; versioned imports/downloads enforce named assignment. Staging receipts are retained for Task 9 reconciliation.
+Five concurrent named readers exercised 10,000 synthetic metadata rows with assignment isolation and bounded pagination. The observed five-request sample is not a throughput or service-level claim. Exact test results and known limits live in the active change verification record.
 
-Artifact plan: update STATE and draft product/system position; add BUILD and one CHANGE proposal/design/delta/tasks/verification set; engine generates INDEX/LOG and root build instructions. Do not regenerate the full suite.
+Preserve the local encryption key, private sources, generated container password and separate recovery key. Retire denies access and preserves an authenticated tombstone; physical retention deletion/scheduling remain later work. Optional untracked research and old plans remain untouched.
 
 ## 8. Self-Check
 

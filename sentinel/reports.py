@@ -13,6 +13,7 @@ from sentinel.bundles import ordered_documents
 from sentinel.db import AccessEvent, Claim, ReportSnapshot, ReviewEvent
 from sentinel.profile import RULE_VERSION
 from sentinel.review import fence_case, review_state
+from sentinel.storage import PrivateStorage
 
 PROVENANCE = "Synthetic patient records; internal sample profile; no payer approval."
 READY = "Ready for final submission review"
@@ -24,7 +25,7 @@ def report_public(report, case):
             "stale":report.revision != case.revision or report.bundle_id != case.current_bundle_id or report.rule_version != RULE_VERSION}
 
 
-def finalize_review(db, actor, case_id, bundle_version, rule_version, expected_revision):
+def finalize_review(db, actor, case_id, bundle_version, rule_version, expected_revision, *, settings=None):
     with db.session() as session:
         case = session.get(Claim, case_id)
         require_case_access(actor, case)
@@ -37,6 +38,11 @@ def finalize_review(db, actor, case_id, bundle_version, rule_version, expected_r
         state = review_state(session, case)
         if not state["can_finalize"]:
             raise HTTPException(409, {"message":"Resolve current-version blockers before completing review.", "blockers":state["blockers"]})
+        if settings is None:
+            raise HTTPException(503,"Source verification configuration is required before closeout.")
+        storage = PrivateStorage(settings)
+        for document in ordered_documents(session,case.current_bundle_id):
+            storage.read(document.object_key,document.source_hash)
         for check in state["checks"]:
             if any(a["bundle_id"] != case.current_bundle_id for a in check["anchors"]):
                 raise HTTPException(409, "Evidence belongs to another source version.")
@@ -96,10 +102,24 @@ def export_report(db, actor, report_id, format):
             content = output.getvalue().encode("utf-8-sig")
         elif format == "html":
             # No active content or external assets. Browser Print exports this standalone record.
-            content = ("<!doctype html><html lang='en'><meta charset='utf-8'><title>Sentinel Claims internal review</title>"
-                       "<h1>Internal review record</h1><p>Use your browser’s Print command to print this record.</p>"
-                       f"<p>{escape(PROVENANCE)}</p><h2>{escape(snapshot['claim_ref'])}</h2>"
-                       f"<p>{escape(READY)}</p><pre>{escape(json.dumps(snapshot, indent=2, ensure_ascii=False))}</pre></html>").encode()
+            parts = ["<!doctype html><html lang='en'><meta charset='utf-8'><title>Sentinel Claims internal review</title>",
+                     "<h1>Internal review record</h1><p>Use your browser’s Print command to print this record.</p>",
+                     f"<p>{escape(PROVENANCE)}</p><h2>{escape(snapshot['claim_ref'])}</h2><p>{escape(READY)}</p>"]
+            for key in ("patient_id","actor","completed_at","bundle_id","bundle_version","rule_version","revision","model_status"):
+                parts.append(f"<p><strong>{escape(key.replace('_',' ').title())}:</strong> {escape(str(snapshot[key]))}</p>")
+            parts.append("<h2>Check coverage</h2><table><thead><tr><th>Check</th><th>Requirement</th><th>Result</th></tr></thead><tbody>")
+            for check in snapshot["checks"]:
+                parts.append(f"<tr><td>{escape(check['id'])}</td><td>{escape(check['label'])}</td><td>{escape(check['status'])}</td></tr>")
+            parts.append("</tbody></table><h2>Findings and decisions</h2>")
+            for finding in snapshot["findings"]:
+                parts.append(f"<h3>{escape(finding['id'])} {escape(finding['title'])}</h3><p>{escape(finding['explanation'])}</p><p>Resolution: {escape(finding['resolution_status'])}</p>")
+            for event in snapshot["events"]:
+                parts.append(f"<p><strong>{escape(event['actor'])}: {escape(event['action'])}</strong> (revision {event['revision']})<br>{escape(event['payload'].get('reason',''))}</p>")
+            parts.append("<h2>Source provenance</h2>")
+            for doc in snapshot["documents"]:
+                parts.append(f"<p>{escape(doc['type'])} / {escape(doc['id'])}<br>SHA-256: {escape(doc['sha256'])}</p>")
+            parts.append("</html>")
+            content = "".join(parts).encode()
         else:
             raise HTTPException(422, "Choose CSV or printable HTML.")
         session.add(AccessEvent(actor_id=actor.id, action="report_exported", resource_id=report.id, detail={"format":format}))

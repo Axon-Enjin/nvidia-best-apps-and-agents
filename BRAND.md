@@ -1,4 +1,4 @@
-<!-- MATERIALIZED from docs/dsd-sentinel-node.md by scripts/materialize.py on 2026-10-21. Do not hand-edit; edit the canonical doc and re-run. -->
+<!-- MATERIALIZED from docs/dsd-sentinel-node.md by scripts/materialize.py on 2026-10-22. Do not hand-edit; edit the canonical doc and re-run. -->
 
 # Brand:
 

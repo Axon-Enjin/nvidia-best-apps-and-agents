@@ -1,0 +1,43 @@
+{
+  "facility_id": "EVAL-FACILITY-K7",
+  "encounter_ref": "EV-2026-0017",
+  "claim_ref": "EVAL-CLAIM-0017",
+  "patient_id": "FICTION-0017",
+  "documents": [
+    {
+      "type": "cf2",
+      "filename": "cf2.txt",
+      "sha256": "b28c634724757a9a931ff58e1deaf1eaf67b3fd1e5dd369e627f027c3a0df328"
+    },
+    {
+      "type": "cf4",
+      "filename": "cf4.txt",
+      "sha256": "b28c634724757a9a931ff58e1deaf1eaf67b3fd1e5dd369e627f027c3a0df328"
+    },
+    {
+      "type": "cf5",
+      "filename": "cf5.txt",
+      "sha256": "b28c634724757a9a931ff58e1deaf1eaf67b3fd1e5dd369e627f027c3a0df328"
+    },
+    {
+      "type": "esoa",
+      "filename": "esoa.xml",
+      "sha256": "9ebbab485fa64c100cfac51000e8343ceb2964b65a2766d5ac827cf19ea6d86c"
+    },
+    {
+      "type": "discharge",
+      "filename": "discharge.txt",
+      "sha256": "b28c634724757a9a931ff58e1deaf1eaf67b3fd1e5dd369e627f027c3a0df328"
+    },
+    {
+      "type": "csf",
+      "filename": "csf.txt",
+      "sha256": "b28c634724757a9a931ff58e1deaf1eaf67b3fd1e5dd369e627f027c3a0df328"
+    },
+    {
+      "type": "eligibility",
+      "filename": "eligibility.txt",
+      "sha256": "b28c634724757a9a931ff58e1deaf1eaf67b3fd1e5dd369e627f027c3a0df328"
+    }
+  ]
+}

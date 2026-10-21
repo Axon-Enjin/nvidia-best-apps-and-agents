@@ -1,0 +1,18 @@
+Facility ID: EVAL-FACILITY-K7
+Encounter Ref: EV-2026-0004
+Claim Ref: EVAL-CLAIM-0004
+Patient ID: FICTION-0004
+DOB: 1978-02-18
+Scope: adult medical inpatient
+Admission Date: 2026-08-10
+Discharge Date: 2026-08-17
+Diagnosis: Fictional condition K7
+Diagnosis Code: SYN.K7
+Disposition: Transferred
+Admission Reason: Fictional observation episode
+Course: Sample improvement after observation
+Treatment: Fictional supportive care
+Outcome: Stable sample discharge
+Mark: Fictional acknowledgement K7
+Printed Name: Synthetic Signatory K7
+Signed Date: 2026-08-17

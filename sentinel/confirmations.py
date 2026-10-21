@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sentinel.accounts import require_case_access
 from sentinel.db import Bundle, Claim, Document, ExtractionConfirmation, ReviewEvent
 from sentinel.document_parser import FIELD_NAMES
-from sentinel.profile import REQUIRED_FIELDS, RULE_VERSION
+from sentinel.profile import IDENTITY, REQUIRED_FIELDS, RULE_VERSION, equivalent
 
 
 class ConfirmationInput(BaseModel):
@@ -38,10 +38,13 @@ def confirmed_documents(session, documents):
             status = "needs_confirmation" if pending else "readable"
         elif status in {"ambiguous", "unmatched"} and confirmations and not pending:
             status = "readable"
+        membership = session.get(Bundle,doc.bundle_id).manifest
+        if status == "readable" and any(not fields.get(key) or equivalent(fields[key]) != equivalent(membership.get(key,"")) for key in IDENTITY):
+            status = "unmatched"
         effective.append({"id":doc.id,"type":doc.declared_type,"sha256":doc.source_hash,"status":status,
                           "page_count":doc.page_count,"problems":doc.problems,"extraction":{**doc.extraction,"fields":fields,"anchors":anchored}})
         requirements.append({"document_id":doc.id,"type":doc.declared_type,"status":status,"pending":sorted(pending),"confirmed":confirmed,
-                             "fields":sorted(set(fields) | set(doc.extraction.get("fields", {})) | set(REQUIRED_FIELDS.get(doc.declared_type, ())))})
+                             "fields":sorted(set(fields) | set(doc.extraction.get("fields", {})) | set(REQUIRED_FIELDS.get(doc.declared_type, ())) | set(IDENTITY))})
     return effective, requirements
 
 

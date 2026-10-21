@@ -11,6 +11,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, model_validator
+from sqlalchemy import case as sql_case
 from sqlalchemy import func, select, text, update
 from sqlalchemy.exc import IntegrityError
 from starlette.concurrency import run_in_threadpool
@@ -51,6 +52,14 @@ from sentinel.service import enqueue, job_detail, job_summary, save_review
 from sentinel.worker import worker_loop
 
 STATIC = Path(__file__).parent / "static"
+
+
+def queue_category():
+    from sentinel.profile import RULE_VERSION
+    checked = (Job.status == "succeeded") & (Job.result["rule_version"].as_string() == RULE_VERSION)
+    versioned = sql_case((checked & (Claim.state == "Ready for final submission review"), "no_findings"),
+                         (checked,"needs_review"),else_="incomplete")
+    return sql_case((Claim.current_bundle_id.is_not(None),versioned),else_=func.coalesce(Job.result["outcome"].as_string(),"incomplete"))
 
 
 class BodyLimitMiddleware:
@@ -247,22 +256,22 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
             condition = Claim.reference.contains(q, autoescape=True) | Claim.patient_id.contains(q, autoescape=True)
             condition &= visible_claims(actor, Claim)
             if view != "all":
-                condition &= Job.result["outcome"].as_string() == view
+                condition &= queue_category() == view
             total = session.scalar(select(func.count()).select_from(Claim).outerjoin(Job, Claim.latest_job_id == Job.id).where(condition))
-            rows = session.execute(select(Claim, Job.id, Job.status, Job.result, Job.use_model)
+            rows = session.execute(select(Claim, Job.id, Job.status, Job.result, Job.use_model, queue_category())
                                    .outerjoin(Job, Claim.latest_job_id == Job.id).where(condition)
                                    .order_by(Claim.created_at.desc(), Claim.id).offset(offset).limit(limit)).all()
             items = []
             job_ids = [row[1] for row in rows]
             all_reviews = session.scalars(select(Review).where(Review.job_id.in_(job_ids))).all() if job_ids else []
-            for claim, job_id, status, result, use_model in rows:
+            for claim, job_id, status, result, use_model, outcome in rows:
                 reviews = [review for review in all_reviews if review.job_id == job_id]
                 decisions = {r.finding_id: r.decision for r in reviews}
                 findings = (result or {}).get("findings", [])
                 items.append({"id": claim.id, "reference": claim.reference, "patient_id": claim.patient_id,
                               "sample": bool(claim.sample_key), "created_at": claim.created_at, "assignee_id": claim.assignee_id,
                               "revision": claim.revision, "current_bundle_id": claim.current_bundle_id, "state": claim.state,
-                              "job_id": job_id, "status": status, "outcome": (result or {}).get("outcome"),
+                              "job_id": job_id, "status": status, "outcome": outcome,
                               "finding_count": len(findings),
                               "pending_count": sum(decisions.get(f["id"], "pending") == "pending" for f in findings),
                               "model_status": (result or {}).get("model_status"), "use_model": use_model})
@@ -271,10 +280,10 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
     @app.get("/api/stats")
     def stats(actor: Actor = Depends(require_actor)):
         with db.session() as session:
-            rows = session.execute(select(Job.status, Job.result["outcome"].as_string(), func.count()).select_from(Claim)
+            rows = session.execute(select(Job.status, queue_category(), func.count()).select_from(Claim)
                                    .outerjoin(Job, Claim.latest_job_id == Job.id)
                                    .where(visible_claims(actor, Claim))
-                                   .group_by(Job.status, Job.result["outcome"].as_string())).all()
+                                   .group_by(Job.status, queue_category())).all()
             counts = {"all": 0, "needs_review": 0, "incomplete": 0, "no_findings": 0, "processing": 0}
             for status, outcome, count in rows:
                 counts["all"] += count
@@ -308,7 +317,7 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
 
     @app.post("/api/claims/{claim_id}/finalize", status_code=201)
     def finalize(claim_id: str, body: FinalizeInput, actor: Actor = Depends(require_actor)):
-        return finalize_review(db, actor, claim_id, body.bundle_id, body.rule_version, body.expected_revision)
+        return finalize_review(db, actor, claim_id, body.bundle_id, body.rule_version, body.expected_revision, settings=settings)
 
     @app.get("/api/claims/{claim_id}/reports")
     def case_reports(claim_id: str, actor: Actor = Depends(require_actor)):
@@ -416,7 +425,7 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
                 raise HTTPException(422, "Assign an enabled reviewer or supervisor.")
             old = claim.assignee_id
             session.execute(update(Claim).where(Claim.id == claim.id)
-                            .values(assignee_id=target.id, revision=Claim.revision + 1))
+                            .values(assignee_id=target.id, revision=Claim.revision + 1, state="In review"))
             session.add(AccessEvent(actor_id=actor.id, action="case_assigned", resource_id=claim.id,
                                    detail={"previous": old, "assignee_id": target.id}))
             session.commit()

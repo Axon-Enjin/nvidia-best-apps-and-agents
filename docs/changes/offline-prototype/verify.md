@@ -3,7 +3,7 @@
 **Date:** 2026-10-21
 **Overall:** FAIL
 
-FAIL means the complete prototype is not finished. Tasks 1-8 are verified; Tasks 9-10 remain pending. Do not archive or report the entire change complete.
+FAIL means the complete prototype is not finished. Tasks 1-8 are verified. Tasks 9-10 have verified local implementation, with standard-runtime and isolation gates still open. Do not archive or report the entire change complete.
 
 ## Completeness
 
@@ -14,31 +14,33 @@ FAIL means the complete prototype is not finished. Tasks 1-8 are verified; Tasks
 - PASS: `uv run --offline --locked pytest -q`: 37 passed, one Starlette/HTTPX deprecation warning.
 - PASS: Task 2 named accounts, local privileged MFA, revocable sessions and assigned case authorization implemented and tested.
 - PASS: Task 3 encrypted immutable local originals, versioned membership, idempotent/revision-fenced imports, bounded child parsing and protected source downloads implemented.
-- FAIL: accepted profile checks, evidence workbench, manual acknowledgement, correction tasks, closeout/reporting, local OCR and packaging/recovery remain unimplemented.
+- PASS: accepted profile, evidence workbench, separate manual/supervisor review, corrections, current-version reports, real printed OCR and encrypted SQLite recovery are implemented and exercised.
+- OPEN: actual container/PostgreSQL build, workflow, OCR, restore and OS/container egress acceptance remain unrun. CI is prepared without an executed result.
 
 ## Correctness
 
 - PASS: default/explicit mode validation, offline import rejection despite credentials, direct adapter zero-request behavior, offline worker handling of already-queued remote work and explicit online transport behavior tested.
 - PASS: queued remote work processed offline retains deterministic results and marks remote coverage `not_run_offline` with incomplete outcome.
 - LIMIT: `uv --offline` is a package-manager setting; this test run is not a whole-machine network isolation test. Provider transport tests are controlled test doubles, not live AI calls.
-- FAIL: the full disconnected browser correction loop and 40-bundle acceptance set have not been executed.
+- PASS: a real SQLite/browser correction/export/process-restart loop and the 40-case deterministic evaluation set execute locally, with browser-origin and Python socket guards.
+- LIMIT: these guards do not establish whole-machine network isolation or the standard PostgreSQL/container path.
 
 ## Coherence
 
 - PASS: offline is an intermediate local milestone; the approved hosted-evaluation and operational-hospital goals remain.
 - PASS: no remote credentials, cloud purchase, real-record authorization or completed hospital integration is invented.
-- OPEN: Docker was not found on the current command path. PostgreSQL/container verification must use an actual available runtime before Task 9 can complete.
+- OPEN: Docker engine, WSL, Podman and PostgreSQL are unavailable. Official standalone Compose configuration validation passes; actual runtime verification is required before Tasks 9-10 sign-off.
 
 ## Review quality
 
 - Security: named mode now denies anonymous/shared-token access. Legacy shared-token access requires explicit development-only configuration; it does not establish named accountability.
-- Coverage: existing tests and new offline guard tests pass, but they do not exercise the pending Must-Have workflow.
+- Coverage: deterministic profile, source evidence, correction/manual guards, finalization, real OCR and local restore have direct tests. PostgreSQL/container/OS isolation remain explicit gaps.
 - Context hygiene: document content remains untrusted; offline mode never substitutes canned model output.
 
 ## Findings
 
 - WARNING: Starlette warns that HTTPX TestClient support is deprecated. The existing locked environment works; select a supported replacement deliberately rather than restoring an impossible package range.
-- WARNING: missing browser CSS/JavaScript and single-XML/chart assumptions still prevent a fully working prototype.
+- RESOLVED: local CSS/JavaScript and the versioned seven-artifact workbench now replace the old single-XML/chart UI.
 - SUGGESTION: keep task commits small and update this record with actual test and runtime evidence.
 
 ## Decisions during execution
@@ -123,3 +125,57 @@ FAIL means the complete prototype is not finished. Tasks 1-8 are verified; Tasks
 - Ruling: preserve orphan staging objects for explicit operator reconciliation rather than delete uncertain evidence. Cost if wrong: disk growth until a reviewed retention job exists.
 - Ruling: continue Task 10 on the verified SQLite development path while leaving the standard container/PostgreSQL gate open, as the task explicitly requires when runtime is unavailable. Cost if wrong: platform-specific defects may remain until that gate is executed.
 - Primary references: [PostgreSQL pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html), [pg_restore](https://www.postgresql.org/docs/current/app-pgrestore.html), [version policy](https://www.postgresql.org/support/versioning/) and [Compose internal networks](https://docs.docker.com/compose/how-tos/networking/).
+
+## Task 10 local acceptance evidence
+
+- Locked 40 independently authored synthetic evaluation cases: 20 discrepancies, 10 clean, 10 incomplete/adversarial. Twenty corrected pairs retain separate original manifests. The lock records original/corrected manifest hashes, source hashes, expected checks and exact field/page/value evidence. Held-out printed PNG/PDF equivalents use separate fictional templates. No clinical/model accuracy or hospital-benefit claim follows from this set.
+- Real Chromium and a real local server/database complete import, discrepancy/source inspection, correction ownership, handoff/acknowledgement, corrected import, recheck, manual P07/P08, different-supervisor acknowledgement, final snapshot, CSV/print, process termination/restart and reopen. A second named reviewer is denied case/source/report access. Old originals, review history, current report and AI not_run_offline survive restart.
+- The acceptance server installs a Python socket audit guard independent of NETWORK_MODE and verifies that guard using a blocked startup probe. Browser routing separately blocks external origins. No external application request was recorded before or after restart. These controls do not establish a whole-machine firewall; container/OS isolation remains unrun.
+- Environment: Windows 11 build 26200, Python 3.14.5, SQLite 3.50.4, FastAPI 0.156.4, Starlette 1.9.0, SQLAlchemy 2.0.55, Alembic 1.20.0, pytest 9.1.1, Ruff 0.17.1, Playwright 1.64.0 / Chromium 156.0.8078.4. OCR/package versions are recorded under Task 8. This run used no provider credentials.
+- A bounded metadata exercise uses 10,000 rows, five concurrent named readers, 2,000 assigned rows each and 100-row response limits. It checks assignment isolation and rejects a requested page size of 101. The five-request latency sample is descriptive only, not a production capacity/SLA result or 100-import/day proof.
+- Screenshots: test-results/workbench-1366-1.png, workbench-375-1.png, workbench-1366-2.png and offline-acceptance.png. The final 2x capture uses a 683x384 effective viewport with device scale 2, replacing an invalid CSS-zoom simulation. Native browser-chrome zoom gestures and screen-reader conformance are not established. Launch, checkpoint and isolated restore commands are in LOCAL-SETUP.md.
+- Acceptance guard regressions reproduced and corrected: current P10 display, missing-original hash verification at closeout, reassignment reopening and explicit absent/unknown marks/signatories/dates. Prior combined run: 164 passed, 1 explicit PostgreSQL skip, 2 warnings. One is the existing Starlette warning; Pydantic produced an intermittent schema-field warning in an existing concurrent-account scenario. No warning suppression was added.
+
+## Fresh review and fix pass
+
+A fresh read-only whole-branch code/interface review found four Important issues and no established Critical issue. All four were reproduced through real API/browser failures before their fixes:
+
+1. An unrelated confirmation promoted an unmatched extra attachment. Effective source status now requires all four identity anchors to match the case before readable/matched status; extra review stays blocked otherwise.
+2. An explicitly supplied missing retirement ledger was silently empty. Restore now validates that directory before creating a restore target and fails closed if it disappears during reconciliation.
+3. Queue filters used immutable raw job outcomes after closeout. Current versioned queue categories now derive from current rule/job/case state: checks unavailable before a successful current run, needs review until closeout, completed after current finalization. Raw coverage/AI results remain unchanged.
+4. Manual/extra evidence controls hardcoded page 1. Reviewers now select one or more real page numbers, with client/server bounds and page-2 persistence checked in Chromium.
+
+The targeted review-fix/viewport run passed five scenarios. Source-before-decision placement was additionally reproduced failing and fixed after the page controls lengthened the form. Desktop and effective-zoom recaptures show the source before the action form. There is no second reviewer certification; the fixes are covered by regression tests and the final combined suite.
+
+Deferred minor: a completed import may retain its earlier processing notice. Stored job status, coverage, source version and final record are authoritative; the notice is cosmetic.
+
+## Rulings and unresolved review scope
+
+- Ruling: isolate the profile in profile.py and expose it through audit.py to preserve legacy records/contracts. Cost if wrong: relocate code without changing the interface.
+- Ruling: import an explicit manifest and its originals, displaying declared types first. Cost if wrong: add a guided manifest editor without changing immutable membership.
+- Ruling: derive correction tasks/extra expectations from append-only events. Cost if wrong: add cached projections while retaining the events.
+- Ruling: require confirmation of every OCR candidate until quality is measured. Cost if wrong: reviewer effort; any relaxation needs evidence.
+- Ruling: preserve uncertain orphan staging for operator reconciliation. Cost if wrong: disk growth until a reviewed retention job exists.
+- Ruling: continue SQLite acceptance while retaining the standard PostgreSQL/container gate, as Task 9 explicitly permits when no runtime exists. Cost if wrong: platform-specific defects remain until that gate executes.
+- Ruling: current queue categories reflect workflow state, with raw coverage/AI visible in the case. Cost if wrong: refine filtering labels without rewriting evidence.
+- Ruling: use reduced effective viewport/device scale for a 200-percent equivalent, not CSS zoom. Cost if wrong: native-browser behavior still needs manual follow-up; no gesture/conformance claim is made.
+- Ruling: treat source placement as material after page controls lengthened the form. Cost if wrong: refine navigation after observing reviewers.
+
+The reviewer explicitly set aside the following; they remain bounded as follows:
+
+- Actual container/PostgreSQL/Linux OCR/OS isolation/hosted CI: still unrun and gated, not implicitly approved. Cost if wrong: runtime-specific failures await execution.
+- Clinical/model quality and hospital effectiveness: outside deterministic synthetic acceptance, with separate later evaluation. Cost if wrong: no reviewer-benefit or clinical claim is justified.
+- Old supervisor acknowledgements after rerun: the current-event cutoff blocks P07 completion; the old event remains inspectable. Cost if wrong: revisit acknowledgement recording UX; no completion bypass was established.
+- One attachment covering multiple expectations: named manual applicability can cover several requirements, with source evidence and reasons. Cost if wrong: require distinct attachment mappings after workflow evidence.
+- Native zoom, screen-reader conformance and administrative UI completeness: not established here. Named account administration is the tested local CLI; screen-reader/native gesture assessment remains open. Cost if wrong: accessibility or operator-workflow defects may remain.
+- Broader recovery crash windows and concurrent account revocation: not reproduced by the bounded review. Recovery commands require stopped services, source checks and an isolated target; auth is checked on every request and restore revokes sessions. Cost if wrong: further fault/concurrency tests may identify gaps; no broader assurance is claimed.
+
+Overall remains FAIL until Tasks 9.4 and 10.3/10.4 pass on an actual standard runtime with independent OS/container network isolation. No change archival, hosted release, live-model study or hospital sign-off occurred.
+
+## Final local verification result
+
+- `uv run --offline --locked pytest -q --tb=short`: **168 passed, 1 skipped, 1 warning in 227.00s (0:03:46)**. The one skip is the explicitly unavailable PostgreSQL runtime; the one warning is Starlette/HTTPX deprecation. No warnings were suppressed.
+- `uv run --offline --locked ruff check sentinel tests migrations scripts`: all checks passed. Official standalone Compose 5.6.1 `config --quiet`: passed.
+- Final five-request metadata sample: median 0.1077 seconds, maximum 0.1172 seconds. This is SQLite metadata only, without an import throughput or production latency claim.
+- Test fixture bytes are preserved, including Windows CRLF manifest formatting. Git permits CR at fixture line ends rather than altering locked originals/hashes.
+- Full-workspace FMD validation reports two unchanged untracked research/old-plan findings. Strict validation of the tracked artifact snapshot returns zero failures/warnings. Unrelated local files remain untouched.

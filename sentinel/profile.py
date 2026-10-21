@@ -20,6 +20,16 @@ def equivalent(value):
     return " ".join(str(value).split()).casefold()
 
 
+def mark_problems(fields):
+    absent = {"", "none", "no", "n/a", "not present", "missing", "absent", "unknown"}
+    problems = [key for key in ("mark", "printed_name") if equivalent(fields.get(key, "")) in absent]
+    try:
+        date.fromisoformat(fields.get("signed_date", ""))
+    except (ValueError,TypeError):
+        problems.append("signed_date")
+    return problems
+
+
 def evaluate_profile(bundle, confirmed_extractions=None, rule_version=RULE_VERSION):
     # Overrides are constructed only from stored, source-backed confirmations by the service.
     docs = bundle["documents"]
@@ -102,8 +112,8 @@ def evaluate_profile(bundle, confirmed_extractions=None, rule_version=RULE_VERSI
         finance.append("Require supported SampleESOA v1 PHP lines, explicit discounts and total.")
     add("P06", "Sample eSOA arithmetic", finance, finance_status, selected=by_type["esoa"])
     add("P07", "Narrative agreement", ["Record source-backed manual comparison and separate supervisor acknowledgement."])
-    marks = [f"{d['type']}: missing {key}" for d in docs if d["type"] in {"cf2", "cf4", "cf5", "csf"}
-             for key in ("mark", "printed_name", "signed_date") if not fields[d["id"]].get(key)]
+    marks = [f"{d['type']}: missing/unknown {key}" for d in docs if d["type"] in {"cf2", "cf4", "cf5", "csf"}
+             for key in mark_problems(fields[d["id"]])]
     add("P08", "Marks, printed signatory and date", marks + ["Named manual presence review is required."], names=("mark", "printed_name", "signed_date"))
     extra = []
     for expectation in bundle.get("expectations", []):

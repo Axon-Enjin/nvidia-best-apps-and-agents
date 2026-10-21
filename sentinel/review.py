@@ -8,8 +8,8 @@ from sqlalchemy import select, update
 from sentinel.accounts import require_case_access
 from sentinel.bundles import ordered_documents
 from sentinel.confirmations import confirmed_documents
-from sentinel.db import Bundle, Claim, Job, ReviewEvent, new_id
-from sentinel.profile import RULE_VERSION, evaluate_profile
+from sentinel.db import Bundle, Claim, Job, ReportSnapshot, ReviewEvent, new_id
+from sentinel.profile import RULE_VERSION, evaluate_profile, mark_problems
 
 
 class ReviewAction(BaseModel):
@@ -77,9 +77,14 @@ def review_state(session, case):
         blockers.append({"id":"processing", "reasons":["Current sources and rule version require a completed local check run."]})
     if any(t["status"] not in {"resolved", "cancelled"} for t in tasks.values()):
         blockers.append({"id":"corrections", "reasons":["Open correction tasks must be resolved or reasonedly cancelled."]})
+    finalized = not blockers and case.state == "Ready for final submission review" and session.scalar(select(ReportSnapshot.id).where(
+        ReportSnapshot.claim_id == case.id,ReportSnapshot.revision == case.revision,
+        ReportSnapshot.bundle_id == case.current_bundle_id,ReportSnapshot.rule_version == RULE_VERSION)) is not None
+    if finalized:
+        result["checks"][9].update(status="passed",blocking_reasons=[])
     return {**result, "revision":case.revision, "bundle_version":bundle.sequence if bundle else None,
             "tasks":list(tasks.values()), "expectations":list(expectations.values()), "events":[event_public(e) for e in events],
-            "blockers":blockers, "can_finalize":not blockers, "confirmations":confirmations}
+            "blockers":blockers, "can_finalize":not blockers and not finalized, "confirmations":confirmations}
 
 
 def fence_case(session, actor, case, expected_revision, bundle_id):
@@ -131,7 +136,7 @@ def record_review(db, actor, case_id, expected_revision, action):
         if kind == "manual_p08":
             effective, _ = confirmed_documents(session, ordered_documents(session, case.current_bundle_id))
             for doc in effective:
-                if doc["type"] in {"cf2", "cf4", "cf5", "csf"} and any(not doc["extraction"].get("fields", {}).get(key) for key in ("mark", "printed_name", "signed_date")):
+                if doc["type"] in {"cf2", "cf4", "cf5", "csf"} and mark_problems(doc["extraction"].get("fields", {})):
                     raise HTTPException(409, "Missing mark, printed signatory or date requires a completed source.")
         elif kind == "supervisor_ack":
             if "supervisor" not in actor.roles:

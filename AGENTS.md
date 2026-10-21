@@ -1,6 +1,6 @@
 <!-- fmd:pointer --> Built on FMD v3.0.1. Before any docs/ work, follow the FMD v3.0.1 kernel. Run that engine's scripts against docs/. Never copy engine files into this repo.
 
-<!-- MATERIALIZED from docs/build-sentinel-node.md by scripts/materialize.py on 2026-10-21. Do not hand-edit; edit the canonical doc and re-run. -->
+<!-- MATERIALIZED from docs/build-sentinel-node.md by scripts/materialize.py on 2026-10-22. Do not hand-edit; edit the canonical doc and re-run. -->
 
 # Project Build Guide
 
@@ -9,7 +9,7 @@
 **Version:** 0.1
 **Owner:** Yushin
 **Status:** Draft
-**Last reconciled:** 2026-10-21
+**Last reconciled:** 2026-10-22
 **PRD:** `docs/prd-sentinel-node.md`
 **SDD:** `docs/sdd-sentinel-node.md`
 **SAD:** N/A; work inline by default.
@@ -44,7 +44,7 @@ Work inline. Test new behavior before implementing it, run the affected tests th
 | pytest / Ruff / Playwright | 9.1.1 / 0.17.1 / 1.64.0 | 2026-10-21, installed metadata | [pytest](https://docs.pytest.org/), [Ruff](https://docs.astral.sh/ruff/), [Playwright Python](https://playwright.dev/python/docs/intro) |
 | pypdf | 6.21.1 | 2026-10-21, installed metadata | [pypdf](https://pypdf.readthedocs.io/en/stable/) |
 
-Local PostgreSQL/container and OCR versions are not selected/verified yet. Task 8/9 must pin them before claiming those paths work. Docker is not available on the current command path; report actual runtime availability before executing container acceptance.
+Windows printed OCR is verified with Tesseract 5.5.3.20260724 and English tessdata_fast 4.1.0 (pinned SHA-256 in OCR-NOTICES.md). Pillow 12.3.0 and pypdfium2 5.14.0 are locked. Container artifacts pin Python 3.14.5, PostgreSQL 17.11 image digests and Debian Tesseract 5.5.0-1+b1, but those images have not run. Docker engine, WSL, Podman and PostgreSQL remain unavailable on this host. Compose 5.6.1 configuration validation passes; this is not container/database acceptance.
 
 | Trap | Current rule | Evidence |
 |---|---|---|
@@ -56,13 +56,15 @@ Local PostgreSQL/container and OCR versions are not selected/verified yet. Task 
 
 Verified 2026-10-21 against the installed stack: use `TestClient(create_app(settings, database))` as a context manager so lifespan runs; inject a temporary database/settings explicitly. The real examples are `tests/test_workflow.py` and `tests/test_offline.py`.
 
-For remote adapters, test the transport boundary with `httpx.MockTransport` and assert no request was sent offline. Test doubles are test-only; never expose their output as runtime findings. Runtime uses an explicit offline error/coverage state and the implemented manual path, once available.
+For remote adapters, test the transport boundary with `httpx.MockTransport` and assert no request was sent offline. Test doubles are test-only; never expose their output as runtime findings. Runtime retains explicit unavailable AI coverage. P07 uses source-backed manual comparison and a different supervisor acknowledgement; no fabricated automated result is substituted.
 
 ## 5. Conventions & Guardrails
 
 Use existing focused modules; introduce account, bundle/storage, review and report modules only as their tasks require. Server transactions own case revisions and completion. UI state cannot authorize operations. Original evidence and published review snapshots are immutable; decisions append events.
 
 Synthetic patient records only. Keep the environment indication and export provenance. Credentials alone cannot enable remote calls; `NETWORK_MODE=online` is an explicit opt-in. Keep all core UI assets local and default server binding to loopback. Named authorization, encrypted credentials/secrets, bounded uploads and reliable coverage remain necessary even for an offline prototype.
+
+Closeout re-verifies encrypted original hashes in the same transaction as the current-version guards/snapshot. Review actions and extraction confirmations append events and fence the current revision. Retired cases stay denied after restoration with the newest authenticated tombstone ledger.
 
 Task verification:
 
@@ -73,7 +75,7 @@ uv run --offline --locked pytest -q
 git diff --check
 ```
 
-Run the task-specific tests in `tasks.md` when they exist. A passing legacy suite cannot establish role, OCR, report or UI features that have not been implemented. Add full lint/CI/browser checks as those paths are introduced; do not declare them passing from these commands.
+Run the task-specific tests in `tasks.md` when they exist. A passing legacy suite cannot establish role, OCR, report or UI features that have not been implemented. Full lint, real browser correction/restart and encrypted SQLite restore checks now exist. The PostgreSQL test explicitly skips without TEST_DATABASE_URL. CI is prepared but has not executed. See LOCAL-SETUP.md and the active verification record for the open runtime gates.
 
 ## 5.1 Change Workflow
 

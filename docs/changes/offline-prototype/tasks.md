@@ -81,7 +81,7 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 
 - [x] 5.1 Write browser scenarios for login, assigned queue/filtering, import/matching, coverage, finding selection and source anchors. Assert requested assets return 200 locally and no external origin is requested.
 - [x] 5.2 Implement Sentinel Claims styling and keyboard-operable screens with empty/loading/error/success states. Show source beside finding and one sample-record environment notice.
-- [x] 5.3 Exercise 1366x768, 375px, keyboard-only and 200% zoom. Run `uv run --locked pytest tests/browser/test_review_workspace.py -q`; expected source version matches selection and denied deep links stay denied. Commit `feat: complete the local evidence review workbench`.
+- [x] 5.3 Exercise 1366x768, 375px, keyboard activation and a 200% equivalent effective viewport (683x384 with 2x device scale). Native browser gestures/screen-reader conformance remain unclaimed. Run `uv run --locked pytest tests/browser/test_review_workspace.py -q`; expected source version matches selection and denied deep links stay denied. Commit `feat: complete the local evidence review workbench`.
 
 ## Task 6: Decisions, manual review, corrections and revisions
 
@@ -129,11 +129,13 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 **Files:** add 40 held-out labelled bundles under `tests/fixtures/evaluation/`, `tests/browser/test_offline_acceptance.py`, and `tests/test_acceptance.py`; update this change's `verify.md` with actual results.
 **Interfaces:** Consume the completed application with named local accounts and no provider credentials. Use a real local browser/server/database and block external requests while allowing loopback/local database traffic.
 
-- [ ] 10.1 Lock 20 discrepancy, 10 clean and 10 incomplete/unsupported/adversarial evaluation bundles independent of development fixtures. Record hashes, expected findings and evidence locations.
-- [ ] 10.2 Run import -> evidence -> correction handoff -> corrected import -> recheck -> manual review/supervisor acknowledgement -> final record -> CSV/print -> restart -> reopen. Include a second account and unauthorized access attempts.
+- [x] 10.1 Lock 20 discrepancy, 10 clean and 10 incomplete/unsupported/adversarial evaluation bundles independent of development fixtures. Record hashes, expected findings and evidence locations.
+- [x] 10.2 Run import -> evidence -> correction handoff -> corrected import -> recheck -> manual review/supervisor acknowledgement -> final record -> CSV/print -> restart -> reopen. Include a second account and unauthorized access attempts.
 - [ ] 10.3 Block external networking and inspect browser/server requests. Assert no hidden provider/CDN/identity/analytics traffic, no false finalization and no wrong-version evidence.
 - [ ] 10.4 Run `uv run --offline --locked pytest -q` and the documented PostgreSQL/browser/restore commands. Expected all offline acceptance scenarios pass with real data persistence. Measure workload limits; do not label unrun hosted/AI/hospital studies complete.
-- [ ] 10.5 Record known limits, actual test environment, screenshots and repeatable launch/restore instructions. Commit `test: verify the complete disconnected review workflow` only after evidence exists.
+- [x] 10.5 Record known limits, actual test environment, screenshots and repeatable launch/restore instructions. Commit `test: verify the complete disconnected review workflow` only after evidence exists.
+
+**Task 10 gate:** The real SQLite/browser correction/export/restart loop and 40-case deterministic set pass. Python socket/browser-origin guards are exercised. Whole-machine/container egress, standard PostgreSQL/container restore and hosted CI remain unrun, so 10.3/10.4 and overall prototype sign-off stay open. The acceptance commit describes this narrower verified scope.
 
 ## First prototype completion bar
 

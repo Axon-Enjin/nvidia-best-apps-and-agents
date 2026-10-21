@@ -1,5 +1,6 @@
 from concurrent.futures import ThreadPoolExecutor
 
+import pytest
 from fastapi.testclient import TestClient
 
 from sentinel.accounts import Actor, SecretBox, create_local_account
@@ -107,3 +108,18 @@ def test_old_evidence_and_old_rules_cannot_authorize_new_manual_review(context):
     assert client.post(f"/api/claims/{case_id}/review-events", json={"expected_revision":case["revision"],
         "bundle_id":case["current_bundle_id"], "rule_version":"old-rule", "action":"manual_p07", "reason":"old rules"}).status_code == 409
     assert client.get(f"/api/claims/{case_id}/review-state").json()["events"] == []
+
+
+@pytest.mark.parametrize("old,new", [(b"Fictional sample mark",b"none"),(b"Sample Signatory",b"n/a"),(b"Signed Date: 2026-10-14",b"Signed Date: unknown")])
+def test_explicit_absence_is_not_mark_signatory_or_date_presence(context,old,new):
+    from sentinel.samples import development_bundle
+    from sentinel.worker import process_one
+    from tests.bundle_helpers import create_case, import_files
+    client,db,settings = context
+    case_id=create_case(client)["id"]
+    files,_=development_bundle()
+    files[0]=(files[0][0],files[0][1].replace(old,new))
+    assert import_files(client,case_id,files).status_code == 202
+    assert process_one(db,settings)
+    bundle=client.get(f"/api/claims/{case_id}/bundles/1").json()
+    assert action(client,case_id,"manual_p08",reason="Presence review",anchors=anchors(bundle)).status_code == 409

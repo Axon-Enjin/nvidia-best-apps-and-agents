@@ -1,74 +1,42 @@
 # Sentinel Claims: session handoff
 
-Last updated: **2026-10-21**.
+Last updated: **2026-10-22**.
 
-## Current instruction
+## Current instruction and branch
 
-**Implementation is resumed.** The owner instructed: "proceed with a commit with appropriate message, then lets branch off and continue the build. Write the next implementation steps so we can attain our first offline first but fully working prototype".
+Implementation remains authorized. The owner requested Tasks 4 through 10. Work stays inline on **feat/offline-prototype** in the existing linked worktree. The earlier owner pause is superseded. Commit only in this project; never commit or push to the external FMD repository. No push, public deployment, cloud purchase or real-patient-data processing is authorized.
 
-The existing scaffold was checkpointed as `e8c0ace` on `review/fmd-product-framing`. The build branch is **`feat/offline-prototype`** in this existing isolated worktree. Foundation changes are committed as `08b0c09`. The earlier product-definition pause is superseded; do not ask again whether already authorized development may resume.
+## Read next
 
-Commits belong only in this current project repository. **Never commit or push anything to the external FMD repository.** No push, cloud purchase or real-patient-record processing is implied.
+1. Root AGENTS.md and docs/state.md.
+2. docs/changes/offline-prototype/tasks.md and verify.md, which own progress and evidence.
+3. The active delta spec/design, PRD P01-P10 and SDD; DSD/QAD for UI and evaluation.
+4. LOCAL-SETUP.md for launch, provisioning, backup and isolated restore; OCR-NOTICES.md for pinned local OCR.
 
-## Reading order
+## Implemented and verified locally
 
-1. Root [AGENTS.md](AGENTS.md), generated from the canonical [build guide](docs/build-sentinel-node.md).
-2. [docs/state.md](docs/state.md), then the active [implementation plan](docs/changes/offline-prototype/tasks.md) and [verification record](docs/changes/offline-prototype/verify.md).
-3. For the task at hand: [offline requirements](docs/changes/offline-prototype/specs/offline-review/spec.md), [change design](docs/changes/offline-prototype/design.md), [PRD](docs/prd-sentinel-node.md) and [SDD](docs/sdd-sentinel-node.md).
-4. For UI/evaluation: [DSD](docs/dsd-sentinel-node.md), [QAD](docs/qad-sentinel-node.md), [protection register](docs/clr-sentinel-node.md), [AI assurance](docs/aia-sentinel-node.md) and [operations](docs/ops-sentinel-node.md).
-5. [docs/index.md](docs/index.md) and [append-only log](docs/log-sentinel-node.md) provide inventory and history.
+Tasks 1-8: offline provider guards; named local accounts and privileged TOTP; immutable encrypted bundle originals; content-derived P01-P10 checks; real queue/import/source workspace; append-only correction/manual events and revision fencing; guarded immutable reports and safe CSV/print; actual printed PNG/PDF OCR with separate source confirmations.
 
-[PRODUCT.md](PRODUCT.md) is the short reader entrypoint. [BUILD-CHECKLIST.md](BUILD-CHECKLIST.md) is the broader dependency checklist; the active task plan owns current execution progress. [PILOT-DECISIONS.md](PILOT-DECISIONS.md) and [workflow research](PILOT-WORKFLOW-RESEARCH.md) retain decision/source provenance, not competing requirements.
+Task 9 adds encrypted checkpoints, isolated SQLite restore, source hash/history/authorization checks, revoked restored sessions, interrupted-job reconciliation, bounded worker retries and authenticated retirement tombstones. Docker/Compose/CI artifacts are prepared. Physical retention deletion and scheduled backups are not implemented.
 
-## Offline prototype boundary
+Task 10 adds 40 independent labelled evaluation cases (20 discrepancies, 10 clean, 10 incomplete/adversarial), 20 corrected pairs and printed equivalents. The real browser completes import, discrepancy evidence, correction handoff/acknowledgement, corrected import, recheck, manual P07/P08, a different supervisor acknowledgement, finalization, CSV/print and a real process restart/reopen. A second reviewer is denied case/source/report access. Browser external origins and Python server non-loopback sockets are independently blocked during this test.
 
-Offline means the locally hosted app completes the supported workflow with external runtime traffic blocked after installation. The browser still connects to the local server/database. Install dependencies, container images and OCR language data before disconnecting. No browser cache/PWA or synchronization between installations is assumed.
+The active verification record holds exact test counts, measured environment, screenshots and rulings. A small SQLite metadata exercise uses 10,000 rows and five concurrent named readers; it does not establish production capacity or hospital benefit.
 
-Complete named sign-in, assignment, versioned imports, coverage/evidence, correction ownership and manual handoff, revised sources/recheck, human closeout, exports, local OCR and backup/restore. All controls must have real saved behavior. P07 can use the accepted manual comparison plus separate supervisor acknowledgement; AI remains not run/failed. Do not invent canned model results or waive required checks.
+## Open first-prototype gates
 
-PostgreSQL remains the standard local/container target. SQLite remains an optional direct-development convenience, not proof of PostgreSQL concurrency or pilot deployment suitability. Docker was not found on this machine's command path; obtain an available runtime before claiming container/database acceptance. Hosted deployment and operational hospital gates remain later work.
+There is no available Docker engine, WSL, Podman or PostgreSQL runtime on this host. Official Compose 5.6.1 standalone configuration validation passes, but image build/start, actual PostgreSQL correction/restore, Linux container OCR and container/OS egress acceptance remain unrun. The PostgreSQL integration test explicitly skips without TEST_DATABASE_URL. CI is defined but has not executed; no L1 claim is made. Tasks 9.4 and 10.3/10.4 remain unchecked; overall change verification stays FAIL. Do not archive or claim full prototype sign-off.
 
-## Verified progress
+Next: obtain a working container runtime, run the standard setup and PostgreSQL restore drill, execute CI when publishing is authorized, then repeat acceptance with OS/container network isolation. No product-scope reapproval is needed.
 
-- `e8c0ace`: checkpoint of the existing application, migrations, tests, config and lockfile; recorded as incomplete. The initial `uv run --locked pytest -q` could not resolve `httpx2>=0.22,<1`.
-- `08b0c09`: removed only that invalid constraint; `uv sync --locked` succeeds without changing `uv.lock`.
-- `NETWORK_MODE=offline` is now default. Explicit online mode plus credentials is needed for remote inference; API, worker and adapter enforce the boundary.
-- Six new tests failed before implementation, then passed. Full `uv run --offline --locked pytest -q`: **37 passed**, one Starlette/HTTPX deprecation warning. New test file passes Ruff.
-- Queued remote jobs processed offline retain local results and explicit incomplete remote coverage. This is not yet the complete manual-review/closeout implementation.
-- No full browser flow, PostgreSQL/container run, printed OCR test, restore drill, live inference or hospital evaluation has occurred.
+## Boundaries
 
-Task 2 now implements named local accounts, Argon2id passwords, encrypted TOTP for supervisors/admins, replay fencing, revocable sessions, CSRF and assigned case access. CLI provisioning/recovery and a local login page are tested. Twenty account scenarios and one real Chromium desktop/mobile login check pass. Default named mode never accepts the old shared token; explicit development migration mode requires a configured token. See README for commands and private key handling.
+Synthetic patients only. Adult general medical inpatient ACR after discharge and before initial submission; the existing hospital system keeps submission authority. No official eClaims compatibility, autonomous clinical/coding decision, signature authenticity, hospital endorsement or payment guarantee is claimed.
 
-Task 3 now adds JSON case creation (`POST /api/cases`), versioned manifests, private encrypted originals and durable quarantined parsing jobs. Eleven bundle tests cover idempotency, immutable versions, identity, ambiguity, limits, protected source access, concurrency and damage. Case assignment advances revision. Legacy rerun cannot replace a versioned case. Worker child parsing has time/memory bounds; profile completion is not inferred from successful extraction.
+P07 may resolve through named source-backed manual comparison and a different supervisor acknowledgement; AI remains not run offline. P08 requires actual marks, printed names and dates, not explicit absence. P09 permits only reasoned supervisor withdrawal of a mistakenly expected extra attachment. No core-artifact waiver exists. Source/rule changes reopen manual review; missing original objects block closeout; later revisions mark reports stale.
 
-Task 4 is verified with 22 new profile scenarios and 91 passing full-suite tests. Task 5 workbench is verified in Chromium across desktop/mobile/zoom; full suite 92 passed. Task 6 correction events/manual review are verified; full suite 99 passed. Task 7 transactional closeout/reports is verified; full suite 106 passed. Task 8 real printed-scan OCR/confirmation is verified; full suite 110 passed. Task 9 recovery/packaging is implemented with 115 passing tests and one explicit PostgreSQL skip. Compose configuration passes; container/PostgreSQL execution is still unavailable, so 9.4 remains unchecked. Next is **Task 10: local acceptance and runtime-gap evidence**. The change's overall verification is FAIL because the complete prototype is unfinished. Evidence workbench assets, full correction workflow, PostgreSQL/container/OCR/restore acceptance remain pending.
+## External documentation engine and local material
 
-## Product boundaries already accepted
+Read-only engine: C:/Users/Yushin/tools/fmd-v3.0.1, source https://github.com/delatorrecj/fmd.git, tag v3.0.1, commit 4979fda6435dc007a331c40a5e9e28db813eebb2. Read its AGENTS.md and trigger matrix before docs work, use PYTHONDONTWRITEBYTECODE=1, and run its scripts against project docs. Never copy engine files here or commit/push to the engine repository.
 
-Sentinel Claims serves hospital PhilHealth reviewers checking adult general medical inpatient ACR claims after discharge and before initial submission. Scope is one team. Technical slug remains `sentinel-node`.
-
-P01-P10 in PRD govern completion. Core missing documents, identity conflicts, open correction tasks and stale versions block closeout. Sole exception: supervisor withdraws a mistakenly expected extra attachment with a reason. The existing hospital system retains submission authority.
-
-Synthetic patient records only. One environment-level sample indication and export provenance; ordinary records need no repeated static badges. No real patient records, hospital endorsement, clinical/coding decisions, autonomous source edits or payment guarantees.
-
-SCRUTINY remains **PROCEED WITH FIXES**. Product choices are settled; performance, reviewer benefit and hospital interoperability remain unproven.
-
-## External engine
-
-Checkout: `C:/Users/Yushin/tools/fmd-v3.0.1`.
-Source: `https://github.com/delatorrecj/fmd.git`.
-Tag/HEAD: **v3.0.1**, **4979fda6435dc007a331c40a5e9e28db813eebb2**.
-On the last fetch, main matched that October 11 release. Earlier 404 access failures were resolved.
-
-Before docs work, read the external kernel and trigger matrix. Set `PYTHONDONTWRITEBYTECODE=1` and run engine scripts against project `docs/`; never copy engine files into this repository or edit the engine. INDEX/LOG and root materializations are engine-generated. Preserve historical log rows.
-
-The committed document set is validated separately from unchanged local untracked research/old plans, whose style/manifest findings remain visible in full-workspace checks. Do not alter unrelated local notes just to make those checks green.
-
-## Workspace and history
-
-Origin is `https://github.com/Axon-Enjin/nvidia-best-apps-and-agents.git`.
-Previous documentation commits: `b2919bf` accepted baseline/checklist; `bc974d6` populated reconciliation. Existing main merge `51e4535` preserved local work. These are history, not reset instructions.
-
-Application source and tests are now tracked by the checkpoint. Optional untracked material remains: `output/`, `docs/sentinel-node-claims-interoperability-research.md`, `docs/sentinel-node-walkthrough.html` and the old plan under `docs/superpowers/`. Preserve them and exclude them from application commits unless specifically relevant.
-
-[Historical opportunity research](Hackathon-AI-Agent-Research.md), [event reference](HACKATHON.md), [sponsor context](ORG.md) and [research prompt](PROMPT.md) do not override current scope. Recheck official rules before current submission claims.
+Preserve unrelated untracked output/, docs/sentinel-node-claims-interoperability-research.md, docs/sentinel-node-walkthrough.html and docs/superpowers/. Full-workspace FMD checks still see the unchanged research voice/old-plan manifest findings; strict checks of the tracked artifact snapshot are separate. The plan ledger is ignored scratch under .superpowers/sdd/tasks/ while runtime gates remain open.

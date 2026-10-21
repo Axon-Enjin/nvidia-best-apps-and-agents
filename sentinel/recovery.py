@@ -110,6 +110,8 @@ def retire_case(db,settings,case_id,reason):
 
 
 def apply_deletion_ledger(db,settings,ledger):
+    if not Path(ledger).is_dir():
+        raise ValueError("Retirement ledger directory is unavailable; do not reopen this restore.")
     box = SecretBox.from_file(settings.secret_key_file)
     with db.session() as session:
         for path in Path(ledger).glob("*.enc"):
@@ -121,6 +123,8 @@ def apply_deletion_ledger(db,settings,ledger):
 
 
 def restore_backup(backup,target,backup_key_file,*,deletion_ledger=None,database_url=None):
+    if deletion_ledger is not None and not Path(deletion_ledger).is_dir():
+        raise ValueError("Retirement ledger directory is unavailable; restore was not started.")
     target = Path(target).resolve()
     if target.exists():
         raise ValueError("Restore requires a new isolated directory. Existing data is never overwritten.")
@@ -163,7 +167,9 @@ def restore_backup(backup,target,backup_key_file,*,deletion_ledger=None,database
             session.execute(update(LocalSession).values(revoked=True))
             session.execute(update(Job).where(Job.status == "running").values(status="queued",lease_token=None,lease_until=None))
             session.commit()
-        apply_deletion_ledger(db,settings,Path(settings.source_storage_root)/"deletions")
+        saved_ledger = Path(settings.source_storage_root)/"deletions"
+        if saved_ledger.exists():
+            apply_deletion_ledger(db,settings,saved_ledger)
         if deletion_ledger:
             apply_deletion_ledger(db,settings,deletion_ledger)
             destination = Path(settings.source_storage_root)/"deletions"

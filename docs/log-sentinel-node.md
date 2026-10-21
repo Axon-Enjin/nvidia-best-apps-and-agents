@@ -24,6 +24,8 @@
 | 11 | 2026-10-21 16:21 | Verify Task 7 guarded closeout snapshots exports and event metrics | - | docs/changes/offline-prototype/tasks.md, docs/changes/offline-prototype/verify.md, docs/sentinel-node-claims-interoperability-research.md | - | not run |
 | 12 | 2026-10-21 16:31 | Verify Task 8 real local printed scans and source confirmations | - | docs/changes/offline-prototype/tasks.md, docs/changes/offline-prototype/verify.md, docs/sentinel-node-claims-interoperability-research.md | - | not run |
 | 13 | 2026-10-21 16:42 | Verify local recovery and Compose configuration; retain PostgreSQL runtime gate | - | docs/changes/offline-prototype/tasks.md, docs/changes/offline-prototype/verify.md, docs/sentinel-node-claims-interoperability-research.md | - | not run |
+| 14 | 2026-10-21 17:10 | Verify local correction acceptance and fresh-review fixes; retain standard-runtime isolation and CI gates | STATE_Template.md | docs/changes/offline-prototype/verify.md, docs/state.md | - | not run |
+| 15 | 2026-10-21 17:13 | Record 168 passing local tests, one unavailable PostgreSQL skip and open prototype sign-off gates | - | docs/changes/offline-prototype/verify.md | - | not run |
 
 ---
 

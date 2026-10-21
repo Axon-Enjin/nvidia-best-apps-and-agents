@@ -57,7 +57,7 @@ function viewSource(doc,anchor,evidence) {
   evidence.querySelector(".source-view")?.remove();const viewer=node("div",undefined,"source-view");viewer.append(node("h3",`${doc.filename} · page ${anchor.page}`));const original=node("a","Download original");original.href=`/api/documents/${doc.id}/content`;viewer.append(original);
   const text=doc.extraction.pages[anchor.page-1]||"No readable text. Inspect the original or replace it.",source=node("pre",undefined,"source-text");source.setAttribute("aria-label","Source text");source.tabIndex=0;const position=text.indexOf(anchor.value);
   if(position>=0)source.append(document.createTextNode(text.slice(0,position)),node("mark",anchor.value),document.createTextNode(text.slice(position+anchor.value.length)));else source.textContent=text;
-  viewer.append(source);evidence.append(viewer);source.focus();
+  viewer.append(source);evidence.insertBefore(viewer,evidence.querySelector("form"));source.focus();
 }
 function showImport(replace=false){state.replace=replace;$("import-title").textContent=replace?`Import corrected version for ${state.detail.reference}`:"Import a versioned bundle";$("import-error").hidden=true;$("import-dialog").showModal();}
 $("import-button").onclick=()=>showImport();$("cancel-import").onclick=()=>$("import-dialog").close();

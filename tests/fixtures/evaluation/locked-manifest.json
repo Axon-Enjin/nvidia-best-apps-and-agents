@@ -1,0 +1,901 @@
+{
+  "version": 1,
+  "created": "2026-10-22",
+  "independence": "Authored from separate fictional templates without development_bundle; deterministic evaluation only, not a clinical-quality study.",
+  "cases": [
+    {
+      "id": "heldout-01",
+      "label": "discrepancy",
+      "manifest_sha256": "ea0c983b9a8bb08b8c62b04096a0a57743b86c5fdf9b97f8eab846947c664376",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "discharge",
+          "field": "discharge_date",
+          "page": 1,
+          "value": "2026-08-18"
+        }
+      ],
+      "corrected_path": "heldout-01/corrected",
+      "corrected_manifest_sha256": "811f0dc1ec7dfd378d46d1aadf0030218c894d9e73ad30509fa278866b624681"
+    },
+    {
+      "id": "heldout-02",
+      "label": "discrepancy",
+      "manifest_sha256": "78d41a56afb2b17d593541b4bb428b044fc74a718ead5286c52e9fb1beedf233",
+      "expected": [
+        {
+          "id": "P04",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf5",
+          "field": "patient_id",
+          "page": 1,
+          "value": "UNRELATED-FICTION"
+        }
+      ],
+      "corrected_path": "heldout-02/corrected",
+      "corrected_manifest_sha256": "84e71ed4daeb93ef020b3c997dd887a923f7e94d001828c33ad80c52c89983fc"
+    },
+    {
+      "id": "heldout-03",
+      "label": "discrepancy",
+      "manifest_sha256": "ea39c3f43b28a03a70f654c79152030513a36cbd0686037ed2bc46b6d1db12c1",
+      "expected": [
+        {
+          "id": "P06",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "esoa",
+          "field": "total",
+          "page": 1,
+          "value": "190.00"
+        }
+      ],
+      "corrected_path": "heldout-03/corrected",
+      "corrected_manifest_sha256": "a45e700bfbce1a599f284b5c8985c554ee5cab091d19ac1c5b49e05449481192"
+    },
+    {
+      "id": "heldout-04",
+      "label": "discrepancy",
+      "manifest_sha256": "6caae881dedbdd27c538aed3a533db8819a5e5883dbf9979166d23c9809710da",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf5",
+          "field": "disposition",
+          "page": 1,
+          "value": "Transferred"
+        }
+      ],
+      "corrected_path": "heldout-04/corrected",
+      "corrected_manifest_sha256": "1890cfc098bacfb515a0287ae9fb799c4b166d58a14128b62ed8e1bf7e2455ed"
+    },
+    {
+      "id": "heldout-05",
+      "label": "discrepancy",
+      "manifest_sha256": "f0ca16e057fc023ba86a0b3870e10210cbfe36bb09315699bcf85983896c608f",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf4",
+          "field": "admission_date",
+          "page": 1,
+          "value": "2026-08-11"
+        }
+      ],
+      "corrected_path": "heldout-05/corrected",
+      "corrected_manifest_sha256": "f7692732864d6be766ad30bd1ad14477e599d72002efa261ef47dd495854382a"
+    },
+    {
+      "id": "heldout-06",
+      "label": "discrepancy",
+      "manifest_sha256": "875dd20d9611cb11f98f2b76a7ec2f3b35d19d38ae641c0f8ee058e9bee45938",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "discharge",
+          "field": "discharge_date",
+          "page": 1,
+          "value": "2026-08-18"
+        }
+      ],
+      "corrected_path": "heldout-06/corrected",
+      "corrected_manifest_sha256": "6953a2421876e955cacccf298fdc9860104fd2eb06c1f9686af51cea70221935"
+    },
+    {
+      "id": "heldout-07",
+      "label": "discrepancy",
+      "manifest_sha256": "227a112736ea256956e3a49eca799922d2dccd3d1f9af59eaa9573c742659fa4",
+      "expected": [
+        {
+          "id": "P04",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf5",
+          "field": "patient_id",
+          "page": 1,
+          "value": "UNRELATED-FICTION"
+        }
+      ],
+      "corrected_path": "heldout-07/corrected",
+      "corrected_manifest_sha256": "76de08a29440cdbe38d3191d915c88af7936e313adc132d501731aad651fbf1c"
+    },
+    {
+      "id": "heldout-08",
+      "label": "discrepancy",
+      "manifest_sha256": "cbbacd1f3954f8d61e9e1afa45609f5aa74380c20e98bc5815df9fdb6b472c46",
+      "expected": [
+        {
+          "id": "P06",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "esoa",
+          "field": "total",
+          "page": 1,
+          "value": "190.00"
+        }
+      ],
+      "corrected_path": "heldout-08/corrected",
+      "corrected_manifest_sha256": "f5407e5d51ed1cf1655e85f88b4bbedff87bba3dc0493a9d11671fa8da17ff9e"
+    },
+    {
+      "id": "heldout-09",
+      "label": "discrepancy",
+      "manifest_sha256": "7cf12131dd1968b5e95b4b58b1e74a1a0a77872d6b1f8e6f0958f2ff72614616",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf5",
+          "field": "disposition",
+          "page": 1,
+          "value": "Transferred"
+        }
+      ],
+      "corrected_path": "heldout-09/corrected",
+      "corrected_manifest_sha256": "0a099e8ae891e9d5f9eae97651d6905cd52acf736debc2e15288240413aa3414"
+    },
+    {
+      "id": "heldout-10",
+      "label": "discrepancy",
+      "manifest_sha256": "1e9a1add7a38a3a81505806bdd8dda4e58a0981038ec6478fe6965d0da0e8f44",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf4",
+          "field": "admission_date",
+          "page": 1,
+          "value": "2026-08-11"
+        }
+      ],
+      "corrected_path": "heldout-10/corrected",
+      "corrected_manifest_sha256": "5d2ea7c6b27cb680770e0a6ee7f8a865d46c49553962c2ab9f66ec3c903b6911"
+    },
+    {
+      "id": "heldout-11",
+      "label": "discrepancy",
+      "manifest_sha256": "20f073e51f290423ba77c2d9afd570f14ea4fa43bbeb948f08a69f5cd74b2209",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "discharge",
+          "field": "discharge_date",
+          "page": 1,
+          "value": "2026-08-18"
+        }
+      ],
+      "corrected_path": "heldout-11/corrected",
+      "corrected_manifest_sha256": "de22e136717a3496d6b8b9a5e5655714a9c6e2ffd027cbd1d8589a1ee6ab9000"
+    },
+    {
+      "id": "heldout-12",
+      "label": "discrepancy",
+      "manifest_sha256": "6545733769cf9260b291bee8f5403643caab62f5039ef05e0283db899d1e001d",
+      "expected": [
+        {
+          "id": "P04",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf5",
+          "field": "patient_id",
+          "page": 1,
+          "value": "UNRELATED-FICTION"
+        }
+      ],
+      "corrected_path": "heldout-12/corrected",
+      "corrected_manifest_sha256": "1e22ebef7b930e7f1672faf7a1ba84509e2e3d93fe9f94534e08f661067ba0c8"
+    },
+    {
+      "id": "heldout-13",
+      "label": "discrepancy",
+      "manifest_sha256": "e143d5c42ee78d2fb3eeda08af8c880df0f0fe9de7d2211acae2801ae3cdd12f",
+      "expected": [
+        {
+          "id": "P06",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "esoa",
+          "field": "total",
+          "page": 1,
+          "value": "190.00"
+        }
+      ],
+      "corrected_path": "heldout-13/corrected",
+      "corrected_manifest_sha256": "df9cd5dc82be43a759dc16cd687638b5dd69cfddfa0bd7df61029b46a50ee139"
+    },
+    {
+      "id": "heldout-14",
+      "label": "discrepancy",
+      "manifest_sha256": "dd62a25ce0cb14677a54dc110d81ba1a88c6c019ee4bb1b9354f1acf987284b4",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf5",
+          "field": "disposition",
+          "page": 1,
+          "value": "Transferred"
+        }
+      ],
+      "corrected_path": "heldout-14/corrected",
+      "corrected_manifest_sha256": "70b0bf632e09cab0f44af6dbe7e16acab94b812480094ab03b5af3505ca34294"
+    },
+    {
+      "id": "heldout-15",
+      "label": "discrepancy",
+      "manifest_sha256": "d9b5bc72c194b7dca1583a3a48813216d916a80ccffd2ac662c46f927e8b51aa",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf4",
+          "field": "admission_date",
+          "page": 1,
+          "value": "2026-08-11"
+        }
+      ],
+      "corrected_path": "heldout-15/corrected",
+      "corrected_manifest_sha256": "3f4cd7504ebd622615e2d130f13e3b135ebded3a864f25f70e4313ed195975c1"
+    },
+    {
+      "id": "heldout-16",
+      "label": "discrepancy",
+      "manifest_sha256": "a55f037e44219248b6b00147cb4ab5b5393cfb09cffaf57e8988968e7985a704",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "discharge",
+          "field": "discharge_date",
+          "page": 1,
+          "value": "2026-08-18"
+        }
+      ],
+      "corrected_path": "heldout-16/corrected",
+      "corrected_manifest_sha256": "fed1491a5ac5ac167c786d7e6831fe8d15fc757b9448c45ec9afeb6c79b607da"
+    },
+    {
+      "id": "heldout-17",
+      "label": "discrepancy",
+      "manifest_sha256": "fbb14650adcf213c494711a2cf974985397b4b26029f17338bec01595b8c046e",
+      "expected": [
+        {
+          "id": "P04",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf5",
+          "field": "patient_id",
+          "page": 1,
+          "value": "UNRELATED-FICTION"
+        }
+      ],
+      "corrected_path": "heldout-17/corrected",
+      "corrected_manifest_sha256": "33efd64e6409f8e890abb067b7e24489826425289829c91d294cf68edcfbaf3f"
+    },
+    {
+      "id": "heldout-18",
+      "label": "discrepancy",
+      "manifest_sha256": "985766ab3a81703d0a9ccc2bba1a6fedea49e17455ae975fc11305b072c5429a",
+      "expected": [
+        {
+          "id": "P06",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "esoa",
+          "field": "total",
+          "page": 1,
+          "value": "190.00"
+        }
+      ],
+      "corrected_path": "heldout-18/corrected",
+      "corrected_manifest_sha256": "386ee72394beb325ef6fdd7f0d1a0ab3565997dbcba6e4ccbd226768f4f52687"
+    },
+    {
+      "id": "heldout-19",
+      "label": "discrepancy",
+      "manifest_sha256": "3122d85dede525b75ab76e0fc52a5e3042d3002c75fea34a02bac9d98bcbf643",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf5",
+          "field": "disposition",
+          "page": 1,
+          "value": "Transferred"
+        }
+      ],
+      "corrected_path": "heldout-19/corrected",
+      "corrected_manifest_sha256": "0ff151712fea46326517a5ff629685a77a47cf837c0e9b2ee16051f095897cbe"
+    },
+    {
+      "id": "heldout-20",
+      "label": "discrepancy",
+      "manifest_sha256": "ab83eedd4bdd7e51b53379b271e11f743bdda111551030e0f0e981eb22b60ae6",
+      "expected": [
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [
+        {
+          "document_type": "cf4",
+          "field": "admission_date",
+          "page": 1,
+          "value": "2026-08-11"
+        }
+      ],
+      "corrected_path": "heldout-20/corrected",
+      "corrected_manifest_sha256": "f502ef4c2e1a118ce07c9240ec38ed0ef7601126850f8203d278a546e286a13e"
+    },
+    {
+      "id": "heldout-21",
+      "label": "clean",
+      "manifest_sha256": "aa1c33e7902cd36e7f9042f755bdaea35ef457430c226b305bf2091027e95313",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-22",
+      "label": "clean",
+      "manifest_sha256": "ac3a7cfa0862826c5374bcaf8c17b4c0bfc82ad416eb2d12792a443e4e44f4b1",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-23",
+      "label": "clean",
+      "manifest_sha256": "80048412c7ccb282243bb3b08cbe4931c65bba4e119b5af71067f1b034a8929e",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-24",
+      "label": "clean",
+      "manifest_sha256": "64a569420c22f05f8402a1886e344edbfaed3c5f781e816863bfb7a80a3388d4",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-25",
+      "label": "clean",
+      "manifest_sha256": "adbd8ce1730eac928ae57f994b7c6f3aea24c69f2863d5cc59c368311c8e099c",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-26",
+      "label": "clean",
+      "manifest_sha256": "5d2d8c24144bca66bec99906e53b9abdea2e2d76e98bb0cdc1a8dccaf03c376c",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-27",
+      "label": "clean",
+      "manifest_sha256": "c914043e67648a3fb32eb93c599fd4275c7a51d561ce433c10be0e9456c20328",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-28",
+      "label": "clean",
+      "manifest_sha256": "1a68cb6136cf7e152dc6f12799baaa69e22a49d28be86f9e8aedc20a8db6b413",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-29",
+      "label": "clean",
+      "manifest_sha256": "bafd9cbba5f4a86a965fd2a173b906dcd22978a250735876f5b77235eb1c279b",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-30",
+      "label": "clean",
+      "manifest_sha256": "ce11ed2ccf5da45aa026711bd0969673cda0495a14159f96d111a45c3b394a06",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "passed"
+        },
+        {
+          "id": "P02",
+          "status": "passed"
+        },
+        {
+          "id": "P03",
+          "status": "passed"
+        },
+        {
+          "id": "P04",
+          "status": "passed"
+        },
+        {
+          "id": "P05",
+          "status": "passed"
+        },
+        {
+          "id": "P06",
+          "status": "passed"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null,
+      "scan_equivalents": [
+        {
+          "filename": "printed-equivalent.png",
+          "sha256": "94c393e2d0b3be76a55e354ccc63f7ec205c06dd681a6c4ecd72ceb70e63bd04"
+        },
+        {
+          "filename": "printed-equivalent.pdf",
+          "sha256": "f3dbadc256885195b495b29fbdd29541b1f853feead8b6bf6af9fad13eef9d5d"
+        }
+      ]
+    },
+    {
+      "id": "heldout-31",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "3aefb127e43a792ad802a5ae8a5713c459929bf16835ec8f7885c01aae501683",
+      "expected": [
+        {
+          "id": "P03",
+          "status": "incomplete"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-32",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "8195c4f3ee9c65eee888564531208213b42d49d1b950f233e27be13c59a98061",
+      "expected": [
+        {
+          "id": "P03",
+          "status": "incomplete"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-33",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "a61722c7648d049380499350d5f6557cde8cfadaf9d07ff32d8cd290d792f066",
+      "expected": [
+        {
+          "id": "P03",
+          "status": "incomplete"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-34",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "04985113987bb930db214ebf25b582b923dad99a0d951b27a9f1bc30be5e3399",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "incomplete"
+        },
+        {
+          "id": "P05",
+          "status": "flagged"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-35",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "4ec16aac90cda903646d70cc6f817bf3249918774ed7095398e2c7ac62e1fdc0",
+      "expected": [
+        {
+          "id": "P02",
+          "status": "incomplete"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-36",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "71f3d1f6173a43252d3afa5a1377120da0165451ef968fbd1b86807837e5703e",
+      "expected": [
+        {
+          "id": "P03",
+          "status": "incomplete"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-37",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "879d501881dbd0a53f0dba7b57646e210ea1bd1e1ff6c46428d34545628aacc9",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "incomplete"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-38",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "9c0f7276aea25366149559c0f67c09aaf03a4fb24aafe70bfc8f42caf92bbffe",
+      "expected": [
+        {
+          "id": "P01",
+          "status": "incomplete"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-39",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "b051fd7c2b679982a80cbf834995368b457bcc6ae083d3628bc2c91bf46e3583",
+      "expected": [
+        {
+          "id": "P08",
+          "status": "incomplete"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    },
+    {
+      "id": "heldout-40",
+      "label": "incomplete_adversarial",
+      "manifest_sha256": "9f3b2fd671735c4f890b183eafd1a0494a86d246e35935c5bedf2927b8fcae60",
+      "expected": [
+        {
+          "id": "P03",
+          "status": "incomplete"
+        }
+      ],
+      "evidence": [],
+      "corrected_path": null
+    }
+  ]
+}

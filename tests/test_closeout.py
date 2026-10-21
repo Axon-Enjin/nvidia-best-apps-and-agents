@@ -45,6 +45,7 @@ def test_manual_resolution_snapshot_exports_staleness_and_guarded_legacy_route(c
     assert report["snapshot"]["provenance"] == "Synthetic patient records; internal sample profile; no payer approval."
     assert report["snapshot"]["model_status"] == "not_run_offline"
     assert report["snapshot"]["checks"][9]["status"] == "passed"
+    assert client.get(f"/api/claims/{case_id}/review-state").json()["checks"][9]["status"] == "passed"
     export = client.get(f"/api/reports/{report['id']}/export?format=csv")
     assert export.status_code == 200
     assert "SAMPLE-ADULT-MEDICAL-1/1" in export.text and bundle["bundle_id"] in export.text
@@ -104,7 +105,7 @@ def test_concurrent_replacement_and_finalization_cannot_both_publish(context):
     def attempt(kind):
         try:
             if kind == "finalize":
-                finalize_review(db, actor, case_id, bundle["bundle_id"], "SAMPLE-ADULT-MEDICAL-1/1", revision)
+                finalize_review(db, actor, case_id, bundle["bundle_id"], "SAMPLE-ADULT-MEDICAL-1/1", revision, settings=settings)
             else:
                 import_bundle(db, settings, actor, case_id, files, manifest, revision, "competing-import")
             return 200
@@ -112,3 +113,38 @@ def test_concurrent_replacement_and_finalization_cannot_both_publish(context):
             return getattr(exc, "status_code", 500)
     with ThreadPoolExecutor(2) as pool:
         assert sorted(pool.map(attempt, ["finalize", "replace"])) == [200, 409]
+
+
+def test_missing_original_blocks_closeout_even_after_successful_extraction(context):
+    from pathlib import Path
+
+    from sentinel.db import Document
+    client, db, settings = context
+    case_id,bundle,_ = seeded(context)
+    manual_complete(context,case_id,bundle)
+    with db.session() as session:
+        key=session.get(Document,bundle["documents"][0]["id"]).object_key
+    Path(settings.source_storage_root,key+".source").unlink()
+    assert finalize(client,case_id).status_code == 409
+
+
+def test_reassignment_marks_previous_record_stale_and_reopens_closeout(context):
+    import time
+
+    from fastapi.testclient import TestClient
+
+    from sentinel.accounts import totp_code
+    from sentinel.api import create_app
+    client,db,settings = context
+    case_id,bundle,_ = seeded(context)
+    manual_complete(context,case_id,bundle)
+    report = finalize(client,case_id).json()
+    actor = resolve_actor(db,settings,client.cookies.get("sentinel_session"))
+    with TestClient(create_app(settings,db)) as privileged:
+        login = privileged.post("/api/session",json={"username":"supervisor","password":"synthetic reviewer passphrase 2026",
+            "otp":totp_code("GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ",time.time())})
+        privileged.headers["X-CSRF-Token"] = login.json()["csrf_token"]
+        assert privileged.put(f"/api/claims/{case_id}/assignment",json={"assignee_id":actor.id}).status_code == 200
+    assert client.get(f"/api/reports/{report['id']}").json()["stale"]
+    assert client.get(f"/api/claims/{case_id}").json()["state"] == "In review"
+    assert finalize(client,case_id).status_code == 201

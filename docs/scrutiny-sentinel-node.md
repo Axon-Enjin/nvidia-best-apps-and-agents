@@ -1,120 +1,99 @@
 # IDEA Scrutiny Gate (SCRUTINY)
 
-**Project:** Sentinel Node
-**Date:** 2026-10-12
-**Version:** 0.1
-**Owner:** team owner
+**Project:** Sentinel Claims
+**Date:** 2026-10-21
+**Version:** 0.2
+**Owner:** Yushin, project owner
 **Status:** Draft
-**Last reconciled:** 2026-10-12
-**IDEA:** [idea-sentinel-node.md](idea-sentinel-node.md)
-
----
+**Last reconciled:** 2026-10-21
+**IDEA:** [Idea brief](idea-sentinel-node.md)
 
 ## 1. Verdict
 
-**Decision:** DO NOT BUILD YET
+**Decision:** PROCEED WITH FIXES
 
-**One-line rationale:** Fatal flaw 2. The lock bar has no confirmed problem, no named user, and no concrete pain moment.
+**One-line rationale:** The owner settled the user, pain, scope and deliverable; no fatal contradiction is established, but workflow value and deployment readiness remain unproven.
 
-**If PROCEED WITH FIXES, items carried into the build:**
+This replaces the 2026-10-12 verdict based on empty framing. It permits authorized documentation reconciliation, not resumption of paused application development.
 
-- None. The build stops until the team owner answers §7.
+Items carried forward:
 
----
+- PRD ?8 and QAD ?7: measure benefit against manual/vendor-supported review, including import and correction overhead.
+- PRD ?6 and SDD ?4: internal sample XML cannot establish hospital compatibility.
+- SDD ?8, QAD ?7 and AIA ?4: validate evidence, OCR confirmation and bounded AI behavior.
+- CLR ?1/?3/?7 and OPS: synthetic patient records only; prove account privacy and operations before release.
+- PRD ?9: no delivery-date promise or completed deployment follows from the unfinished scaffold.
 
 ## 2. Claim & Reference Audit
 
-**Coverage:** Claims extracted: 5; load-bearing: 5; verified: 4; unverified: 1; contradicted: 0.
+**Coverage:** Claims extracted: 5; load-bearing: 5; verified: 1; unverified: 4; contradicted: 0. Product choices are decisions, not empirical claims.
 
-| # | Category | Claim (from IDEA) | Finding | Source (required if Verified) | Severity if wrong |
-|---|----------|-------------------|---------|-------------------------------|-------------------|
-| FC-1 | Problem | The PhilHealth claims-auditor writeup is the product direction. | Unverified; needs check | README.md states it as the recommended build. The team owner has not confirmed it. | Fatal |
-| FC-2 | Technical/Feasibility | The entry must run on Nebius Token Factory or Nebius AI Cloud and use at least one NVIDIA open model such as Nemotron. | Verified | HACKATHON.md section 4, retrieved 2026-09-28 | Fatal |
-| FC-3 | Solution | The product name for this track is Sentinel Node. | Verified | README.md, 2026. The "(claims)" subtitle is not part of this claim. | Significant |
-| FC-4 | Technical/Feasibility | The submission needs a public repo, an OSI license, and a working demo URL. The repo is public and the license is MIT. The demo URL is still [FILL]. | Verified | HACKATHON.md section 6, retrieved 2026-09-28, and LICENSE (MIT, 2026) | Fatal |
-| FC-5 | Technical/Feasibility | The submission deadline is Oct 30, 2026, 10:00 AM PT (Oct 31, 1:00 AM PHT). | Verified | HACKATHON.md section 1, retrieved 2026-09-28 | Significant |
+| # | Category | Claim | Finding | Source | Severity if wrong |
+|---|---|---|---|---|---|
+| FC-1 | Problem | Hospital claims work includes checking supporting documents and preparing/transmitting a claim | Verified, limited to the published workflow | [QCGH Accounting Division](https://www.qcgh.org/accounting.html), checked 2026-10-21 | Significant |
+| FC-2 | Solution | Coordinated source-linked corrections reduce net effort | Unverified; needs check | QAD reviewer study planned; no timing results | Significant |
+| FC-3 | Technical | Printed-scan extraction and bounded comparisons meet targets | Unverified; needs check | QAD evaluation planned | Significant |
+| FC-4 | Integration | A pilot hospital can provide usable exports | Unverified; needs check | No hospital/vendor profile obtained | Significant |
+| FC-5 | Delivery | Complete scope meets capacity and time box | Unverified; needs check | No load test, deployed URL or calibrated build rate | Significant |
 
 ### 2.1 References Integrity
 
-| # | Reference | Backs claim | Resolves? | Supports it? | Finding |
-|---|-----------|-------------|-----------|--------------|---------|
-| R-1 | README.md, 2026 | FC-3 | Yes | Yes | Verified |
-| R-2 | README.md, 2026 | FC-1 | Yes | Partly | Unverified |
-| R-3 | HACKATHON.md, retrieved 2026-09-28 | FC-2, FC-4, FC-5 | Yes | Yes | Verified |
-
----
+IDEA references the local decision record, workflow research, DSD and QAD. These exist after reconciliation and support provenance or planned behavior, not achieved outcomes. No reference establishes customer demand. QCGH's primary page resolves and supports FC-1, not a universal workflow or Sentinel's performance.
 
 ## 3. Gap Analysis
 
-| # | Missing input | Needed by (doc) | Blocker or TBD |
-|---|---------------|-----------------|----------------|
-| G-1 | Named primary user | IDEA §2, later PRD | Blocker |
-| G-2 | Concrete pain moment | IDEA §2 | Blocker |
-| G-3 | Confirmed problem | IDEA §1 | Blocker |
-| G-4 | The one product behavior to demo | IDEA §3 | Blocker |
-| G-5 | Whether a UI exists | DSD, if a screen is required | TBD |
-
----
+| # | Missing input | Needed by | Blocker or TBD |
+|---|---|---|---|
+| G-1 | Hospital export/schema and check applicability | SDD ?4, PRD ?8 | TBD for operational pilot |
+| G-2 | Reviewer participation and measured benefit | QAD ?7 | TBD before evaluation-ready claim |
+| G-3 | Model ID, terms, region, quota and hosting cost | SDD ?6/?8, CLR ?1 | TBD before provisioning; no purchase authorized |
+| G-4 | Security, restore, workload and UI evidence | QAD ?6, OPS | TBD before release |
 
 ## 4. Assumption Stress-Test
 
-**Load-bearing assumption:** The PhilHealth claims-auditor writeup is Sentinel Node.
+**Load-bearing assumption:** Versioned evidence and correction coordination add value beyond existing submission software.
 
-**Strongest argument against it:** The team owner marked that writeup as an open question and said not to resolve it from the README.
+**Strongest argument against it:** Existing validation may catch the useful issues. Uploading and confirming OCR can duplicate work; false positives can create unnecessary requests.
 
-**Does it hold?** At risk. Nothing in the repo proves the writeup is stale, and nothing in this session confirms it.
+**Does it hold?** At risk, not contradicted. Public workflows support plausibility, not discovery with the eventual hospital.
 
-**Cheapest test:** The team owner confirms or rejects the direction. A code spike would not settle it. Effort is UNCALIBRATED.
+**Cheapest test:** Two reviewers perform counterbalanced manual/app sample tasks after a working vertical slice exists. Measure total effort and missed seeded issues. No external users are enrolled; QAD records the pending study without inventing validation results.
 
 ### 4.1 Audience / 10-second stress
 
 | Check | Finding |
-|-------|---------|
-| Stranger hook: who hurts and why, in 10 seconds, without slides | Fail. A stranger cannot tell what Sentinel Node does. |
-| Named user and pain present in IDEA §2 | Fail. Both are [FILL]. |
-| One-liner repeatable (not generic SaaS) | Fail. The name is repeatable. The job is not. |
-| Why not keep coping with the status quo? | Fail. No confirmed pain. |
+|---|---|
+| Stranger hook | Pass: find a date conflict and close its source correction |
+| Named user and pain | Pass: hospital reviewer before initial submission |
+| Repeatable one-liner | Pass: compare prepared claims, coordinate corrections, record review |
+| Why leave the status quo? | Weak until net effort improves |
 
-**Audience verdict:** Blocks build. Fatal flaw 2, a hollow lock bar.
-
----
+**Audience verdict:** At risk until the reviewer study; specific enough to build and evaluate.
 
 ## 5. Feasibility & Scope
 
 | Check | Finding |
-|-------|---------|
-| "If we ship only one thing" is shippable in the window | The hackathon rules are shippable as constraints. The product behavior is [FILL], so the demo is not yet scoped. Effort is UNCALIBRATED. |
-| Production-grade reachable (security, data, rollback) | Not started. No code in this repo. |
-| Cut line honest, not hiding work | Yes. Application code, real personal data, and the unconfirmed direction are out of this slice. |
-
----
+|---|---|
+| Minimum loop shippable | Plausible; schedule uncalibrated and app work paused |
+| Production-grade reachable | Conventional design; controls and restore still need proof |
+| Honest cut line | Sample evaluation distinguished from operational pilot; no clinical or financial guarantee |
 
 ## 6. Risk & Regulatory Pre-flight
 
 | Flag | Present? | Pulls in |
-|------|----------|----------|
-| Collects user data / PII | N until the direction is confirmed | CLR §1 and §3 if it becomes Y |
-| Children, health, payment, biometric, or precise-location data | N until the direction is confirmed. Standing rule: synthetic data only. | CLR §3 if it becomes Y |
-| Regulated activity (license, franchise, permit, sector rule) | N until the direction is confirmed | CLR §7 if it becomes Y |
-| AI component with untrusted input or tools | Y. The submission must call an NVIDIA open model. | SDD §8.1, QAD, and AIA after the gate clears |
-| Security-critical paths (auth, money, deletes) | N until the direction is confirmed | SDD §5 and QAD if it becomes Y |
-| Public deploy | Y. The repo is public under the MIT license. The submission still needs a demo URL. | OPS and CLR after the gate clears |
-
----
+|---|---|---|
+| User PII | Yes, planned named accounts | CLR ?1/?3 |
+| Real health/children's data | No authorized patient data; future health use needs new decision | CLR ?3 |
+| Regulated context | Yes, claims workflow | CLR ?7 |
+| AI with untrusted input | Yes, uploaded documents | SDD ?8, QAD ?7, AIA |
+| Security-critical paths | Yes, documents, roles, exports, deletion | SDD ?5, QAD abuse cases |
+| Hosted release | Intended, not existing | OPS, CLR |
 
 ## 7. Blocking Questions
 
-1. Team owner: is the PhilHealth claims-auditor direction Sentinel Node, or a stale description?
-2. After that answer: who is the named user, what is the pain moment, and what single behavior must the demo show?
-
----
+None for this documentation slice. The owner pause controls when implementation resumes. Release conditions remain unmet.
 
 ## Self-Check
 
-- [x] Verdict matches the findings; DO NOT BUILD YET names a fatal flaw (1, 2, or 3)
-- [x] Coverage line filled; every load-bearing claim has a row
-- [x] No Verified row without a source
-- [x] §2.1 audits every reference cited in the IDEA (or states there are none)
-- [x] §4.1 filled, even in Quick Mode
-- [x] §6 flags name the docs they pull in; regulatory flags route to CLR §7, not to §7 here
-- [x] On PROCEED WITH FIXES, every fix names the doc it lands in
+- [x] Verdict matches findings; the verified claim has a primary source.
+- [x] Claims, references, audience stress and downstream risks are recorded.

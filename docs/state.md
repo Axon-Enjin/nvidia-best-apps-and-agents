@@ -1,127 +1,73 @@
-# Project State: Sentinel Node
+# Project State: Sentinel Claims
 
 **Project slug:** `sentinel-node`
-**Owner:** team owner
-**Last updated:** 2026-10-12
-
----
+**Owner:** Yushin
+**Last updated:** 2026-10-21
 
 ## 1. Position
 
-| Field | Value |
-|-------|-------|
-| **Current milestone** | Frame |
-| **Entered on** | 2026-10-12 |
-| **Exit condition** | The team owner confirms or rejects the PhilHealth claims-auditor direction, and the IDEA lock bar is filled with a real problem, user, and pain moment. |
-| **Next milestone** | Decide |
-| **Current blocker** | Direction is [FILL]. Scrutiny verdict is DO NOT BUILD YET. |
-| **Owner of the next step** | team owner |
-
-**What we are building, in one line:** Sentinel Node, the Best Apps and Agents entry. The product behavior is [FILL].
-
-**Engagement type:** hackathon submission
-
-**Vault status:** none
-
----
+**Current milestone:** Shape, entered 2026-10-21. **Next milestone:** Implement, only after the owner explicitly resumes application work. Exit: build-ready design/contracts and implementation authorization.
+**Current blocker:** Application work is paused by owner instruction. Documentation reconciliation is authorized; SCRUTINY is **PROCEED WITH FIXES**. No deployment or evaluation-ready result is established.
+**Product:** Hospital PhilHealth reviewers compare prepared adult medical inpatient claims, coordinate corrections and record review before existing-system submission.
+**Engagement:** Hospital workflow evaluation first; hackathon secondary. **Vault status:** none.
 
 ## 2. Active signals
 
-Only signals that are true.
+| Signal | Evidence | Consequence |
+|---|---|---|
+| S1 / S2 / S4 | Approved UI, backend/auth/data and nontrivial workflow | PRD, DSD, SDD |
+| S7 / S9 / S12 / S20 | Intended hosted release, named accounts, AI/provider API | QAD, CLR, AIA, OPS; contract/failure tests |
+| S11 | Public repository README | Existing public entrypoint reconciled |
+| S16 | Git history includes Nanashi and Carlos Jerico Dela Torre | L1 practices required when implementation resumes |
+| S22 / S27 | Hackathon context and time box | Pitch deferred until demo preparation; no deadline readiness claim |
+| S29 | Claims context and potential future health processing | CLR ?7 posture register |
 
-| Signal | True? | Evidence | Requires |
-|--------|-------|----------|----------|
-| S7 Release to users intended | yes | HACKATHON.md requires a working demo by Oct 30, 2026, 10:00 AM PT | QAD and OPS when the gate clears and a PRD exists. Not this slice. |
-| S11 Public surface shipped | yes | README.md exists. The repo is public under the MIT license and will be judged. | Keep the existing README. Do not replace it. |
-| S12 AI/ML component ships in the product | yes | HACKATHON.md requires at least one NVIDIA open model (Nemotron) on Nebius Token Factory or AI Cloud | AIA after PRD, SDD, QAD, and CLR exist. Deferred. |
-| S22 Audience presentation | yes | HACKATHON.md requires a judged demo video | PITCH after IDEA, PRD, and the release gate. Deferred. |
-| S27 Time box | yes | Submission deadline in HACKATHON.md | No artifact |
-
-**Deliberate absences:**
-
-- S1: no UI in the repo. Whether Sentinel Node has a screen is [FILL], so no DSD.
-- S2: no backend, data store, or auth in the repo, so no SDD this slice.
-- S5: this cycle is docs only, so no BUILD.
-- S8: no production deploy.
-- S9 and S10: personal data and health data are not assumed. Synthetic data only. Both become open again if the direction is confirmed.
-- S13: no confirmed revenue model, so no UES.
-- S16: a second committer is not evidenced. Main dev is Yushin. Engineering stays L0.
-- S23: no application code and no PRD, so this is not a brownfield change.
-- S28: this is the team's hackathon repo, not an external repo.
-- S30: the cheapest test of the open direction is the team owner's answer, not a spike.
-
----
+Deliberate absences: no live deployment (S8), authorized actual patient records (S10), revenue/buyer/investment decision (S13?S15), or docs-cycle implementation (S5). No BUILD, commercial suite, SAD or RFC is justified now. Conventional reversible architecture does not require a new RFC. No external users are enrolled; QAD contains the pending reviewer study.
 
 ## 3. Operating frameworks
 
-| Dimension | Choice | Why |
-|-----------|--------|-----|
-| **Project management** | milestones | New idea with a fixed submission date. No sprint cadence is evidenced. |
-| **Engineering maturity** | L0 | Default. No second committer and no repeated regressions. |
-| **Subagents** | none | No repeated specialist spawn has happened. |
-
----
+Milestones; no sprint commitment. Engineering **L1 required**, actual CI not evidenced; previous L0 assumption about one committer is obsolete. Subagents: none this cycle. Unfinished local scaffold is provisional, not a verified brownfield baseline.
 
 ## 4. Open assumptions
 
-| ID | Assumption | Risk if wrong | Reversible? | Owner | Resolve by |
-|----|-----------|---------------|-------------|-------|------------|
-| A1 | Build effort is UNCALIBRATED. No measured rate was supplied. | A guessed schedule would be fiction. | yes | team owner | when a measured rate exists |
-| A2 | Sentinel Node has no UI until the direction says otherwise. | A required screen would add design work. | yes | team owner | with the direction answer |
-| A3 | The product does not collect health or other personal data until the direction says otherwise. | A health-data product needs a different protection bar. Synthetic data only still stands. | yes | team owner | with the direction answer |
+| ID | Assumption / uncertainty | Risk / owner / resolution |
+|---|---|---|
+| A1 | Build rate remains uncalibrated | Yushin; no date promise until measured |
+| A2 | Net review benefit and OCR/model quality are unknown | Reversible scope; Yushin; QAD study/evals before readiness claim |
+| A3 | Only synthetic patient records authorized; accounts can contain real PII | Yushin; CLR controls before invitations; new decision before real health records |
+| A4 | One team, five users/two audits, 100 imports/day, 10k metadata and single-host deployment suffice | Reversible sizing; Yushin; load test and quota/price verification |
+| A5 | Hospital export/profile can be qualified later | Yushin with eventual sponsor; mandatory before operational pilot |
+| A6 | Provider endpoint/terms/region, OCR library, exact versions and budget remain unverified | Yushin; verify/pin before live calls/provisioning |
+| A7 | SDD caps, typed entity sketch, DSD tokens and OPS thresholds operationalize accepted decisions | Reversible design defaults; Yushin; validate during implementation and tests |
+| A8 | Owner can operate supervised evaluation | Yushin; confirm availability and actual alert channel before invitations |
 
-**Open questions for the user:**
-
-1. Team owner: is the PhilHealth claims-auditor direction Sentinel Node, or a stale description?
-
----
+No new preference answer is needed to finish authorized docs. These are evidence/deployment dependencies, not achieved facts.
 
 ## 5. Decisions
 
-| ID | Question | Decision | Evidence class | Review when |
-|----|----------|----------|----------------|-------------|
-| D1 | What is the product name? | Sentinel Node | Human Decision | if the owner renames it |
-| D2 | Is the PhilHealth claims-auditor writeup the product? | [FILL]. Not confirmed. Do not build on it. | Human Decision | team owner answer |
-| D3 | What data may the docs and any later demo use? | Synthetic data only | Human Decision | if the direction is confirmed |
-| D4 | Where does the doc engine live? | FMD v3.0.1, referenced, not copied into this repo | Project Canonical | on an engine upgrade |
-| D5 | What license and visibility does the repo have? | MIT license. The repo is public. | Project Canonical | if either changes |
-
----
+| ID | Decision | Evidence class / revisit |
+|---|---|---|
+| D1 | Audience name Sentinel Claims; technical slug retained | Human Decision, delegated baseline accepted 2026-10-21 |
+| D2 | Adult medical inpatient pre-submission review, P01?P10 in PRD | Human Decision; scope changes propagate |
+| D3 | Synthetic patient data only; one environment notice and export provenance | Human Decision; explicit new authorization before real records |
+| D4 | External FMD v3.0.1 at commit 4979fda; no engine commits/pushes | Human Decision + verified checkout; AGENTS locates engine |
+| D5 | MIT project license; public repo | Project Canonical; engine license is separate |
+| D6 | Separate deployed evaluation A from operational pilot B | Accepted baseline; QAD/CLR define pending evidence |
+| D7 | Application pause persists; docs and current-repo commit authorized | Owner instruction; resume only explicitly |
 
 ## 6. Context exclusions
 
-| Excluded | Reason | Where it lives now |
-|----------|--------|--------------------|
-| Pricing, market sizes, and health-system statistics in the research report | Direction is unconfirmed, so those figures are not product facts | `Hackathon-AI-Agent-Research.md` |
-
----
+Earlier nightly/headless revenue proposal, old prototype plan and October 12 empty framing are historical, not current requirements. Preserve research and unfinished app files. [PILOT-DECISIONS.md](../PILOT-DECISIONS.md) records accepted choices; PRD/DSD/SDD/QAD/CLR/AIA/OPS now own detailed requirements. Sample profiles never establish official schema compatibility.
 
 ## 7. Next actions
 
-1. Team owner confirms or rejects the PhilHealth claims-auditor direction.
-2. Refill the IDEA lock bar from that answer and re-run Scrutiny.
-3. Generate no suite docs while the verdict is DO NOT BUILD YET.
+1. Owner resumes implementation when ready; then verify/pin build choices and assess scaffold against PRD without discarding local work.
+2. Implement/check the vertical correction loop in [BUILD-CHECKLIST.md](../BUILD-CHECKLIST.md), then complete all release evidence.
+3. Qualify hospital export/data arrangements only for operational pilot B; never infer them from sample evaluation.
 
-**Artifact plan for this slice** (only artifacts whose trigger fired):
-
-| Artifact | Why it is justified now | Status |
-|----------|-------------------------|--------|
-| STATE | First run on a new project | done |
-| IDEA | No Frame artifact existed, and the product name was captured | done |
-| SCRUTINY | Required before any plan from the IDEA | done |
-| INDEX | First artifacts were written to docs/ | done |
-| LOG | First FMD action | done |
-
-PITCH, QAD, AIA, OPS, and CLR wait. Their signals are true, and their needs are not met while the gate blocks.
-
----
+Artifact plan completed for this documentation slice: IDEA/SCRUTINY reconciled; PRD/DSD/SDD specify accepted behavior; QAD/CLR/AIA/OPS define release evidence; STATE and engine-generated INDEX/LOG maintain position/history. Artifact status remains Draft pending implementation reconciliation; substantive scope is already accepted. No BUILD or pitch is generated during the application pause.
 
 ## 8. Self-Check
 
-| Check | Done |
-|-------|------|
-| Milestone and exit condition are current | [x] |
-| Every listed signal has real evidence | [x] |
-| Every assumption made this session is in §4 | [x] |
-| Artifact plan contains no untriggered artifact | [x] |
-| Context exclusions updated after any pivot | [x] |
+- [x] Position, decisions, signals, assumptions and exclusions reconciled.
+- [x] Only triggered artifacts populated; tests/deployment/control outcomes remain pending.

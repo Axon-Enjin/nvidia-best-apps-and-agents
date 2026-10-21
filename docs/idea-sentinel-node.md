@@ -1,84 +1,72 @@
 # Idea Brief (IDEA)
 
-**Project:** Sentinel Node
-**Date:** 2026-10-12
-**Version:** 0.1
-**Owner:** team owner
+**Project:** Sentinel Claims
+**Date:** 2026-10-21
+**Version:** 0.2
+**Owner:** Yushin, project owner
 **Status:** Draft
-**Last reconciled:** 2026-10-12
-**Event / context:** Nebius x NVIDIA Global AI Hackathon, Best Apps and Agents. Submission deadline Oct 30, 2026, 10:00 AM PT (Oct 31, 1:00 AM PHT), from HACKATHON.md.
-
----
+**Last reconciled:** 2026-10-21
+**Event / context:** Hospital workflow evaluation; hackathon submission is secondary.
 
 ## 1. The Spark
 
-**One-line pitch:** Sentinel Node is this team's Best Apps and Agents entry.
+**One-line pitch:** Sentinel Claims helps hospital PhilHealth reviewers compare prepared claims with supporting records, coordinate corrections, and document review before submission through their existing system.
 
-**Problem:** [FILL] The README and the GitHub description still describe a PhilHealth claims auditor. The team owner has not confirmed whether that is Sentinel Node or a stale description.
+**Problem:** A reviewer must match several documents to a discharged encounter, compare their contents, chase source corrections, and check revised copies without losing prior decisions.
 
-**Insight (why us, why now):** [FILL] Why this team and why now depend on the confirmed direction.
+**Insight (why us, why now):** A versioned review workspace can keep the discrepancy, its source evidence, correction responsibility, and subsequent resolution together. Its value must be tested against existing vendor validation.
 
-**Riskiest assumption:** The PhilHealth claims-auditor writeup is the product. If it is stale, the problem, the user, and the demo are unknown.
-
----
+**Riskiest assumption:** Import and evidence-confirmation effort costs less than the checking and coordination work saved. This has not been measured with a hospital team.
 
 ## 2. Who It's For
 
-**Primary user (named, specific):** [FILL]
+**Primary user (named, specific):** The hospital PhilHealth claims reviewer responsible for prepared adult general medical inpatient ACR claims after discharge and before initial submission. No actual hospital or customer is claimed.
 
-**Their moment of pain:** [FILL]
+**Their moment of pain:** The claim and discharge summary show different discharge dates. The reviewer locates both passages, finds who can fix the originating record, and checks whether the replacement resolves the discrepancy.
 
-**Success in their words:** [FILL]
-
----
+**Success in their words:** Intended outcome, not a customer quotation: I can explain the discrepancy, hand off the correction, and finish the revised review with previous evidence intact.
 
 ## 3. Scope & Cut Line
 
-| # | Capability | Core to the one thing? |
-|---|------------|------------------------|
-| 1 | A working submission on Nebius Token Factory or Nebius AI Cloud that uses at least one NVIDIA open model (Nemotron). The repo is public under the MIT license. A working demo URL is still [FILL]. | yes, as a hackathon rule |
-| 2 | The product behavior inside that demo | [FILL] |
+| Capability | Core to the one thing? |
+|---|---|
+| Named roles, assignment, versioned bundle import and printed-scan OCR | Yes; establish who reviewed which sources |
+| Coverage, deterministic checks and evidence-linked AI questions | Yes; expose gaps as well as findings |
+| Correction responsibility, manual handoff, reimport and history | Yes; close the correction loop |
+| Human final review record and deployed persistent application | Yes; the requested deliverable |
 
-**Explicitly out of scope (v0):** Application code in this docs pass. Real personal or health records. Treating the claims-auditor writeup as decided.
+**If we only ship one thing:** Import a sample bundle, locate a date discrepancy at two source anchors, request correction, reimport the corrected bundle, and export the completed internal review with the original finding preserved.
 
-**If we only ship one thing:** A working demo that meets the hackathon hard requirements. The behavior inside that demo is [FILL].
-
----
+**Explicitly out of scope (v0):** Submission, HIS writes, autonomous coding or clinical decisions, payment guarantees, signature authentication, live policy search, pediatric/maternity/surgical/outpatient/special-package coverage, and real patient records. Technical slug remains `sentinel-node`.
 
 ## 4. Success & Judging Criteria
 
-**How we know it worked:** [FILL] for the product. The submission still has to be working software a judge can see.
+**How we know it worked:** A deployed, persistent sample-data workflow meets [QAD](qad-sentinel-node.md). Behavior must be real even when records are fixed fixtures.
 
-| Criterion | How we hit it |
-|-----------|---------------|
-| Technological Implementation | [FILL] until the direction names the workflow. The stack constraint is Nebius plus at least one NVIDIA open model. |
-| Design | [FILL] |
-| Potential Impact | [FILL] |
-| Quality of the Idea | [FILL] |
+| Criterion | Required evidence |
+|---|---|
+| Correct completion | Deterministic fixture expectations and zero false finalization with unresolved required checks |
+| Useful AI | Three pinned runs, each at least 90% precision and 80% recall on annotated synthetic discrepancies |
+| Reviewer benefit | Two practicing reviewers, ten cases each; no increase in missed seeded issues and target 20% lower median active review time; import/handoff measured separately |
+| Operational pilot | Separate gate: sponsor, qualified export profile, approved processing arrangements and reviewer validation |
 
----
+All results remain unmeasured. Synthetic results cannot establish clinical accuracy or payer acceptance. Decision provenance is [PILOT-DECISIONS.md](../PILOT-DECISIONS.md); workflow evidence is [PILOT-WORKFLOW-RESEARCH.md](../PILOT-WORKFLOW-RESEARCH.md).
 
 ## 5. Concept Visuals
 
-No concept frames exist. None are linked.
-
----
+No approved concept image exists. The local walkthrough is historical explanatory material. [DSD](dsd-sentinel-node.md) specifies the queue and evidence workbench, not implemented UI.
 
 ## 6. Open Questions
 
 | Question | Owner | Resolve by |
-|----------|-------|------------|
-| Is the PhilHealth claims-auditor direction Sentinel Node, or a stale description? | team owner | before Specify |
-| Who is the named user, and what is the pain moment? | team owner | with the direction answer |
-| What single behavior must the demo show? | team owner | with the direction answer |
-| Does Sentinel Node have a UI? | team owner | with the direction answer |
+|---|---|---|
+| Does the workbench save net effort? | Yushin | Supervised evaluation |
+| Which hospital/vendor export can be qualified? | Yushin with eventual hospital reviewer | Operational pilot |
+| Which provider endpoint, region, quota and preset are available? | Yushin | Before provisioning/live evaluation |
 
-**Spike plan (optional):** None. The cheapest test is the team owner's answer, not code. Effort is UNCALIBRATED.
-
----
+**Spike plan:** None in this documentation cycle. Evaluate the complete correction loop after implementation resumes. Scope approval has not resumed application work.
 
 ## Self-Check
 
-- [ ] Lock bar fields are real, specific, and not placeholders
-- [x] Riskiest assumption named; a spike is planned if code is the cheapest test
-- [x] Cut line explicit; "If we only ship one thing" named
+- [x] Specific user, pain, insight and minimum outcome replace old placeholders.
+- [x] Cut line, unmeasured assumptions and decision provenance are explicit.

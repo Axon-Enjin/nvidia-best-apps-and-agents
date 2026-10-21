@@ -1,8 +1,8 @@
 # Sentinel Claims
 
-Updated: 2026-10-21. The owner approved proceeding with the recommended product changes and FMD reconciliation. This summary replaces the earlier implementer proposal. Application development is still paused; FMD reconciliation is pending access to the exact external v3.0.1 engine.
+Updated: 2026-10-21. The owner approved proceeding with the recommended product changes and FMD reconciliation. This summary replaces the earlier implementer proposal. Application development is still paused. The accepted baseline has been reconciled with the external v3.0.1 engine.
 
-The detailed accepted baseline is [PILOT-DECISIONS.md](PILOT-DECISIONS.md), including its SAMPLE-ADULT-MEDICAL-1 checklist and release criteria. [PILOT-WORKFLOW-RESEARCH.md](PILOT-WORKFLOW-RESEARCH.md) contains the hospital workflow evidence. After FMD reconciliation, its canonical artifacts will own the detailed requirements; this file remains a concise entrypoint.
+The detailed accepted baseline is [PILOT-DECISIONS.md](PILOT-DECISIONS.md), including its SAMPLE-ADULT-MEDICAL-1 checklist and release criteria. [PILOT-WORKFLOW-RESEARCH.md](PILOT-WORKFLOW-RESEARCH.md) contains the hospital workflow evidence. The canonical [product requirements](docs/prd-sentinel-node.md) now own detailed behavior and P01?P10; [design](docs/dsd-sentinel-node.md), [architecture](docs/sdd-sentinel-node.md) and [evaluation](docs/qad-sentinel-node.md) describe delivery and acceptance. This file remains a concise entrypoint.
 
 ## Purpose and priority
 

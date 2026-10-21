@@ -1,24 +1,28 @@
-# Best Apps & Agents
+# Sentinel Claims
 
-Track repo for the Nebius x NVIDIA Global AI Hackathon. This folder is the whole project: rules, sponsor context, the research prompt, and the research report. It does not depend on any other local folder.
+A planned PhilHealth claim review workspace for hospital reviewers: compare prepared claims with supporting records, coordinate corrections, and document review before submission through the hospital's existing system.
 
-**Starting a new session?** Read [HANDOFF.md](HANDOFF.md) for the current instructions and FMD context. The accepted Sentinel Claims baseline is in [PRODUCT.md](PRODUCT.md), with the detailed [product decisions](PILOT-DECISIONS.md), [experience direction](DESIGN.md), and [build checklist](BUILD-CHECKLIST.md). Application development remains paused. The original research below is historical; it does not override the accepted baseline.
+**Current status:** Product scope and design are documented. Application development is paused; no deployed or hospital-ready application is claimed. The first release targets a functioning sample-record evaluation. Operational use with actual hospital records requires additional qualification and approval.
 
-- **Hackathon:** Nebius x NVIDIA Global AI Hackathon
-- **Deadline:** 30 Oct 2026, 10:00 AM PT
-- **Track:** Best Apps & Agents
+Start with the [product summary](PRODUCT.md), [experience guide](DESIGN.md), and [build checklist](BUILD-CHECKLIST.md). Contributors should read the [session handoff](HANDOFF.md) before making changes.
 
-## Recommended build
+## Planned workflow
 
-**Sentinel Node (claims):** a nightly headless auditor that checks PhilHealth CF4 claims before the 60-day filing window closes. The report's weighted score is 8.80, ahead of ClaimCheck (5.45) and PARD Advocate (6.15).
+Import a versioned bundle ? inspect coverage and source-linked findings ? request a source correction ? import the revised bundle ? recheck ? export the named reviewer's record.
 
-Philippine SOM in the report is about $500k ARR (50 hospitals at $10,000). This is not the Physical AI trap that another report also nicknames Sentinel Node. Pivot back to ClaimCheck if billing managers refuse background automation.
+Initial scope is adult general medical inpatient claims before initial submission. Submission automation, clinical/coding decisions and reimbursement guarantees are excluded.
 
-## Docs
+## Project context
 
-| File | What it is |
+This repository also holds the Best Apps & Agents track research for the Nebius x NVIDIA Global AI Hackathon. Hospital workflow readiness takes priority over prize-specific features.
+
+| Document | Purpose |
 |---|---|
-| [HACKATHON.md](HACKATHON.md) | Full hackathon rules and dates, copied so this repo stands alone |
-| [ORG.md](ORG.md) | NVIDIA, Nebius, and Tavily goals, copied so this repo stands alone |
-| [PROMPT.md](PROMPT.md) | Deep-research prompt for this track |
-| [Hackathon-AI-Agent-Research.md](Hackathon-AI-Agent-Research.md) | Research report and the three pitches |
+| [Product decisions](PILOT-DECISIONS.md) | Accepted decisions and their rationale |
+| [Workflow research](PILOT-WORKFLOW-RESEARCH.md) | Hospital process evidence and its limits |
+| [Event reference](HACKATHON.md) | Recorded rules and dates; recheck official rules before submission |
+| [Sponsor context](ORG.md) | Original sponsor background |
+| [Research prompt](PROMPT.md) | Original research request |
+| [Opportunity research](Hackathon-AI-Agent-Research.md) | Historical proposals, not the current product specification |
+
+The earlier nightly headless auditor, market estimates and revenue positioning are historical hypotheses. They do not establish capability, customer demand or measured outcomes.

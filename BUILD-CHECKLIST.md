@@ -2,7 +2,7 @@
 
 Date: 2026-10-21. Purpose: identify work that can be implemented from the accepted product baseline without the external FMD engine. This checklist was requested by the owner; no application implementation or deployment was performed while creating it. All boxes remain unchecked until their completion evidence exists.
 
-FMD is documentation tooling, not an application runtime dependency. The accepted [product](PRODUCT.md), [experience](DESIGN.md), and [detailed decisions](PILOT-DECISIONS.md), including checklist P01–P10, provide sufficient direction for the software work below. Formal FMD generation/validation remains separate. This root-level checklist neither changes `docs/` nor claims its gate has passed. The existing application-development pause remains until the owner instructs execution.
+FMD is documentation tooling, not an application runtime dependency. The accepted [product](PRODUCT.md), [experience](DESIGN.md), and [detailed decisions](PILOT-DECISIONS.md), including checklist P01–P10, provide sufficient direction for the software work below. FMD reconciliation is now complete, with PROCEED WITH FIXES in the [scrutiny assessment](docs/scrutiny-sentinel-node.md). The [canonical requirements](docs/prd-sentinel-node.md), [architecture](docs/sdd-sentinel-node.md) and [test plan](docs/qad-sentinel-node.md) now govern the work below. Engine access is no longer a documentation blocker. The existing application-development pause remains until the owner instructs execution.
 
 ## What exists now
 
@@ -49,7 +49,7 @@ Ordinary development tools and package installation are still needed. These task
 
 - [ ] **B14 — Harden uploads, processing, and private storage.** Finish upload content validation and malware/quarantine handling, private document retrieval, durable queue leases/retries, safe restart recovery, and bounded work. Implement the local storage path and test the object-storage contract against a local compatible service/test harness. **Done when:** unauthorized access, repeated requests, oversized/malicious files, and worker interruption do not leak data or duplicate review actions. **Depends on:** B03, B05, B09, B11–B12. Hosted storage verification remains separate.
 
-- [ ] **B15 — Package the app for deployment and recovery.** Create web/worker images, environment configuration, health checks, migrations, secret handling, backup/restore procedures, and an operator runbook outside `docs/` while the engine is unavailable. **Done when:** a clean local container deployment can be upgraded, restarted, backed up, and restored without losing verified source/history relationships. **Depends on:** B01, B03, B09, B14. Cloud provisioning is not part of this task.
+- [ ] **B15 — Package the app for deployment and recovery.** Create web/worker images, environment configuration, health checks, migrations, secret handling, backup/restore procedures, and implement the canonical [operator runbook](docs/ops-sentinel-node.md). **Done when:** a clean local container deployment can be upgraded, restarted, backed up, and restored without losing verified source/history relationships. **Depends on:** B01, B03, B09, B14. Cloud provisioning is not part of this task.
 
 - [ ] **B16 — Run the local acceptance suite.** Exercise the 40 locked synthetic bundles, role checks, evidence/version correctness, stale edits, worker failures, restored data, and the end-to-end correction loop. Measure local UI/processing performance against the accepted targets and report the test environment. **Done when:** deterministic checks match expectations, required gaps never falsely finalize, and all results distinguish actual execution from test doubles. **Depends on:** B04–B15. Live AI quality, hosted performance, and hospital usability cannot be claimed from local tests.
 
@@ -87,5 +87,5 @@ FMD is specifically needed for the requested canonical artifact generation/recon
 - Keep the accepted adult medical inpatient scope and checklist; do not silently expand to other packages.
 - Keep sample records identified at the environment/export level. Test stubs must not masquerade as live results.
 - Do not add direct claim submission, autonomous coding, financial recovery claims, or hospital write-back.
-- Do not modify the existing FMD artifacts or claim their validation while the exact engine is unavailable.
-- When implementation is authorized, use this checklist as the work order and verify each deliverable before checking its box. FMD reconciliation can incorporate the resulting decisions/evidence later; it must not retroactively label unverified behavior as passing.
+- Maintain canonical artifacts through the pinned external FMD engine; never modify or commit to the engine repository.
+- When implementation is authorized, use this checklist as the work order and verify each deliverable before checking its box. Update the canonical artifacts with actual implementation evidence; never retroactively label unverified behavior as passing.

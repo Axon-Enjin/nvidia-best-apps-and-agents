@@ -43,9 +43,17 @@ def evaluate_profile(bundle, confirmed_extractions=None, rule_version=RULE_VERSI
                 for d in (docs if selected is None else selected) for a in d.get("extraction", {}).get("anchors", [])
                 if names is None or a["field"] in names]
 
-    def add(id, label, problems, status="incomplete", selected=None, names=None):
+    def add(id, label, problems, status="incomplete", selected=None, names=None, differences=()):
         checks.append({"id": id, "label": label, "status": status if problems else "passed",
-                       "blocking_reasons": problems, "anchors": anchors(selected, names)})
+                       "blocking_reasons": problems, "anchors": anchors(selected, names),
+                       "differences": list(differences)})
+
+    def source(doc, key):
+        # Only values that count for the checks are listed; the page comes from a matching anchor or stays unknown.
+        value = fields[doc["id"]][key]
+        page = next((a["page"] for a in doc.get("extraction", {}).get("anchors", [])
+                     if a["field"] == key and equivalent(a["value"]) == equivalent(value)), None)
+        return {"document_id": doc["id"], "type": doc["type"], "bundle_id": bundle["id"], "value": value, "page": page}
 
     primary = fields[by_type["cf2"][0]["id"]] if len(by_type["cf2"]) == 1 else {}
     scope_problems = []
@@ -70,12 +78,20 @@ def evaluate_profile(bundle, confirmed_extractions=None, rule_version=RULE_VERSI
     add("P03", "Required source values", missing)
     conflicts = [f"{key} differs from case membership." for d in docs for key in IDENTITY
                  if fields[d["id"]].get(key) and equivalent(fields[d["id"]][key]) != equivalent(bundle["manifest"].get(key, ""))]
-    add("P04", "Patient and encounter agreement", conflicts, "flagged", names=IDENTITY)
-    chronology = []
+    identity_differences = []
+    for key in IDENTITY:
+        expected = bundle["manifest"].get(key, "")
+        differing = [d for d in docs if fields[d["id"]].get(key) and equivalent(fields[d["id"]][key]) != equivalent(expected)]
+        if differing:
+            identity_differences.append({"field": key, "expected": expected, "sources": [source(d, key) for d in differing]})
+    add("P04", "Patient and encounter agreement", conflicts, "flagged", names=IDENTITY, differences=identity_differences)
+    chronology, date_differences = [], []
     for key in ("dob", "admission_date", "discharge_date", "disposition"):
-        values = [fields[d["id"]][key] for d in docs if fields[d["id"]].get(key)]
+        holders = [d for d in docs if fields[d["id"]].get(key)]
+        values = [fields[d["id"]][key] for d in holders]
         if len({equivalent(value) for value in values}) > 1:
             chronology.append(f"Conflicting {key} values across sources.")
+            date_differences.append({"field": key, "expected": None, "sources": [source(d, key) for d in holders]})
         if key != "disposition":
             for value in values:
                 try:
@@ -91,7 +107,8 @@ def evaluate_profile(bundle, confirmed_extractions=None, rule_version=RULE_VERSI
                 chronology.append("Birth follows admission.")
         except (ValueError, KeyError, TypeError):
             pass  # Missing values remain blocked by P03.
-    add("P05", "Dates and disposition", chronology, "flagged", names=("dob", "admission_date", "discharge_date", "disposition"))
+    add("P05", "Dates and disposition", chronology, "flagged", names=("dob", "admission_date", "discharge_date", "disposition"),
+        differences=date_differences)
     finance = []
     finance_status = "unsupported"
     try:

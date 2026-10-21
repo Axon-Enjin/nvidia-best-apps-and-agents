@@ -1,0 +1,39 @@
+name: Offline workspace verification
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    container: python:3.14.5-trixie
+    services:
+      db:
+        image: postgres:17.11-trixie
+        env:
+          POSTGRES_DB: sentinel_test
+          POSTGRES_USER: sentinel
+          POSTGRES_PASSWORD: synthetic-ci-only
+        options: >-
+          --health-cmd "pg_isready -U sentinel -d sentinel_test"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      TEST_DATABASE_URL: postgresql+psycopg://sentinel:synthetic-ci-only@db:5432/sentinel_test
+      NETWORK_MODE: offline
+      OCR_BINARY: /usr/bin/tesseract
+      OCR_EXPECTED_VERSION: 5.5.0
+      TESSDATA_PREFIX: /opt/tessdata
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: 0.11.19
+      - run: apt-get update && apt-get install -y tesseract-ocr=5.5.0-1+b1 postgresql-client-17
+      - run: |
+          mkdir -p /opt/tessdata
+          python -c "import urllib.request,hashlib,pathlib; b=urllib.request.urlopen('https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/4.1.0/eng.traineddata').read(); assert hashlib.sha256(b).hexdigest()=='7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2'; pathlib.Path('/opt/tessdata/eng.traineddata').write_bytes(b)"
+      - run: uv sync --locked
+      - run: uv run --locked playwright install --with-deps chromium
+      - run: uv run --offline --locked ruff check sentinel tests migrations scripts
+      - run: uv run --offline --locked pytest -q --tb=short

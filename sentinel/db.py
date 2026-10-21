@@ -79,6 +79,7 @@ class Claim(Base):
     revision: Mapped[int] = mapped_column(Integer, default=0)
     current_bundle_id: Mapped[str | None] = mapped_column(String(32), nullable=True)
     state: Mapped[str] = mapped_column(String(60), default="Received")
+    deleted_at: Mapped[float | None] = mapped_column(Float, nullable=True)
     created_at: Mapped[float] = mapped_column(Float, default=time.time, index=True)
 
 

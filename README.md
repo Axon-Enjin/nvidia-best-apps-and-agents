@@ -47,3 +47,5 @@ This repository also holds the Best Apps & Agents track research for the Nebius 
 | [Opportunity research](Hackathon-AI-Agent-Research.md) | Historical proposals, not the current product specification |
 
 The earlier nightly headless auditor, market estimates and revenue positioning are historical hypotheses. They do not establish capability, customer demand or measured outcomes.
+
+Local offline setup, account provisioning, encrypted checkpoints and isolated restore: [LOCAL-SETUP.md](LOCAL-SETUP.md). Container/PostgreSQL acceptance remains pending on a host with a working engine; SQLite verification is developmental.

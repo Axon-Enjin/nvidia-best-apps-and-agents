@@ -20,6 +20,11 @@ def claim_job(db: Database) -> tuple[str, str] | None:
     now = time.time()
     eligible = or_(Job.status == "queued", and_(Job.status == "running", Job.lease_until < now))
     with db.session() as session:
+        session.execute(update(Job).where(eligible, Job.attempts >= 3).values(
+            status="failed", error="Local processing exceeded three attempts. Inspect sources before requesting a recheck.",
+            lease_token=None, lease_until=None, finished_at=now))
+        session.commit()
+        eligible = and_(eligible, Job.attempts < 3)
         candidate = session.scalar(select(Job.id).where(eligible).order_by(Job.created_at).limit(1))
         if candidate is None:
             return None

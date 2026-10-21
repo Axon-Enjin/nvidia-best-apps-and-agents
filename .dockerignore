@@ -1,0 +1,8 @@
+*
+!sentinel/**
+!migrations/**
+!pyproject.toml
+!uv.lock
+!alembic.ini
+!OCR-NOTICES.md
+!LICENSE

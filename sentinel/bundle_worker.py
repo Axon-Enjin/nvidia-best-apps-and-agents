@@ -20,6 +20,12 @@ def process_bundle_job(db, settings, job_id, token):
     extracted = []
     storage = PrivateStorage(settings)
     for document in documents:
+        with db.session() as session:
+            heartbeat = session.execute(update(Job).where(Job.id == job_id,Job.status == "running",Job.lease_token == token)
+                                        .values(lease_until=time.time()+300))
+            session.commit()
+            if not heartbeat.rowcount:
+                return
         try:
             content = storage.read(document.object_key, document.source_hash)
             result = extract_document(content)

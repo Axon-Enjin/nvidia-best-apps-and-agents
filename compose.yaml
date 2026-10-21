@@ -1,0 +1,64 @@
+name: sentinel-claims
+x-app: &app
+  build: .
+  image: sentinel-claims:offline
+  environment: &environment
+    DATABASE_URL: postgresql+psycopg://sentinel:${POSTGRES_PASSWORD:?Run scripts/local.ps1 init first}@db:5432/sentinel
+    NETWORK_MODE: offline
+    AUTH_MODE: named
+    AUTO_MIGRATE: "false"
+    EMBEDDED_WORKER: "false"
+    SECRET_KEY_FILE: /data/account.key
+    SOURCE_STORAGE_ROOT: /data/sources
+    ALLOWED_HOSTS: localhost,127.0.0.1
+  volumes:
+    - workspace:/data
+    - ./data/backups:/backups
+  networks: [local]
+  init: true
+  read_only: true
+  tmpfs: [/tmp]
+  mem_limit: 1g
+services:
+  db:
+    image: postgres:17.11-trixie@sha256:a63c1ea3f6a3a5a1621f97d2aba3b30faecfab4224c1b0000cc85ced57bb1939
+    environment:
+      POSTGRES_USER: sentinel
+      POSTGRES_DB: sentinel
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/local.ps1 init first}
+    volumes: [database:/var/lib/postgresql/data]
+    networks: [local]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U sentinel -d sentinel"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  migrate:
+    <<: *app
+    command: [python, -m, sentinel, migrate]
+    depends_on:
+      db: {condition: service_healthy}
+  web:
+    <<: *app
+    environment:
+      <<: *environment
+      HOST: 0.0.0.0
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  worker:
+    <<: *app
+    command: [python, -m, sentinel, worker]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+volumes:
+  database:
+  workspace:
+networks:
+  local:
+    internal: true

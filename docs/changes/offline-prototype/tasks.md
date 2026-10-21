@@ -117,10 +117,12 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 **Files:** create `Dockerfile`, `compose.yaml`, startup/backup/restore scripts and `LOCAL-SETUP.md`; add `tests/test_recovery.py`; extend config/worker only as needed.
 **Interfaces:** Consume published migrations, private storage root and durable jobs. Produce documented setup/start/stop/backup/restore commands that select no remote services by default. Packaging includes OCR assets and all browser resources.
 
-- [ ] 9.1 Write failure tests for worker interruption, duplicate publication, stale lease, missing source, expired account and restored deletion ledger. Preserve conditional lease fencing.
-- [ ] 9.2 Package web/worker plus local PostgreSQL and persistent private source volumes. Bind to loopback by default; LAN use requires deliberate configuration. Keep SQLite instructions explicitly developmental. Add `.github/workflows/ci.yml` for lint/tests and PostgreSQL integration; record its actual run before claiming L1 exists.
-- [ ] 9.3 Provide coordinated database/source backups and isolated restore verification. Validate hashes, history, authorization and pending-job reconciliation, not only command exit codes.
+- [x] 9.1 Write failure tests for worker interruption, duplicate publication, stale lease, missing source, expired account and restored deletion ledger. Preserve conditional lease fencing.
+- [x] 9.2 Package web/worker plus local PostgreSQL and persistent private source volumes. Bind to loopback by default; LAN use requires deliberate configuration. Keep SQLite instructions explicitly developmental. Add `.github/workflows/ci.yml` for lint/tests and PostgreSQL integration; record its actual run before claiming L1 exists.
+- [x] 9.3 Provide coordinated database/source backups and isolated restore verification. Validate hashes, history, authorization and pending-job reconciliation, not only command exit codes.
 - [ ] 9.4 Run `uv run --locked pytest tests/test_recovery.py -q` and `docker compose config`; then start the available container runtime and execute the full correction loop/restore drill. If Docker/PostgreSQL is unavailable, leave that verification unchecked. Commit `feat: package a recoverable offline workspace`.
+
+**Task 9 gate:** SQLite recovery is verified and Compose configuration validates. Docker image build, PostgreSQL execution, container OCR and the PostgreSQL restore drill remain unrun; 9.4 stays unchecked. CI is prepared, not executed.
 
 ## Task 10: Disconnected acceptance and first prototype sign-off
 

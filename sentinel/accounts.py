@@ -218,10 +218,10 @@ def require_clinical(actor):
 
 def require_case_access(actor, case):
     require_clinical(actor)
-    if not case or (actor.id is not None and "supervisor" not in actor.roles and case.assignee_id != actor.id):
+    if not case or case.deleted_at or (actor.id is not None and "supervisor" not in actor.roles and case.assignee_id != actor.id):
         raise HTTPException(404, "Claim not found.")
 
 
 def visible_claims(actor, claim_type):
     require_clinical(actor)
-    return True if "supervisor" in actor.roles else claim_type.assignee_id == actor.id
+    return claim_type.deleted_at.is_(None) & (True if "supervisor" in actor.roles else claim_type.assignee_id == actor.id)

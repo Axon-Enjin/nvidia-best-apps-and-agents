@@ -66,7 +66,7 @@ The old nightly/revenue proposal and old prototype plan are historical. Keep loc
 ## 7. Next actions
 
 1. Task 4 verified: content-derived P01-P10 coverage and four synthetic development bundles; 91 tests pass.
-2. Tasks 5-7: complete workbench, correction events/revisions and guarded reports.
+2. Tasks 5-6 verified: local workbench and revision-safe correction/manual events; 99 tests pass. Task 7 guarded reports is next.
 3. Tasks 8-10: local OCR, PostgreSQL packaging/recovery, then disconnected acceptance.
 
 Task 1 is complete at `08b0c09`: dependency resolution restored; six offline tests RED to GREEN; 37 tests pass with one deprecation warning. This verifies the foundation, not the full prototype.

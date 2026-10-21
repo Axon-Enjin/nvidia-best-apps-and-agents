@@ -88,10 +88,10 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 **Files:** create `sentinel/review.py`, event/task migration, `tests/test_corrections.py`; extend API/UI and worker recheck integration.
 **Interfaces:** Produce `record_review(actor, case_id, expected_revision, action) -> ReviewState`. Actions include reasoned disposition, manual P07/P08 completion, supervisor acknowledgement and correction lifecycle events. Every action appends history and advances revision.
 
-- [ ] 6.1 Write failing scenarios for true discrepancy, evidence-backed dismissal, responsible department/person, handoff/acknowledgement, corrected-source recheck, retained original history and stale concurrent edits.
-- [ ] 6.2 Implement append-only events and optimistic concurrency. Source/rule changes invalidate affected decisions; conservatively reopen all when dependency is unknown.
-- [ ] 6.3 Implement offline P07 manual comparison with named reviewer evidence plus separate supervisor acknowledgement. Do not change `not_run_offline` to an automated success.
-- [ ] 6.4 Run `uv run --locked pytest tests/test_corrections.py -q` and the full suite. Expected old evidence/history survives restart and stale saves return conflict. Commit `feat: track corrections and revision-safe manual review`.
+- [x] 6.1 Write failing scenarios for true discrepancy, evidence-backed dismissal, responsible department/person, handoff/acknowledgement, corrected-source recheck, retained original history and stale concurrent edits.
+- [x] 6.2 Implement append-only events and optimistic concurrency. Source/rule changes invalidate affected decisions; conservatively reopen all when dependency is unknown.
+- [x] 6.3 Implement offline P07 manual comparison with named reviewer evidence plus separate supervisor acknowledgement. Do not change `not_run_offline` to an automated success.
+- [x] 6.4 Run `uv run --locked pytest tests/test_corrections.py -q` and the full suite. Expected old evidence/history survives restart and stale saves return conflict. Commit `feat: track corrections and revision-safe manual review`.
 
 ## Task 7: Guarded closeout, reports and event metrics
 

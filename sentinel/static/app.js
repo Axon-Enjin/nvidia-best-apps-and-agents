@@ -24,7 +24,11 @@ async function openCase(id) {
   const version=(detail.bundles||[]).find(b=>b.bundle_id===detail.current_bundle_id);
   const bundle=version?await api(`/api/claims/${id}/bundles/${version.version}`):null;
   if(serial!==state.serial)return;
-  state.selected=id;state.detail=detail;state.bundle=bundle;location.hash=`case=${id}`;renderCase();await queue();
+  const review=bundle?await api(`/api/claims/${id}/review-state`):null;
+  if(serial!==state.serial)return;
+  state.selected=id;state.detail=detail;state.bundle=bundle;state.review=review;
+  if(review&&detail.latest?.result)detail.latest.result={...detail.latest.result,checks:review.checks};
+  location.hash=`case=${id}`;renderCase();await queue();
   if(detail.latest&&["queued","running"].includes(detail.latest.status))setTimeout(()=>{if(state.selected===id)openCase(id).catch(notice);},750);
 }
 function renderCase() {

@@ -20,6 +20,7 @@
 | 7 | 2026-10-21 15:44 | Implemented Task 3 immutable encrypted bundles and isolated parsing; Task 4 profile remains next | STATE_Template.md | docs/changes/offline-prototype/tasks.md, docs/changes/offline-prototype/verify.md, docs/state.md | - | not run |
 | 8 | 2026-10-21 16:00 | Verify Task 4 deterministic synthetic profile; begin evidence workbench | STATE_Template.md | docs/changes/offline-prototype/tasks.md, docs/changes/offline-prototype/verify.md, docs/state.md, docs/sentinel-node-claims-interoperability-research.md | - | not run |
 | 9 | 2026-10-21 16:08 | Verify Task 5 local workbench across desktop mobile and zoom | - | docs/changes/offline-prototype/tasks.md, docs/changes/offline-prototype/verify.md, docs/sentinel-node-claims-interoperability-research.md | - | not run |
+| 10 | 2026-10-21 16:16 | Verify Task 6 correction history manual review and revision fencing | STATE_Template.md | docs/changes/offline-prototype/tasks.md, docs/changes/offline-prototype/verify.md, docs/state.md, docs/sentinel-node-claims-interoperability-research.md | - | not run |
 
 ---
 

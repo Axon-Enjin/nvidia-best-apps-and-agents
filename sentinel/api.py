@@ -43,6 +43,7 @@ from sentinel.bundles import (
 from sentinel.config import Settings, migrate
 from sentinel.db import AccessEvent, Account, Bundle, Claim, Database, Job, Review
 from sentinel.documents import MAX_FILE_BYTES, extract_chart
+from sentinel.review import ReviewAction, record_review, review_state
 from sentinel.samples import bundle_zip, samples
 from sentinel.service import enqueue, job_detail, job_summary, save_review
 from sentinel.worker import worker_loop
@@ -290,6 +291,17 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
     def new_case(body: CaseInput, actor: Actor = Depends(require_actor)):
         return create_case(db, actor, body)
 
+    @app.get("/api/claims/{claim_id}/review-state")
+    def current_review(claim_id: str, actor: Actor = Depends(require_actor)):
+        with db.session() as session:
+            case = session.get(Claim, claim_id)
+            require_case_access(actor, case)
+            return review_state(session, case)
+
+    @app.post("/api/claims/{claim_id}/review-events")
+    def review_event(claim_id: str, body: ReviewAction, actor: Actor = Depends(require_actor)):
+        return record_review(db, actor, claim_id, body.expected_revision, body.model_dump())
+
     @app.post("/api/claims/{claim_id}/bundles", status_code=202)
     async def upload_version(request: Request, claim_id: str, files: list[UploadFile] = File(...),
                              manifest: str = Form(..., max_length=100000), expected_revision: int = Form(..., ge=0),
@@ -432,7 +444,9 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
     @app.put("/api/jobs/{job_id}/reviews/{finding_id}")
     def review(job_id: str, finding_id: str, body: ReviewInput, actor: Actor = Depends(require_actor)):
         with db.session() as session:
-            authorized_job(session, job_id, actor)
+            job = authorized_job(session, job_id, actor)
+            if job.bundle_id:
+                raise HTTPException(409, "Use the versioned review workflow for this bundle.")
             try:
                 return save_review(session, job_id, finding_id, body.decision, body.note, actor_id=actor.id)
             except IntegrityError as exc:

@@ -153,6 +153,21 @@ class Document(Base):
     __table_args__ = (UniqueConstraint("bundle_id", "position"),)
 
 
+class ReviewEvent(Base):
+    __tablename__ = "review_events"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    claim_id: Mapped[str] = mapped_column(ForeignKey("claims.id"), index=True)
+    bundle_id: Mapped[str] = mapped_column(ForeignKey("bundles.id"))
+    rule_version: Mapped[str] = mapped_column(String(80))
+    revision: Mapped[int] = mapped_column(Integer)
+    actor_id: Mapped[str] = mapped_column(ForeignKey("accounts.id"))
+    actor_name: Mapped[str] = mapped_column(String(80))
+    action: Mapped[str] = mapped_column(String(40))
+    payload: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+    __table_args__ = (UniqueConstraint("claim_id", "revision"),)
+
+
 class Database:
     def __init__(self, url: str):
         if url.startswith("sqlite:///"):

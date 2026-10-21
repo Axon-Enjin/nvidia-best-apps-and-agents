@@ -3,7 +3,7 @@
 **Date:** 2026-10-21
 **Overall:** FAIL
 
-FAIL means the complete prototype is not finished. Tasks 1-5 are verified; Tasks 6-10 remain pending. Do not archive or report the entire change complete.
+FAIL means the complete prototype is not finished. Tasks 1-6 are verified; Tasks 7-10 remain pending. Do not archive or report the entire change complete.
 
 ## Completeness
 
@@ -87,3 +87,11 @@ FAIL means the complete prototype is not finished. Tasks 1-5 are verified; Tasks
 - The desktop/mobile captures were inspected together. The UI inherits the accepted forest/paper design and local system fonts. Source downloads retain server assignment checks.
 - Fixture bytes are marked binary in .gitattributes so checkout line-ending conversion cannot invalidate manifest hashes. A Task 4 trailing-blank-line diff-check finding was removed.
 - Ruling: import accepts an explicit JSON manifest and its originals, exposing declared types before upload. Cost if wrong: add a guided manifest editor without changing storage or membership semantics.
+
+## Task 6 evidence
+
+- RED: five service scenarios failed for absent routes/service; a real browser scenario failed for absent review controls. GREEN: six service scenarios plus the browser correction-handoff/reload flow pass. Full suite: 99 passed, one existing warning, in 98.85 seconds.
+- Tests establish attributed append-only history, department/person responsibility, handoff/acknowledgement, corrected-version recheck, old-source preservation, concurrency conflicts, wrong-version evidence rejection and restart persistence.
+- P07 requires current source-backed comparison and a different supervisor actor. Automated status remains not_run_offline. P08 verifies source marks/printed names/dates before accepting manual presence review. Source/rule changes and explicit reruns reopen manual review.
+- Extra expectations persist; only a supervisor can withdraw one with a reason. No core-artifact waiver exists. Legacy mutable decision writes are denied for versioned bundles.
+- Ruling: correction tasks and extra expectations are projections of append-only events rather than separate mutable task rows. Cost if wrong: add cached projections while retaining events as authority.

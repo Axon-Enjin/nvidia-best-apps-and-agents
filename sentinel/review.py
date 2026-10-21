@@ -67,6 +67,8 @@ def review_state(session, case):
         result["checks"][6].update(status="passed", blocking_reasons=[])
     if any(e.action == "manual_p08" for e in current):
         result["checks"][7].update(status="passed", blocking_reasons=[])
+    for finding in result["findings"]:
+        finding["resolution_status"] = next(c["status"] for c in result["checks"] if c["id"] == finding["id"])
     # New sources or rule versions never inherit prior manual decisions.
     job = session.get(Job, case.latest_job_id) if case.latest_job_id else None
     processed = bool(job and job.status == "succeeded" and job.result and job.result.get("bundle_id") == case.current_bundle_id and job.result.get("rule_version") == RULE_VERSION)

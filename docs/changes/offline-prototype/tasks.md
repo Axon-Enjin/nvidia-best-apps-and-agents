@@ -98,10 +98,10 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 **Files:** create `sentinel/reports.py`, finalization migration, `tests/test_closeout.py`; extend API/UI.
 **Interfaces:** Produce `finalize_review(actor, case_id, bundle_version, rule_version, expected_revision) -> ReportSnapshot` and `export_report(actor, report_id, format) -> bytes`. Allowed formats: CSV and printable HTML. All guards run in the same transaction as snapshot creation.
 
-- [ ] 7.1 Write failing tests for each unresolved blocker, open correction, wrong role, stale version, concurrent replacement, CSV formula/XSS payload and wrong-version evidence.
-- [ ] 7.2 Implement current-version P10 guards and snapshots with actor, source/rule versions, coverage and sample provenance. Revisions mark previous reports stale; no payer approval wording.
-- [ ] 7.3 Derive queue/correction/completion metrics from stored events with explicit denominators. Verify counts against seeded histories.
-- [ ] 7.4 Run `uv run --locked pytest tests/test_closeout.py -q` and the full suite. Commit `feat: finalize and export versioned review records`.
+- [x] 7.1 Write failing tests for each unresolved blocker, open correction, wrong role, stale version, concurrent replacement, CSV formula/XSS payload and wrong-version evidence.
+- [x] 7.2 Implement current-version P10 guards and snapshots with actor, source/rule versions, coverage and sample provenance. Revisions mark previous reports stale; no payer approval wording.
+- [x] 7.3 Derive queue/correction/completion metrics from stored events with explicit denominators. Verify counts against seeded histories.
+- [x] 7.4 Run `uv run --locked pytest tests/test_closeout.py -q` and the full suite. Commit `feat: finalize and export versioned review records`.
 
 ## Task 8: Local printed-scan OCR and confirmation
 

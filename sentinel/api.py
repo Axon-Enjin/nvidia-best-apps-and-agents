@@ -41,8 +41,9 @@ from sentinel.bundles import (
     read_source,
 )
 from sentinel.config import Settings, migrate
-from sentinel.db import AccessEvent, Account, Bundle, Claim, Database, Job, Review
+from sentinel.db import AccessEvent, Account, Bundle, Claim, Database, Job, ReportSnapshot, Review
 from sentinel.documents import MAX_FILE_BYTES, extract_chart
+from sentinel.reports import export_report, finalize_review, get_report, metrics, report_public
 from sentinel.review import ReviewAction, record_review, review_state
 from sentinel.samples import bundle_zip, samples
 from sentinel.service import enqueue, job_detail, job_summary, save_review
@@ -107,6 +108,12 @@ class LegacyLoginInput(BaseModel):
 
 class AssignmentInput(BaseModel):
     assignee_id: str = Field(min_length=32, max_length=32)
+
+
+class FinalizeInput(BaseModel):
+    expected_revision: int = Field(ge=0)
+    bundle_id: str = Field(min_length=1, max_length=32)
+    rule_version: str = Field(max_length=80)
 
 
 def create_app(settings: Settings | None = None, database: Database | None = None):
@@ -298,6 +305,31 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
             require_case_access(actor, case)
             return review_state(session, case)
 
+    @app.post("/api/claims/{claim_id}/finalize", status_code=201)
+    def finalize(claim_id: str, body: FinalizeInput, actor: Actor = Depends(require_actor)):
+        return finalize_review(db, actor, claim_id, body.bundle_id, body.rule_version, body.expected_revision)
+
+    @app.get("/api/claims/{claim_id}/reports")
+    def case_reports(claim_id: str, actor: Actor = Depends(require_actor)):
+        with db.session() as session:
+            case = session.get(Claim, claim_id)
+            require_case_access(actor, case)
+            return {"items":[report_public(r, case) for r in session.scalars(select(ReportSnapshot).where(ReportSnapshot.claim_id == claim_id).order_by(ReportSnapshot.revision.desc()))]}
+
+    @app.get("/api/reports/{report_id}")
+    def report_snapshot(report_id: str, actor: Actor = Depends(require_actor)):
+        return get_report(db, actor, report_id)
+
+    @app.get("/api/reports/{report_id}/export")
+    def report_export(report_id: str, format: str = Query(pattern="^(csv|html)$"), actor: Actor = Depends(require_actor)):
+        content = export_report(db, actor, report_id, format)
+        return Response(content, media_type="text/csv" if format == "csv" else "text/html",
+                        headers={"Content-Disposition":f'{"attachment" if format == "csv" else "inline"}; filename="sentinel-review-{report_id}.{format}"'})
+
+    @app.get("/api/metrics")
+    def event_metrics(actor: Actor = Depends(require_actor)):
+        return metrics(db, actor)
+
     @app.post("/api/claims/{claim_id}/review-events")
     def review_event(claim_id: str, body: ReviewAction, actor: Actor = Depends(require_actor)):
         return record_review(db, actor, claim_id, body.expected_revision, body.model_dump())
@@ -457,6 +489,8 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
     def report(job_id: str, actor: Actor = Depends(require_actor)):
         detail = get_job(job_id, actor)
         with db.session() as session:
+            if session.get(Job, job_id).bundle_id:
+                raise HTTPException(409, "Complete the current versioned review before exporting a final record.")
             session.add(AccessEvent(actor_id=actor.id, action="legacy_report_exported", resource_id=job_id))
             session.commit()
         payload = {k: v for k, v in detail.items() if k not in {"xml_text", "chart_text"}}

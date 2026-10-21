@@ -39,3 +39,11 @@ window.renderReview=root=>{
   const history=node("details");history.setAttribute("aria-label","Review history");history.open=true;history.append(node("summary","Review history"));for(const event of review.events)history.append(node("p",`${event.actor} · ${event.action} · revision ${event.revision} · ${event.payload.reason}`,"event"));root.append(history);
   if(window.renderReports)window.renderReports(root);
 };
+
+window.renderReports=root=>{
+  const section=node("section");section.setAttribute("aria-label","Completion and reports");section.append(node("h3","Complete internal review"));
+  for(const blocker of state.review.blockers)section.append(node("p",`${blocker.id}: ${blocker.reasons.join(" ")}`));
+  const finalize=button("Complete current review",async()=>{await api(`/api/claims/${state.selected}/finalize`,{method:"POST",body:{expected_revision:state.detail.revision,bundle_id:state.bundle.bundle_id,rule_version:state.review.rule_version}});await openCase(state.selected);notice("Internal review record saved. Ready for final submission review.");},"primary");
+  finalize.disabled=!state.review.can_finalize||state.detail.state==="Ready for final submission review";section.append(finalize);root.append(section);
+  api(`/api/claims/${state.selected}/reports`).then(data=>{if(!section.isConnected)return;for(const report of data.items){const row=node("div",undefined,"task-row");row.append(node("p",`Review record · revision ${report.revision} · ${report.stale?"Stale after later changes":"Current"}`));if(!report.stale){for(const [format,label]of [["csv","Download CSV"],["html","Open printable record"]]){const link=node("a",label);link.href=`/api/reports/${report.id}/export?format=${format}`;link.target="_blank";link.rel="noopener";row.append(link,document.createTextNode(" · "));}}else row.append(button("Inspect historical review record",async()=>{const data=await api(`/api/reports/${report.id}`);row.append(node("pre",JSON.stringify(data.snapshot,null,2),"source-text"));}));section.append(row);}}).catch(notice);
+};

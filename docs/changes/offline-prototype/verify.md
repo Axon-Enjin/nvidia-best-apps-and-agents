@@ -3,7 +3,7 @@
 **Date:** 2026-10-21
 **Overall:** FAIL
 
-FAIL means the complete prototype is not finished. Tasks 1-6 are verified; Tasks 7-10 remain pending. Do not archive or report the entire change complete.
+FAIL means the complete prototype is not finished. Tasks 1-7 are verified; Tasks 8-10 remain pending. Do not archive or report the entire change complete.
 
 ## Completeness
 
@@ -95,3 +95,10 @@ FAIL means the complete prototype is not finished. Tasks 1-6 are verified; Tasks
 - P07 requires current source-backed comparison and a different supervisor actor. Automated status remains not_run_offline. P08 verifies source marks/printed names/dates before accepting manual presence review. Source/rule changes and explicit reruns reopen manual review.
 - Extra expectations persist; only a supervisor can withdraw one with a reason. No core-artifact waiver exists. Legacy mutable decision writes are denied for versioned bundles.
 - Ruling: correction tasks and extra expectations are projections of append-only events rather than separate mutable task rows. Cost if wrong: add cached projections while retaining events as authority.
+
+## Task 7 evidence
+
+- RED: six scenarios failed for absent closeout/report contracts and an unguarded legacy report route. GREEN: seven closeout scenarios pass, including unresolved checks, open tasks, wrong role, stale revisions/versions, concurrent source replacement, immutable report staleness, CSV formula neutralization, HTML escaping and explicit metric denominators. Full suite: 106 passed, one existing warning, in 128.41 seconds.
+- Finalization locks the current case through guard evaluation, snapshot creation and final event. Snapshots retain actors, source hashes, checks/findings/decisions, manual/AI coverage and sample provenance. Later revisions mark reports stale; old snapshots remain inspectable.
+- Legacy versioned-job JSON export is denied so it cannot bypass finalization.
+- Queue, completion and correction-duration metrics derive from assigned cases and stored events, with case/correction/duration denominators.

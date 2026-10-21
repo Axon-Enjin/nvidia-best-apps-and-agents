@@ -168,6 +168,19 @@ class ReviewEvent(Base):
     __table_args__ = (UniqueConstraint("claim_id", "revision"),)
 
 
+class ReportSnapshot(Base):
+    __tablename__ = "report_snapshots"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    claim_id: Mapped[str] = mapped_column(ForeignKey("claims.id"), index=True)
+    bundle_id: Mapped[str] = mapped_column(ForeignKey("bundles.id"))
+    rule_version: Mapped[str] = mapped_column(String(80))
+    revision: Mapped[int] = mapped_column(Integer)
+    actor_id: Mapped[str] = mapped_column(ForeignKey("accounts.id"))
+    snapshot: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+    __table_args__ = (UniqueConstraint("claim_id", "revision"),)
+
+
 class Database:
     def __init__(self, url: str):
         if url.startswith("sqlite:///"):

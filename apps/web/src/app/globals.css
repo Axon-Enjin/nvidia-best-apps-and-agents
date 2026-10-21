@@ -1,1 +1,203 @@
 @import "tailwindcss";
+
+/* Semantic tokens. Values come from docs/dsd-sentinel-node.md; tokens.test.ts
+   measures every text and indicator pairing used by the interface. */
+@theme {
+  --color-paper: #F7F6F2;
+  --color-surface: #FFFFFF;
+  /* DSD #8A9790 measured 2.81:1 on paper; darkened to meet 3:1 for control boundaries. */
+  --color-rule: #7A8780;
+  --color-rule-faint: #DCDFD8;
+  --color-ink: #172B24;
+  --color-ink-muted: #52635A;
+  --color-forest: #174A3B;
+  --color-forest-strong: #10382C;
+  --color-teal: #176B68;
+  --color-teal-tint: #E3EFEC;
+  --color-passed: #245B3D;
+  --color-passed-tint: #E7EEE8;
+  --color-attention: #825000;
+  --color-attention-tint: #FBF1DC;
+  --color-blocking: #A32D2D;
+  --color-blocking-tint: #FBE9E7;
+  --color-highlight: #FFE3A0;
+
+  --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, Consolas, "Cascadia Mono", monospace;
+
+  --radius-control: 6px;
+  --radius-panel: 8px;
+
+  --default-transition-duration: 120ms;
+  --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    min-height: 100dvh;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  h1, h2, h3 {
+    font-weight: 650;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  p, li, dd, td {
+    overflow-wrap: anywhere;
+  }
+  a {
+    color: var(--color-forest);
+    text-underline-offset: 3px;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: #B8DCD3;
+    color: var(--color-ink);
+  }
+  summary {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Controls: 44px targets, 6px radius, forest primary; disabled states keep text contrast. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid var(--color-forest);
+    border-radius: var(--radius-control);
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: left;
+    cursor: pointer;
+    transition-property: background-color, color, border-color;
+  }
+  .btn-primary {
+    background: var(--color-forest);
+    color: #FFFFFF;
+  }
+  .btn-primary:hover {
+    background: var(--color-forest-strong);
+  }
+  .btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-forest);
+  }
+  .btn-secondary:hover {
+    background: var(--color-teal-tint);
+  }
+  .btn-on-dark {
+    background: transparent;
+    border-color: rgb(255 255 255 / 0.7);
+    color: #FFFFFF;
+  }
+  .btn-on-dark:hover {
+    background: rgb(255 255 255 / 0.12);
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    background: var(--color-paper);
+    border-color: var(--color-rule);
+    color: var(--color-ink-muted);
+    cursor: not-allowed;
+  }
+  .link-button {
+    min-height: 44px;
+    padding: 10px 0;
+    color: var(--color-forest);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .input {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-control);
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+  .input[aria-invalid="true"] {
+    border-color: var(--color-blocking);
+  }
+  .input[readonly] {
+    background: var(--color-paper);
+  }
+  textarea.input {
+    min-height: 6.5rem;
+    resize: vertical;
+  }
+  .label {
+    display: block;
+    font-weight: 600;
+  }
+  .help {
+    font-size: 0.875rem;
+    color: var(--color-ink-muted);
+  }
+  .field-error {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-blocking);
+  }
+  /* Archive vocabulary: eyebrow labels and monospace document references. */
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .doc-ref {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+  }
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-panel);
+  }
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -100px;
+    z-index: 50;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface);
+    color: var(--color-forest);
+    font-weight: 600;
+  }
+  .skip-link:focus {
+    top: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

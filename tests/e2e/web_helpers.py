@@ -39,6 +39,21 @@ def otp_for(stack: WebStack, username: str) -> str:
         time.sleep(1)
 
 
+def sign_in(page, stack: WebStack, username: str = "reviewer", landing: str = "/claims") -> None:
+    """Sign in through the real login page and wait for the landing page."""
+    page.goto(stack.base + "/login")
+    page.get_by_label("Username").fill(username)
+    page.get_by_label("Password", exact=True).fill(PASSWORD)
+    if username in PRIVILEGED:
+        page.get_by_label("Authenticator code").fill(otp_for(stack, username))
+    page.get_by_role("button", name="Sign in", exact=True).click()
+    page.wait_for_url(stack.base + landing)
+
+
+def no_horizontal_overflow(page) -> bool:
+    return page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+
+
 def api_client(stack: WebStack, username: str = "reviewer") -> httpx.Client:
     """An HTTP client signed in through the web origin, as the browser would be."""
     client = httpx.Client(base_url=stack.base, headers={"Origin": stack.base}, timeout=30)

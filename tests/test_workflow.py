@@ -1,25 +1,28 @@
+import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import replace
-import time
 
-from fastapi.testclient import TestClient
 import pytest
-from sqlalchemy import select, update
+from fastapi.testclient import TestClient
+from sqlalchemy import update
 
 from sentinel.api import create_app
 from sentinel.config import Settings
 from sentinel.db import Database, Job
 from sentinel.worker import claim_job, process_one
+from tests.account_helpers import provision_reviewer, sign_in_reviewer
 from tests.test_audit import CHART, claim_xml
 
 
 @pytest.fixture
 def context(tmp_path):
     settings = Settings(database_url=f"sqlite:///{tmp_path / 'test.db'}", embedded_worker=False,
-                        auto_migrate=False)
+                        auto_migrate=False, secret_key_file=str(tmp_path / "account.key"))
     db = Database(settings.database_url)
     db.initialize()
+    provision_reviewer(db, settings.secret_key_file)
     with TestClient(create_app(settings, db)) as client:
+        sign_in_reviewer(client)
         yield client, db, settings
     db.engine.dispose()
 
@@ -46,6 +49,7 @@ def test_import_is_durable_and_a_worker_computes_the_result(context):
     # A new engine/process sees the persisted result, not Python process memory.
     second_db = Database(settings.database_url)
     with TestClient(create_app(settings, second_db)) as second_client:
+        sign_in_reviewer(second_client)
         assert second_client.get(f"/api/claims/{claim_id}").json()["latest"]["status"] == "succeeded"
     second_db.engine.dispose()
 
@@ -141,7 +145,7 @@ def test_sample_loading_is_idempotent_and_downloads_are_available(context):
 
 def test_workspace_token_protects_data_and_login_works(context):
     _, db, settings = context
-    protected = replace(settings, access_token="a-long-test-workspace-access-token")
+    protected = replace(settings, auth_mode="legacy", access_token="a-long-test-workspace-access-token")
     with TestClient(create_app(protected, db)) as client:
         assert client.get("/api/claims").status_code == 401
         assert client.post("/api/session", json={"token": "incorrect"}).status_code == 401

@@ -13,6 +13,11 @@ class Settings:
     environment: str = "development"
     network_mode: str = "offline"
     access_token: str = ""
+    auth_mode: str = "named"
+    secret_key_file: str = "data/account.key"
+    secure_cookies: bool = False
+    session_hours: int = 8
+    session_idle_minutes: int = 20
     allowed_hosts: tuple[str, ...] = ("localhost", "127.0.0.1", "testserver")
     nebius_api_key: str = ""
     nebius_base_url: str = "https://api.tokenfactory.nebius.com/v1"
@@ -33,6 +38,9 @@ class Settings:
             environment=os.getenv("APP_ENV", "development"),
             network_mode=os.getenv("NETWORK_MODE", "offline").strip().lower(),
             access_token=os.getenv("APP_ACCESS_TOKEN", ""),
+            auth_mode=os.getenv("AUTH_MODE", "named").strip().lower(),
+            secret_key_file=os.getenv("SECRET_KEY_FILE", cls.secret_key_file),
+            secure_cookies=os.getenv("SECURE_COOKIES", "false").lower() == "true",
             allowed_hosts=tuple(h.strip() for h in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",") if h.strip()),
             nebius_api_key=os.getenv("NEBIUS_API_KEY", ""),
             nebius_base_url=os.getenv("NEBIUS_BASE_URL", cls.nebius_base_url),
@@ -42,13 +50,19 @@ class Settings:
         return settings
 
     def validate(self):
+        if self.auth_mode not in {"named", "legacy"}:
+            raise ValueError("AUTH_MODE must be named or legacy.")
+        if self.auth_mode == "legacy" and (self.environment != "development" or len(self.access_token) < 24):
+            raise ValueError("Legacy migration requires development mode and APP_ACCESS_TOKEN of at least 24 characters.")
+        if not 1 <= self.session_hours <= 12 or not 1 <= self.session_idle_minutes <= 30:
+            raise ValueError("Invalid session timeout.")
         if self.network_mode not in {"offline", "online"}:
             raise ValueError("NETWORK_MODE must be offline or online.")
         if self.environment not in {"development", "production"}:
             raise ValueError("APP_ENV must be development or production.")
         if self.environment == "production":
-            if len(self.access_token) < 24:
-                raise ValueError("Production requires APP_ACCESS_TOKEN with at least 24 characters.")
+            if not self.secure_cookies:
+                raise ValueError("Production requires SECURE_COOKIES=true and HTTPS.")
             if not self.database_url.startswith("postgresql+psycopg://"):
                 raise ValueError("Production requires PostgreSQL. Use SQLite only for local development.")
             if not self.allowed_hosts or "*" in self.allowed_hosts:

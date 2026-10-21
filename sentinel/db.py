@@ -2,7 +2,19 @@ import time
 import uuid
 from pathlib import Path
 
-from sqlalchemy import JSON, Boolean, Float, ForeignKey, Index, Integer, LargeBinary, String, Text, create_engine, event
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Float,
+    ForeignKey,
+    Index,
+    Integer,
+    LargeBinary,
+    String,
+    Text,
+    create_engine,
+    event,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 
@@ -14,6 +26,45 @@ class Base(DeclarativeBase):
     pass
 
 
+class Account(Base):
+    __tablename__ = "accounts"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    username: Mapped[str] = mapped_column(String(80), unique=True)
+    password_hash: Mapped[str] = mapped_column(Text)
+    roles: Mapped[list] = mapped_column(JSON)
+    enabled: Mapped[bool] = mapped_column(Boolean, default=True)
+    totp_encrypted: Mapped[str | None] = mapped_column(Text, nullable=True)
+    totp_last_step: Mapped[int] = mapped_column(Integer, default=-1)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class LocalSession(Base):
+    __tablename__ = "local_sessions"
+    token_digest: Mapped[str] = mapped_column(String(64), primary_key=True)
+    account_id: Mapped[str] = mapped_column(ForeignKey("accounts.id"), index=True)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+    expires_at: Mapped[float] = mapped_column(Float)
+    last_seen_at: Mapped[float] = mapped_column(Float, default=time.time)
+    revoked: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class LoginThrottle(Base):
+    __tablename__ = "login_throttles"
+    key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    window_start: Mapped[float] = mapped_column(Float)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class AccessEvent(Base):
+    __tablename__ = "access_events"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    actor_id: Mapped[str | None] = mapped_column(ForeignKey("accounts.id"), nullable=True)
+    action: Mapped[str] = mapped_column(String(80))
+    resource_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    detail: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
 class Claim(Base):
     __tablename__ = "claims"
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
@@ -21,6 +72,7 @@ class Claim(Base):
     patient_id: Mapped[str] = mapped_column(String(200), default="")
     sample_key: Mapped[str | None] = mapped_column(String(80), unique=True, nullable=True)
     latest_job_id: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    assignee_id: Mapped[str | None] = mapped_column(ForeignKey("accounts.id"), nullable=True, index=True)
     created_at: Mapped[float] = mapped_column(Float, default=time.time, index=True)
 
 
@@ -52,6 +104,7 @@ class Review(Base):
     __tablename__ = "reviews"
     job_id: Mapped[str] = mapped_column(ForeignKey("audit_jobs.id", ondelete="CASCADE"), primary_key=True)
     finding_id: Mapped[str] = mapped_column(String(100), primary_key=True)
+    actor_id: Mapped[str | None] = mapped_column(ForeignKey("accounts.id"), nullable=True)
     decision: Mapped[str] = mapped_column(String(20))
     note: Mapped[str] = mapped_column(Text, default="")
     updated_at: Mapped[float] = mapped_column(Float, default=time.time)

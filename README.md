@@ -2,7 +2,7 @@
 
 A planned PhilHealth claim review workspace for hospital reviewers: compare prepared claims with supporting records, coordinate corrections, and document review before submission through the hospital's existing system.
 
-**Current status:** Implementation is underway. The next milestone is a complete local sample-record workflow that works offline after installation. Reproducible setup and remote-inference guards are verified; the full review interface and workflow remain unfinished. Hosted deployment and operational hospital use require additional verification.
+**Current status:** Implementation is underway. Named accounts, local MFA, assigned case access and offline inference guards are implemented. The full review interface and correction workflow remain unfinished. Hosted deployment and operational hospital use require additional verification.
 
 Start with the [product summary](PRODUCT.md), [experience guide](DESIGN.md), and [build checklist](BUILD-CHECKLIST.md). Contributors should read the [session handoff](HANDOFF.md) before making changes.
 
@@ -11,6 +11,25 @@ Start with the [product summary](PRODUCT.md), [experience guide](DESIGN.md), and
 Import a versioned bundle ? inspect coverage and source-linked findings ? request a source correction ? import the revised bundle ? recheck ? export the named reviewer's record.
 
 Initial scope is adult general medical inpatient claims before initial submission. Submission automation, clinical/coding decisions and reimbursement guarantees are excluded.
+
+## Local development
+
+Install the locked environment and provision named accounts from a private terminal:
+
+```powershell
+uv sync --locked
+uv run --locked python -m sentinel account-create reviewer --roles reviewer
+uv run --locked python -m sentinel account-create supervisor --roles supervisor
+uv run --locked python -m sentinel serve
+```
+
+Open `http://127.0.0.1:8000/login`. Password prompts do not echo. Supervisor/admin provisioning displays a fresh secret for a local TOTP authenticator and requires its code before saving. No shared or default password exists. Supervisor assignment can claim historical unassigned cases; administrator status alone cannot view records.
+
+`account-disable USER`, `account-enable USER`, `account-revoke USER` and `account-reset USER` run through the same CLI. Resetting a privileged account reenrolls MFA; all these commands revoke existing sessions. Treat terminal access as operator authority. Restrict the data directory to the operator using local filesystem permissions, including Windows ACLs. Keep `data/account.key` private and backed up separately from database exports: it encrypts the stored MFA secrets. A missing or wrong key fails authentication closed.
+
+Sessions expire after eight hours or twenty idle minutes. HTTP on loopback uses HttpOnly/SameSite cookies; HTTPS requires `SECURE_COOKIES=true`. Production requires HTTPS/secure cookies and PostgreSQL. Remote inference remains disabled unless `NETWORK_MODE=online` is explicitly selected. SQLite is a development path; container/PostgreSQL verification is pending.
+
+The old shared token works only with explicit `AUTH_MODE=legacy` in development and a configured token of at least 24 characters. This migration mode has no named accountability; use named mode for the new workflow. The full evidence workbench is still under construction.
 
 ## Project context
 

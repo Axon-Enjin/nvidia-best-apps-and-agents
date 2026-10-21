@@ -49,10 +49,10 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 **Files:** create `sentinel/accounts.py`, additive account/session migration, `tests/test_accounts.py`; modify `api.py`, `db.py`, CLI and login UI.
 **Interfaces:** Produce `require_actor(request) -> Actor`, `require_case_access(actor, case) -> None` and `create_local_account(username, password, roles) -> account_id`. `Actor` has immutable ID, role set and enabled state. Every child-resource route resolves its case before authorization.
 
-- [ ] 2.1 Verify current password hashing, local TOTP and session guidance against primary sources. Write failing tests for valid/invalid sign-in, MFA, expiry/revocation, disabled users, supervisor assignment, admin-without-review-role, IDOR and CSRF.
-- [ ] 2.2 Implement local CLI account provisioning, secure password storage, revocable sessions and locally verified privileged MFA. No hardcoded/shared credentials; no outbound email. Retain the old prototype only behind an explicit migration path.
-- [ ] 2.3 Wire actor and assignment checks into queue, case, source, job, history and export routes. Use safe cookies appropriate to local HTTP versus eventual HTTPS.
-- [ ] 2.4 Run `uv run --locked pytest tests/test_accounts.py -q`, then the full suite; expected all role/abuse cases pass. Commit `feat: add local accounts and assigned case access`.
+- [x] 2.1 Verified OWASP, argon2-cffi, Fernet, RFC 6238 and FastAPI primary guidance. Observed missing account tests and old-token bypass failing before implementation; added credential-reflection regression RED to GREEN.
+- [x] 2.2 Implemented CLI provisioning/recovery, salted Argon2id passwords, encrypted TOTP secrets, replay protection and revocable sessions. Shared-token mode requires explicit development migration configuration.
+- [x] 2.3 Actor/assignment checks cover queue, aggregates, case history, rerun, findings, job, source and report routes. CSRF and safe local/HTTPS cookies are enforced. Admin alone cannot review.
+- [x] 2.4 Account tests and full suite pass; Chromium desktop/mobile sign-in verified. Commit `feat: add local accounts and assigned case access`; evidence in `verify.md`.
 
 ## Task 3: Versioned bundles and private local originals
 

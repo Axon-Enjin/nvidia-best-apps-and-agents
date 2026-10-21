@@ -37,7 +37,9 @@ PostgreSQL remains the standard local/container target. SQLite remains an option
 - Queued remote jobs processed offline retain local results and explicit incomplete remote coverage. This is not yet the complete manual-review/closeout implementation.
 - No full browser flow, PostgreSQL/container run, printed OCR test, restore drill, live inference or hospital evaluation has occurred.
 
-Next task is **Task 2: named local accounts and access controls**. Tasks 2-10 remain unchecked. The change's overall verification is FAIL because the complete prototype is unfinished, not because Task 1 failed.
+Task 2 now implements named local accounts, Argon2id passwords, encrypted TOTP for supervisors/admins, replay fencing, revocable sessions, CSRF and assigned case access. CLI provisioning/recovery and a local login page are tested. Twenty account scenarios and one real Chromium desktop/mobile login check pass. Default named mode never accepts the old shared token; explicit development migration mode requires a configured token. See README for commands and private key handling.
+
+Next task is **Task 3: immutable versioned bundles**. Tasks 3-10 remain unchecked. The change's overall verification is FAIL because the complete prototype is unfinished. Evidence workbench assets, full correction workflow, PostgreSQL/container/OCR/restore acceptance remain pending.
 
 ## Product boundaries already accepted
 

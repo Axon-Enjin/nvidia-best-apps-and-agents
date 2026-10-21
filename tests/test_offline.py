@@ -10,6 +10,7 @@ from sentinel.config import Settings
 from sentinel.db import Job
 from sentinel.inference import review_with_nebius
 from sentinel.worker import process_one
+from tests.account_helpers import sign_in_reviewer
 from tests.test_audit import CHART, claim_xml
 from tests.test_workflow import context as context
 from tests.test_workflow import upload
@@ -31,6 +32,7 @@ def test_offline_import_cannot_request_remote_ai_even_with_credentials(context):
     _, db, settings = context
     offline = replace(settings, network_mode="offline", nebius_api_key="test-only-credential")
     with TestClient(create_app(offline, db)) as client:
+        sign_in_reviewer(client)
         config = client.get("/api/config").json()
         assert config["network_mode"] == "offline"
         assert config["model_configured"] is False

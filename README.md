@@ -2,6 +2,8 @@
 
 Track repo for the Nebius x NVIDIA Global AI Hackathon. This folder is the whole project: rules, sponsor context, the research prompt, and the research report. It does not depend on any other local folder.
 
+**Starting a new session?** Read [HANDOFF.md](HANDOFF.md) for the current instructions and FMD context. The accepted Sentinel Claims baseline is in [PRODUCT.md](PRODUCT.md), with the detailed [product decisions](PILOT-DECISIONS.md), [experience direction](DESIGN.md), and [build checklist](BUILD-CHECKLIST.md). Application development remains paused. The original research below is historical; it does not override the accepted baseline.
+
 - **Hackathon:** Nebius x NVIDIA Global AI Hackathon
 - **Deadline:** 30 Oct 2026, 10:00 AM PT
 - **Track:** Best Apps & Agents

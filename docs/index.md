@@ -12,12 +12,13 @@
 | Document | File | Version | Status | Last Updated | Last Reconciled |
 |----------|------|---------|--------|--------------|-----------------|
 | STATE · Operating position | [state.md](state.md) | - | Current | 2026-10-21 | N/A |
-| IDEA · Idea Brief | [idea-sentinel-node.md](idea-sentinel-node.md) | 0.2 | Draft | 2026-10-21 | 2026-10-21 |
-| SCRUTINY · Scrutiny Gate | [scrutiny-sentinel-node.md](scrutiny-sentinel-node.md) | 0.2 | Draft | 2026-10-21 | 2026-10-21 |
-| PRD · Product Requirements | [prd-sentinel-node.md](prd-sentinel-node.md) | 0.1 | Draft | 2026-10-21 | 2026-10-21 |
+| IDEA · Idea Brief | [idea-sentinel-node.md](idea-sentinel-node.md) | 0.3 | Draft | 2026-10-21 | 2026-10-21 |
+| SCRUTINY · Scrutiny Gate | [scrutiny-sentinel-node.md](scrutiny-sentinel-node.md) | 0.3 | Draft | 2026-10-21 | 2026-10-21 |
+| PRD · Product Requirements | [prd-sentinel-node.md](prd-sentinel-node.md) | 0.2 | Draft | 2026-10-21 | 2026-10-21 |
 | DSD · Design System | [dsd-sentinel-node.md](dsd-sentinel-node.md) | 0.1 | Draft | 2026-10-21 | 2026-10-21 |
-| SDD · System Design | [sdd-sentinel-node.md](sdd-sentinel-node.md) | 0.1 | Draft | 2026-10-21 | 2026-10-21 |
+| SDD · System Design | [sdd-sentinel-node.md](sdd-sentinel-node.md) | 0.2 | Draft | 2026-10-21 | 2026-10-21 |
 | QAD · QA & Test Plan | [qad-sentinel-node.md](qad-sentinel-node.md) | 0.1 | Draft | 2026-10-21 | 2026-10-21 |
+| BUILD · Build Guide | [build-sentinel-node.md](build-sentinel-node.md) | 0.1 | Draft | 2026-10-21 | 2026-10-21 |
 | CLR · User Protection & Regulatory Posture | [clr-sentinel-node.md](clr-sentinel-node.md) | 0.1 | Draft | 2026-10-21 | 2026-10-21 |
 | AIA · AI Assurance Dossier | [aia-sentinel-node.md](aia-sentinel-node.md) | 0.1 | Draft | 2026-10-21 | 2026-10-21 |
 | OPS · Ops & Observability | [ops-sentinel-node.md](ops-sentinel-node.md) | 0.1 | Draft | 2026-10-21 | 2026-10-21 |

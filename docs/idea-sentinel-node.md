@@ -2,7 +2,7 @@
 
 **Project:** Sentinel Claims
 **Date:** 2026-10-21
-**Version:** 0.2
+**Version:** 0.3
 **Owner:** Yushin, project owner
 **Status:** Draft
 **Last reconciled:** 2026-10-21
@@ -64,7 +64,7 @@ No approved concept image exists. The local walkthrough is historical explanator
 | Which hospital/vendor export can be qualified? | Yushin with eventual hospital reviewer | Operational pilot |
 | Which provider endpoint, region, quota and preset are available? | Yushin | Before provisioning/live evaluation |
 
-**Spike plan:** None in this documentation cycle. Evaluate the complete correction loop after implementation resumes. Scope approval has not resumed application work.
+**Spike plan:** No disposable spike is needed for the current slice. The owner resumed implementation on 2026-10-21; build and evaluate the complete offline correction loop through the active change plan. Clinical/hospital value remains unmeasured.
 
 ## Self-Check
 

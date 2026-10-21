@@ -2,7 +2,7 @@
 
 **Project:** Sentinel Claims
 **Date:** 2026-10-21
-**Version:** 0.2
+**Version:** 0.3
 **Owner:** Yushin, project owner
 **Status:** Draft
 **Last reconciled:** 2026-10-21
@@ -14,7 +14,7 @@
 
 **One-line rationale:** The owner settled the user, pain, scope and deliverable; no fatal contradiction is established, but workflow value and deployment readiness remain unproven.
 
-This replaces the 2026-10-12 verdict based on empty framing. It permits authorized documentation reconciliation, not resumption of paused application development.
+This replaces the 2026-10-12 verdict based on empty framing. The owner subsequently resumed implementation on 2026-10-21, selecting the offline local prototype next. This verdict permits the defined build/evaluation work; it does not clear release gates.
 
 Items carried forward:
 
@@ -74,7 +74,7 @@ IDEA references the local decision record, workflow research, DSD and QAD. These
 
 | Check | Finding |
 |---|---|
-| Minimum loop shippable | Plausible; schedule uncalibrated and app work paused |
+| Minimum loop shippable | Plausible; implementation resumed, schedule still uncalibrated |
 | Production-grade reachable | Conventional design; controls and restore still need proof |
 | Honest cut line | Sample evaluation distinguished from operational pilot; no clinical or financial guarantee |
 
@@ -91,7 +91,7 @@ IDEA references the local decision record, workflow research, DSD and QAD. These
 
 ## 7. Blocking Questions
 
-None for this documentation slice. The owner pause controls when implementation resumes. Release conditions remain unmet.
+None for the authorized offline prototype. The previous owner pause is lifted by the 2026-10-21 instruction to continue the build. Release conditions remain unmet.
 
 ## Self-Check
 

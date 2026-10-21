@@ -2,7 +2,7 @@
 
 A planned PhilHealth claim review workspace for hospital reviewers: compare prepared claims with supporting records, coordinate corrections, and document review before submission through the hospital's existing system.
 
-**Current status:** Product scope and design are documented. Application development is paused; no deployed or hospital-ready application is claimed. The first release targets a functioning sample-record evaluation. Operational use with actual hospital records requires additional qualification and approval.
+**Current status:** Implementation is underway. The next milestone is a complete local sample-record workflow that works offline after installation. Reproducible setup and remote-inference guards are verified; the full review interface and workflow remain unfinished. Hosted deployment and operational hospital use require additional verification.
 
 Start with the [product summary](PRODUCT.md), [experience guide](DESIGN.md), and [build checklist](BUILD-CHECKLIST.md). Contributors should read the [session handoff](HANDOFF.md) before making changes.
 

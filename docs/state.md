@@ -6,68 +6,74 @@
 
 ## 1. Position
 
-**Current milestone:** Shape, entered 2026-10-21. **Next milestone:** Implement, only after the owner explicitly resumes application work. Exit: build-ready design/contracts and implementation authorization.
-**Current blocker:** Application work is paused by owner instruction. Documentation reconciliation is authorized; SCRUTINY is **PROCEED WITH FIXES**. No deployment or evaluation-ready result is established.
-**Product:** Hospital PhilHealth reviewers compare prepared adult medical inpatient claims, coordinate corrections and record review before existing-system submission.
-**Engagement:** Hospital workflow evaluation first; hackathon secondary. **Vault status:** none.
+**Current milestone:** Implement, entered 2026-10-21. **Next milestone:** Verify the first offline prototype.
+**Exit condition:** Complete the local import, evidence review, correction, revised-source review, guarded closeout/export, local OCR and recovery tasks; execute disconnected browser acceptance.
+**Current blocker:** No owner pause remains. Docker is absent from the current command path, so container/PostgreSQL verification must wait for an available runtime; it does not block the next account/domain tasks.
+**Product:** Hospital PhilHealth reviewers reconcile prepared adult medical inpatient claims and source corrections before submission through the existing hospital system.
+**Engagement:** Hospital readiness first; local offline prototype before hosted evaluation. **Vault status:** none.
 
 ## 2. Active signals
 
 | Signal | Evidence | Consequence |
 |---|---|---|
-| S1 / S2 / S4 | Approved UI, backend/auth/data and nontrivial workflow | PRD, DSD, SDD |
-| S7 / S9 / S12 / S20 | Intended hosted release, named accounts, AI/provider API | QAD, CLR, AIA, OPS; contract/failure tests |
-| S11 | Public repository README | Existing public entrypoint reconciled |
-| S16 | Git history includes Nanashi and Carlos Jerico Dela Torre | L1 practices required when implementation resumes |
-| S22 / S27 | Hackathon context and time box | Pitch deferred until demo preparation; no deadline readiness claim |
-| S29 | Claims context and potential future health processing | CLR ?7 posture register |
+| S1 / S2 / S4 | Approved UI, backend/auth/data and workflow | PRD, DSD, SDD |
+| S5 | Owner explicitly resumed the build | BUILD guide; task-by-task implementation |
+| S7 / S9 / S12 / S20 | Eventual hosted release, named accounts and remote model path | QAD, CLR, AIA, OPS remain release dependencies; offline core has no provider dependency |
+| S11 / S16 | Public repository and multiple contributors | Reader-facing status and L1 practices required |
+| S22 / S27 / S29 | Hackathon context, time box and claims activity | Pitch deferred; no delivery-date promise; CLR postures retained |
+| S23 | Scaffold checkpointed and tested against existing PRD/SDD | Active CHANGE: offline-prototype |
 
-Deliberate absences: no live deployment (S8), authorized actual patient records (S10), revenue/buyer/investment decision (S13?S15), or docs-cycle implementation (S5). No BUILD, commercial suite, SAD or RFC is justified now. Conventional reversible architecture does not require a new RFC. No external users are enrolled; QAD contains the pending reviewer study.
+No production deploy, real patient data, pricing, named buyer or investment decision exists. No SAD or new RFC is justified. The existing conventional architecture is retained.
 
 ## 3. Operating frameworks
 
-Milestones; no sprint commitment. Engineering **L1 required**, actual CI not evidenced; previous L0 assumption about one committer is obsolete. Subagents: none this cycle. Unfinished local scaffold is provisional, not a verified brownfield baseline.
+Milestones. Work inline on `feat/offline-prototype` in the existing isolated worktree.
+L1 is required by multiple contributors; current evidence is local tests only, no CI/preview/deploy pipeline. Packaging task adds CI. Do not claim the required level already exists.
 
 ## 4. Open assumptions
 
-| ID | Assumption / uncertainty | Risk / owner / resolution |
+| ID | Assumption / uncertainty | Risk / resolution |
 |---|---|---|
-| A1 | Build rate remains uncalibrated | Yushin; no date promise until measured |
-| A2 | Net review benefit and OCR/model quality are unknown | Reversible scope; Yushin; QAD study/evals before readiness claim |
-| A3 | Only synthetic patient records authorized; accounts can contain real PII | Yushin; CLR controls before invitations; new decision before real health records |
-| A4 | One team, five users/two audits, 100 imports/day, 10k metadata and single-host deployment suffice | Reversible sizing; Yushin; load test and quota/price verification |
-| A5 | Hospital export/profile can be qualified later | Yushin with eventual sponsor; mandatory before operational pilot |
-| A6 | Provider endpoint/terms/region, OCR library, exact versions and budget remain unverified | Yushin; verify/pin before live calls/provisioning |
-| A7 | SDD caps, typed entity sketch, DSD tokens and OPS thresholds operationalize accepted decisions | Reversible design defaults; Yushin; validate during implementation and tests |
-| A8 | Owner can operate supervised evaluation | Yushin; confirm availability and actual alert channel before invitations |
+| A1 | Build rate uncalibrated | Yushin; no date promise until measured |
+| A2 | Reviewer benefit and OCR/model quality unmeasured | QAD evaluation before readiness claim |
+| A3 | Synthetic patient records only; staff/account data can be real PII | Local protection before invitations; new decision before patient records |
+| A4 | One team, five users/two audits, 100 imports/day, 10k metadata | Load test before capacity claim |
+| A5 | Hospital export/profile can be qualified later | Mandatory before operational pilot |
+| A6 | Cloud provider/region/terms/cost and OCR/database container versions unresolved | Verify at the relevant later task; installed Python stack recorded in BUILD |
+| A7 | Current design defaults remain reversible | Tests and reviewer evidence govern refinement |
+| A8 | Yushin operates supervised evaluation | Confirm alert channel/availability before invitations |
+| A9 | Offline means local server after dependency/image installation, without external runtime calls | Not an air-gapped installer or cross-device synchronization; final task independently blocks egress |
 
-No new preference answer is needed to finish authorized docs. These are evidence/deployment dependencies, not achieved facts.
+No further product approval is required to continue the already authorized tasks. External runtime or data-scope changes still require the applicable facts/authorization.
 
 ## 5. Decisions
 
 | ID | Decision | Evidence class / revisit |
 |---|---|---|
-| D1 | Audience name Sentinel Claims; technical slug retained | Human Decision, delegated baseline accepted 2026-10-21 |
-| D2 | Adult medical inpatient pre-submission review, P01?P10 in PRD | Human Decision; scope changes propagate |
-| D3 | Synthetic patient data only; one environment notice and export provenance | Human Decision; explicit new authorization before real records |
-| D4 | External FMD v3.0.1 at commit 4979fda; no engine commits/pushes | Human Decision + verified checkout; AGENTS locates engine |
-| D5 | MIT project license; public repo | Project Canonical; engine license is separate |
-| D6 | Separate deployed evaluation A from operational pilot B | Accepted baseline; QAD/CLR define pending evidence |
-| D7 | Application pause persists; docs and current-repo commit authorized | Owner instruction; resume only explicitly |
+| D1 | Sentinel Claims audience name; sentinel-node technical slug | Accepted human decision |
+| D2 | Adult medical inpatient scope and P01-P10 | Accepted baseline; PRD owns behavior |
+| D3 | Synthetic patients, environment notice and export provenance | Human decision; explicit new authorization for real records |
+| D4 | External FMD v3.0.1 at 4979fda, read-only | Never commit/push to engine repository |
+| D5 | MIT project license and public repository | Project canonical |
+| D6 | Local prototype precedes deployed evaluation A and operational pilot B | Human direction; later release gates retained |
+| D7 | Owner resumed implementation and authorized project commits/branch on 2026-10-21 | Latest explicit instruction supersedes pause |
+| D8 | Offline default; online inference requires explicit opt-in plus credentials | Agent implementation choice under offline-first instruction; tests in Task 1 |
 
 ## 6. Context exclusions
 
-Earlier nightly/headless revenue proposal, old prototype plan and October 12 empty framing are historical, not current requirements. Preserve research and unfinished app files. [PILOT-DECISIONS.md](../PILOT-DECISIONS.md) records accepted choices; PRD/DSD/SDD/QAD/CLR/AIA/OPS now own detailed requirements. Sample profiles never establish official schema compatibility.
+The old nightly/revenue proposal and old prototype plan are historical. Keep local research untouched. Scaffold is now committed, not a completed app; shared-token access and single-XML/chart assumptions remain to replace. Canonical requirements and active change govern.
 
 ## 7. Next actions
 
-1. Owner resumes implementation when ready; then verify/pin build choices and assess scaffold against PRD without discarding local work.
-2. Implement/check the vertical correction loop in [BUILD-CHECKLIST.md](../BUILD-CHECKLIST.md), then complete all release evidence.
-3. Qualify hospital export/data arrangements only for operational pilot B; never infer them from sample evaluation.
+1. Task 2: named local accounts, privileged MFA, role/assignment checks and protected source access.
+2. Tasks 3-7: bundles/profile, complete workbench, correction events/revisions and guarded reports.
+3. Tasks 8-10: local OCR, PostgreSQL packaging/recovery, then disconnected acceptance.
 
-Artifact plan completed for this documentation slice: IDEA/SCRUTINY reconciled; PRD/DSD/SDD specify accepted behavior; QAD/CLR/AIA/OPS define release evidence; STATE and engine-generated INDEX/LOG maintain position/history. Artifact status remains Draft pending implementation reconciliation; substantive scope is already accepted. No BUILD or pitch is generated during the application pause.
+Task 1 is complete at `08b0c09`: dependency resolution restored; six offline tests RED to GREEN; 37 tests pass with one deprecation warning. This verifies the foundation, not the full prototype.
+
+Artifact plan: update STATE and draft product/system position; add BUILD and one CHANGE proposal/design/delta/tasks/verification set; engine generates INDEX/LOG and root build instructions. Do not regenerate the full suite.
 
 ## 8. Self-Check
 
-- [x] Position, decisions, signals, assumptions and exclusions reconciled.
-- [x] Only triggered artifacts populated; tests/deployment/control outcomes remain pending.
+- [x] Latest owner instruction, current branch, verified progress and remaining tasks recorded.
+- [x] App verification is distinguished from future prototype, hosted and hospital gates.

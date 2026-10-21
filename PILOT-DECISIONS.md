@@ -1,5 +1,7 @@
 # Sentinel Claims: delegated product decisions
 
+Current update, 2026-10-21: the owner has resumed implementation and requested an offline first working prototype. The [active implementation plan](docs/changes/offline-prototype/tasks.md) governs the build. Pause references in the dated decision history below describe the earlier documentation stage and are no longer the current instruction. Scope and real-data boundaries remain in force.
+
 Date: 2026-10-21. Status: accepted product baseline. After delegating the decisions and receiving the report, the owner instructed: "proceed with the FMD reconciliation. Proceed with the changes that you recommend to the earlier proposal, then write or populate the FMD". This authorizes adopting the recommended product/experience changes and reconciling documentation. Application development remains paused. These decisions are not claims about completed software, hospital approval, or measured performance.
 
 This dated decision record has been reconciled into the canonical [product requirements](docs/prd-sentinel-node.md), [design](docs/dsd-sentinel-node.md), [system design](docs/sdd-sentinel-node.md), [test plan](docs/qad-sentinel-node.md), [protection register](docs/clr-sentinel-node.md), [AI assurance](docs/aia-sentinel-node.md) and [operations plan](docs/ops-sentinel-node.md). Those artifacts own detailed requirements. This record preserves the accepted rationale; it is not proof of implementation or deployment. The external FMD v3.0.1 engine is now available and remains read-only.

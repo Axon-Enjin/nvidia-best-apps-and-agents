@@ -2,13 +2,15 @@
 
 **Project:** Sentinel Claims
 **Date:** 2026-10-21
-**Version:** 0.1
+**Version:** 0.2
 **Owner:** Yushin
 **Status:** Draft
 **Last reconciled:** 2026-10-21
 **PRD:** [Requirements](prd-sentinel-node.md)
 
-Rapid design baseline for the approved slice. It describes target architecture, not the provisional scaffold's behavior. Exact dependency versions, migration columns and executable deployment contracts are finalized when implementation resumes.
+Rapid design baseline for the approved slice. It describes target architecture, not the provisional scaffold's behavior. Finalize exact dependency versions, migration columns and executable deployment contracts before implementing each corresponding task.
+
+Implementation resumed 2026-10-21 on `feat/offline-prototype`. The [active change design](changes/offline-prototype/design.md) adds default offline operation and the local prototype sequence. Provider credentials cannot enable inference without explicit online mode. Local manual review preserves the approved completion rules. Installed versions are recorded in [the build guide](build-sentinel-node.md); local PostgreSQL/OCR packaging and the complete workflow remain pending.
 
 ## 1. Architectural Vision & Principles
 

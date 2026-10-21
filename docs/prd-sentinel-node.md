@@ -2,7 +2,7 @@
 
 **Project:** Sentinel Claims
 **Date:** 2026-10-21
-**Version:** 0.1
+**Version:** 0.2
 **Owner:** Yushin, project owner
 **Status:** Draft
 **Last reconciled:** 2026-10-21
@@ -10,6 +10,8 @@
 **BRD:** N/A; no investment or pricing decision this cycle.
 
 Approved scope is stable enough for design. Draft status preserves the distinction between accepted requirements and unverified implementation. [Dated decisions](../PILOT-DECISIONS.md) record approval provenance; this document now owns product behavior.
+
+**Implementation update, 2026-10-21:** The owner resumed building and selected an offline first local prototype as the next milestone. [The active change](changes/offline-prototype/proposal.md) and [implementation tasks](changes/offline-prototype/tasks.md) define that intermediate delivery. Complete the core correction loop with local checks and the approved manual P07 path without remote services. The eventual deployed evaluation and operational pilot gates below remain required.
 
 ## 1. Product Purpose & Value Proposition
 

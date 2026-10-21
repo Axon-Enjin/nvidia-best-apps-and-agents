@@ -1,0 +1,9 @@
+{
+ "auth_mode": "named",
+ "format": "SentinelClaim v1",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "model_configured": false,
+ "network_mode": "offline",
+ "protected": true,
+ "rule_version": "sentinel-bundle/1.0"
+}

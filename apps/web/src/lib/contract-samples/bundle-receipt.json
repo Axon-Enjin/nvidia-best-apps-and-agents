@@ -1,0 +1,14 @@
+{
+ "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+ "case_id": "10906512effe45c7bfd60a23245aa65c",
+ "coverage": [
+  {
+   "document_id": "26fa579a10564dd98ab6c05ac0851026",
+   "status": "quarantined",
+   "type": "cf2"
+  }
+ ],
+ "import_job_id": "b82ecb147d01473aa8c7e7c31281ec03",
+ "revision": 1,
+ "version": 1
+}

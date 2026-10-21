@@ -1,0 +1,13 @@
+{
+ "actor": {
+  "id": "9b32bc79559a4aedbd171f9524dd91ad",
+  "roles": [
+   "reviewer"
+  ],
+  "username": "reviewer"
+ },
+ "auth_mode": "named",
+ "authenticated": true,
+ "csrf_token": "8f23eb48b21db4685c38fb1c87283c5843cac98c7ffd7687c51bdf3206a77d2f",
+ "protected": true
+}

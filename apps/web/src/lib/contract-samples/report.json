@@ -1,0 +1,162 @@
+{
+ "bundle_id": "7909d1fc68094984ab7a47153072a974",
+ "case_id": "af3f8468bb4740cfa40ca6b75f508910",
+ "created_at": 1792625530.9133966,
+ "id": "980966e2273e4e289c7f826ad0426627",
+ "revision": 5,
+ "snapshot": {
+  "actor": "reviewer",
+  "actor_id": "9b32bc79559a4aedbd171f9524dd91ad",
+  "bundle_id": "7909d1fc68094984ab7a47153072a974",
+  "bundle_version": 1,
+  "case_id": "af3f8468bb4740cfa40ca6b75f508910",
+  "checks": [
+   {
+    "anchors": [
+     {
+      "bundle_id": "7909d1fc68094984ab7a47153072a974",
+      "document_id": "240a62206c3e4460a21def4cd8468593",
+      "field": "facility_id",
+      "line": 1,
+      "page": 1,
+      "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62",
+      "value": "SYN-FACILITY"
+     },
+     {
+      "bundle_id": "7909d1fc68094984ab7a47153072a974",
+      "document_id": "bb5ab131e76c470ab67c306166d133d6",
+      "field": "facility_id",
+      "page": 1,
+      "path": "/SampleESOA/FacilityID[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "blocking_reasons": [],
+    "differences": [],
+    "id": "P01",
+    "label": "Adult medical inpatient scope",
+    "status": "passed"
+   },
+   {
+    "anchors": [
+     {
+      "bundle_id": "7909d1fc68094984ab7a47153072a974",
+      "document_id": "bb5ab131e76c470ab67c306166d133d6",
+      "field": "facility_id",
+      "page": 1,
+      "path": "/SampleESOA/FacilityID[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "blocking_reasons": [],
+    "differences": [],
+    "id": "P06",
+    "label": "Sample eSOA arithmetic",
+    "status": "passed"
+   }
+  ],
+  "claim_ref": "SYN-CLAIM-1",
+  "completed_at": 1792625530.9110281,
+  "coverage": [
+   {
+    "document_id": "240a62206c3e4460a21def4cd8468593",
+    "problems": [],
+    "status": "readable",
+    "type": "cf2"
+   }
+  ],
+  "documents": [
+   {
+    "id": "240a62206c3e4460a21def4cd8468593",
+    "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62",
+    "type": "cf2"
+   }
+  ],
+  "events": [
+   {
+    "action": "manual_p07",
+    "actor": "reviewer",
+    "actor_id": "9b32bc79559a4aedbd171f9524dd91ad",
+    "bundle_id": "7909d1fc68094984ab7a47153072a974",
+    "created_at": 1792625530.3160973,
+    "id": "852202f092c54393ae51ece4ea4d30bd",
+    "payload": {
+     "anchors": [
+      {
+       "document_id": "240a62206c3e4460a21def4cd8468593",
+       "page": 1
+      }
+     ],
+     "check_id": "",
+     "department": "",
+     "expectation_id": "",
+     "person": "",
+     "reason": "Compared narratives",
+     "task_id": ""
+    },
+    "revision": 2,
+    "rule_version": "SAMPLE-ADULT-MEDICAL-1/1"
+   },
+   {
+    "action": "supervisor_ack",
+    "actor": "supervisor",
+    "actor_id": "e9e6d3b3d83d43ada673ce46ba4be5cd",
+    "bundle_id": "7909d1fc68094984ab7a47153072a974",
+    "created_at": 1792625530.7530777,
+    "id": "db4089be221d46dc9fa6457b09c3cb9f",
+    "payload": {
+     "anchors": [],
+     "check_id": "",
+     "department": "",
+     "expectation_id": "",
+     "person": "",
+     "reason": "Acknowledged the named comparison",
+     "task_id": ""
+    },
+    "revision": 4,
+    "rule_version": "SAMPLE-ADULT-MEDICAL-1/1"
+   }
+  ],
+  "findings": [
+   {
+    "anchors": [
+     {
+      "bundle_id": "7909d1fc68094984ab7a47153072a974",
+      "document_id": "240a62206c3e4460a21def4cd8468593",
+      "field": "facility_id",
+      "line": 1,
+      "page": 1,
+      "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62",
+      "value": "SYN-FACILITY"
+     },
+     {
+      "bundle_id": "7909d1fc68094984ab7a47153072a974",
+      "document_id": "bb5ab131e76c470ab67c306166d133d6",
+      "field": "facility_id",
+      "page": 1,
+      "path": "/SampleESOA/FacilityID[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "code": "P07",
+    "explanation": "Record source-backed manual comparison and separate supervisor acknowledgement.",
+    "id": "P07",
+    "resolution_status": "passed",
+    "rule": "SAMPLE-ADULT-MEDICAL-1/1",
+    "severity": "blocking",
+    "title": "Narrative agreement"
+   }
+  ],
+  "model_status": "not_run_offline",
+  "outcome": "Ready for final submission review",
+  "patient_id": "SYN-PATIENT-1",
+  "provenance": "Synthetic patient records; internal sample profile; no payer approval.",
+  "revision": 5,
+  "rule_version": "SAMPLE-ADULT-MEDICAL-1/1",
+  "tasks": []
+ },
+ "stale": false
+}

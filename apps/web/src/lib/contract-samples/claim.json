@@ -1,0 +1,412 @@
+{
+ "assignee_id": "9b32bc79559a4aedbd171f9524dd91ad",
+ "bundles": [
+  {
+   "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+   "case_id": "10906512effe45c7bfd60a23245aa65c",
+   "coverage": [
+    {
+     "document_id": "26fa579a10564dd98ab6c05ac0851026",
+     "status": "quarantined",
+     "type": "cf2"
+    }
+   ],
+   "import_job_id": "b82ecb147d01473aa8c7e7c31281ec03",
+   "revision": 1,
+   "version": 1
+  }
+ ],
+ "claim_ref": "SYN-CLAIM-1",
+ "current_bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+ "encounter_ref": "SYN-ENCOUNTER-1",
+ "facility_id": "SYN-FACILITY",
+ "history": [
+  {
+   "attempts": 1,
+   "chart_name": "",
+   "claim_id": "10906512effe45c7bfd60a23245aa65c",
+   "created_at": 1792625518.2902825,
+   "error": null,
+   "finished_at": 1792625524.780006,
+   "id": "b82ecb147d01473aa8c7e7c31281ec03",
+   "result": {
+    "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+    "checks": [
+     {
+      "anchors": [
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "26fa579a10564dd98ab6c05ac0851026",
+        "field": "facility_id",
+        "line": 1,
+        "page": 1,
+        "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+        "value": "SYN-FACILITY"
+       },
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+        "field": "facility_id",
+        "page": 1,
+        "path": "/SampleESOA/FacilityID[1]",
+        "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+        "value": "SYN-FACILITY"
+       }
+      ],
+      "blocking_reasons": [],
+      "differences": [],
+      "id": "P01",
+      "label": "Adult medical inpatient scope",
+      "status": "passed"
+     },
+     {
+      "anchors": [
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "26fa579a10564dd98ab6c05ac0851026",
+        "field": "facility_id",
+        "line": 1,
+        "page": 1,
+        "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+        "value": "SYN-FACILITY"
+       },
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+        "field": "facility_id",
+        "page": 1,
+        "path": "/SampleESOA/FacilityID[1]",
+        "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+        "value": "SYN-FACILITY"
+       }
+      ],
+      "blocking_reasons": [
+       "Require exactly one readable matched cf2."
+      ],
+      "differences": [],
+      "id": "P02",
+      "label": "Seven core artifacts",
+      "status": "incomplete"
+     },
+     {
+      "anchors": [
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "26fa579a10564dd98ab6c05ac0851026",
+        "field": "dob",
+        "line": 8,
+        "page": 1,
+        "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+        "value": "1980-04-12"
+       },
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+        "field": "dob",
+        "page": 1,
+        "path": "/SampleESOA/DOB[1]",
+        "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+        "value": "1980-04-12"
+       }
+      ],
+      "blocking_reasons": [
+       "Conflicting discharge_date values across sources."
+      ],
+      "differences": [
+       {
+        "expected": null,
+        "field": "discharge_date",
+        "sources": [
+         {
+          "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+          "document_id": "26fa579a10564dd98ab6c05ac0851026",
+          "page": 1,
+          "type": "cf2",
+          "value": "2026-10-14"
+         }
+        ]
+       }
+      ],
+      "id": "P05",
+      "label": "Dates and disposition",
+      "status": "flagged"
+     },
+     {
+      "anchors": [
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+        "field": "facility_id",
+        "page": 1,
+        "path": "/SampleESOA/FacilityID[1]",
+        "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+        "value": "SYN-FACILITY"
+       }
+      ],
+      "blocking_reasons": [],
+      "differences": [],
+      "id": "P06",
+      "label": "Sample eSOA arithmetic",
+      "status": "passed"
+     }
+    ],
+    "coverage": [
+     {
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "problems": [
+       "Confirm legible printed values against the original. Handwriting is unsupported."
+      ],
+      "status": "needs_confirmation",
+      "type": "cf2"
+     },
+     {
+      "document_id": "e8e91a3b2e054f5ea7d0b59c2c360696",
+      "problems": [],
+      "status": "readable",
+      "type": "cf4"
+     }
+    ],
+    "fields": {
+     "claim_id": "SYN-CLAIM-1",
+     "patient_id": "SYN-PATIENT-1"
+    },
+    "findings": [
+     {
+      "anchors": [
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "26fa579a10564dd98ab6c05ac0851026",
+        "field": "facility_id",
+        "line": 1,
+        "page": 1,
+        "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+        "value": "SYN-FACILITY"
+       },
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+        "field": "facility_id",
+        "page": 1,
+        "path": "/SampleESOA/FacilityID[1]",
+        "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+        "value": "SYN-FACILITY"
+       }
+      ],
+      "code": "P02",
+      "explanation": "Require exactly one readable matched cf2.",
+      "id": "P02",
+      "rule": "SAMPLE-ADULT-MEDICAL-1/1",
+      "severity": "blocking",
+      "title": "Seven core artifacts"
+     }
+    ],
+    "model_status": "not_run_offline",
+    "outcome": "incomplete",
+    "profile_status": "evaluated",
+    "rule_version": "SAMPLE-ADULT-MEDICAL-1/1"
+   },
+   "status": "succeeded",
+   "use_model": false,
+   "xml_name": ""
+  }
+ ],
+ "id": "10906512effe45c7bfd60a23245aa65c",
+ "latest": {
+  "attempts": 1,
+  "chart_hash": null,
+  "chart_name": "",
+  "chart_text": "",
+  "claim_id": "10906512effe45c7bfd60a23245aa65c",
+  "created_at": 1792625518.2902825,
+  "error": null,
+  "finished_at": 1792625524.780006,
+  "id": "b82ecb147d01473aa8c7e7c31281ec03",
+  "result": {
+   "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+   "checks": [
+    {
+     "anchors": [
+      {
+       "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+       "document_id": "26fa579a10564dd98ab6c05ac0851026",
+       "field": "facility_id",
+       "line": 1,
+       "page": 1,
+       "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+       "value": "SYN-FACILITY"
+      },
+      {
+       "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+       "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+       "field": "facility_id",
+       "page": 1,
+       "path": "/SampleESOA/FacilityID[1]",
+       "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+       "value": "SYN-FACILITY"
+      }
+     ],
+     "blocking_reasons": [],
+     "differences": [],
+     "id": "P01",
+     "label": "Adult medical inpatient scope",
+     "status": "passed"
+    },
+    {
+     "anchors": [
+      {
+       "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+       "document_id": "26fa579a10564dd98ab6c05ac0851026",
+       "field": "facility_id",
+       "line": 1,
+       "page": 1,
+       "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+       "value": "SYN-FACILITY"
+      },
+      {
+       "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+       "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+       "field": "facility_id",
+       "page": 1,
+       "path": "/SampleESOA/FacilityID[1]",
+       "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+       "value": "SYN-FACILITY"
+      }
+     ],
+     "blocking_reasons": [
+      "Require exactly one readable matched cf2."
+     ],
+     "differences": [],
+     "id": "P02",
+     "label": "Seven core artifacts",
+     "status": "incomplete"
+    },
+    {
+     "anchors": [
+      {
+       "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+       "document_id": "26fa579a10564dd98ab6c05ac0851026",
+       "field": "dob",
+       "line": 8,
+       "page": 1,
+       "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+       "value": "1980-04-12"
+      },
+      {
+       "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+       "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+       "field": "dob",
+       "page": 1,
+       "path": "/SampleESOA/DOB[1]",
+       "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+       "value": "1980-04-12"
+      }
+     ],
+     "blocking_reasons": [
+      "Conflicting discharge_date values across sources."
+     ],
+     "differences": [
+      {
+       "expected": null,
+       "field": "discharge_date",
+       "sources": [
+        {
+         "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+         "document_id": "26fa579a10564dd98ab6c05ac0851026",
+         "page": 1,
+         "type": "cf2",
+         "value": "2026-10-14"
+        }
+       ]
+      }
+     ],
+     "id": "P05",
+     "label": "Dates and disposition",
+     "status": "flagged"
+    },
+    {
+     "anchors": [
+      {
+       "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+       "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+       "field": "facility_id",
+       "page": 1,
+       "path": "/SampleESOA/FacilityID[1]",
+       "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+       "value": "SYN-FACILITY"
+      }
+     ],
+     "blocking_reasons": [],
+     "differences": [],
+     "id": "P06",
+     "label": "Sample eSOA arithmetic",
+     "status": "passed"
+    }
+   ],
+   "coverage": [
+    {
+     "document_id": "26fa579a10564dd98ab6c05ac0851026",
+     "problems": [
+      "Confirm legible printed values against the original. Handwriting is unsupported."
+     ],
+     "status": "needs_confirmation",
+     "type": "cf2"
+    },
+    {
+     "document_id": "e8e91a3b2e054f5ea7d0b59c2c360696",
+     "problems": [],
+     "status": "readable",
+     "type": "cf4"
+    }
+   ],
+   "fields": {
+    "claim_id": "SYN-CLAIM-1",
+    "patient_id": "SYN-PATIENT-1"
+   },
+   "findings": [
+    {
+     "anchors": [
+      {
+       "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+       "document_id": "26fa579a10564dd98ab6c05ac0851026",
+       "field": "facility_id",
+       "line": 1,
+       "page": 1,
+       "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+       "value": "SYN-FACILITY"
+      },
+      {
+       "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+       "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+       "field": "facility_id",
+       "page": 1,
+       "path": "/SampleESOA/FacilityID[1]",
+       "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+       "value": "SYN-FACILITY"
+      }
+     ],
+     "code": "P02",
+     "explanation": "Require exactly one readable matched cf2.",
+     "id": "P02",
+     "rule": "SAMPLE-ADULT-MEDICAL-1/1",
+     "severity": "blocking",
+     "title": "Seven core artifacts"
+    }
+   ],
+   "model_status": "not_run_offline",
+   "outcome": "incomplete",
+   "profile_status": "evaluated",
+   "rule_version": "SAMPLE-ADULT-MEDICAL-1/1"
+  },
+  "reviews": {},
+  "status": "succeeded",
+  "use_model": false,
+  "xml_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "xml_name": "",
+  "xml_text": ""
+ },
+ "patient_id": "SYN-PATIENT-1",
+ "reference": "SYN-CLAIM-1",
+ "revision": 1,
+ "sample": false,
+ "state": "In review"
+}

@@ -1,0 +1,11 @@
+{
+ "assignee_id": "9b32bc79559a4aedbd171f9524dd91ad",
+ "claim_ref": "SYN-CLAIM-1",
+ "current_bundle_id": null,
+ "encounter_ref": "SYN-ENCOUNTER-1",
+ "facility_id": "SYN-FACILITY",
+ "id": "10906512effe45c7bfd60a23245aa65c",
+ "patient_id": "SYN-PATIENT-1",
+ "revision": 0,
+ "state": "Received"
+}

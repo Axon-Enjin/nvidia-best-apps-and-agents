@@ -1,0 +1,25 @@
+{
+ "items": [
+  {
+   "assignee_id": "9b32bc79559a4aedbd171f9524dd91ad",
+   "created_at": 1792625518.1723347,
+   "current_bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+   "finding_count": 4,
+   "id": "10906512effe45c7bfd60a23245aa65c",
+   "job_id": "b82ecb147d01473aa8c7e7c31281ec03",
+   "model_status": "not_run_offline",
+   "outcome": "needs_review",
+   "patient_id": "SYN-PATIENT-1",
+   "pending_count": 4,
+   "reference": "SYN-CLAIM-1",
+   "revision": 4,
+   "sample": false,
+   "state": "In review",
+   "status": "succeeded",
+   "use_model": false
+  }
+ ],
+ "limit": 50,
+ "offset": 0,
+ "total": 1
+}

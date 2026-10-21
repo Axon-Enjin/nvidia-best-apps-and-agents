@@ -1,0 +1,193 @@
+{
+ "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+ "case_id": "10906512effe45c7bfd60a23245aa65c",
+ "coverage": [
+  {
+   "document_id": "26fa579a10564dd98ab6c05ac0851026",
+   "problems": [
+    "Confirm legible printed values against the original. Handwriting is unsupported."
+   ],
+   "status": "needs_confirmation",
+   "type": "cf2"
+  },
+  {
+   "document_id": "e8e91a3b2e054f5ea7d0b59c2c360696",
+   "problems": [],
+   "status": "readable",
+   "type": "cf4"
+  }
+ ],
+ "documents": [
+  {
+   "byte_count": 108067,
+   "content_type": "image/png",
+   "extraction": {
+    "anchors": [
+     {
+      "field": "facility_id",
+      "line": 1,
+      "page": 1,
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "english_sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+    "extractor": "tesseract/5.5.3.20260724",
+    "fields": {
+     "admission_date": "2026-10-10",
+     "admission_reason": "Synthetic fever",
+     "claim_ref": "SYN-CLAIM-1",
+     "course": "Improved",
+     "diagnosis": "Synthetic pneumonia",
+     "diagnosis_code": "J18.9",
+     "discharge_date": "2026-10-14",
+     "disposition": "Discharged",
+     "dob": "1980-04-12",
+     "encounter_ref": "SYN-ENCOUNTER-1",
+     "facility_id": "SYN-FACILITY",
+     "mark": "Fictional sample mark",
+     "outcome": "Improved",
+     "patient_id": "SYN-PATIENT-1",
+     "printed_name": "Sample Signatory",
+     "scope": "adult medical inpatient",
+     "signed_date": "2026-10-14",
+     "treatment": "Sample treatment"
+    },
+    "pages": [
+     "Facility ID: SYN-FACILITY\r\nEncounter Ref: SYN-ENCOUNTER-1\r\nClaim Ref: SYN-CLAIM-1\r\n\r\nPatient ID: SYN-PATIENT-1\r\n\r\nScope: adult medical inpatient\r\nDOB: 1980-04-12\r\n\r\nAdmission Date: 2026-10-10\r\nDischarge Date: 2026-10-14\r\nDiagnosis: Synthetic pneumonia\r\nDiagnosis Code: J18.9\r\nDisposition: Discharged\r\nAdmission Reason: Synthetic fever\r\nCourse: Improved\r\n\r\nTreatment: Sample treatment\r\nOutcome: Improved\r\n\r\nMark: Fictional sample mark\r\nPrinted Name: Sample Signatory\r\nSigned Date: 2026-10-14\r\n"
+    ],
+    "requires_confirmation": true
+   },
+   "filename": "printed-cf2.png",
+   "id": "26fa579a10564dd98ab6c05ac0851026",
+   "page_count": 1,
+   "problems": [
+    "Confirm legible printed values against the original. Handwriting is unsupported."
+   ],
+   "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+   "status": "needs_confirmation",
+   "type": "cf2"
+  },
+  {
+   "byte_count": 464,
+   "content_type": "text/plain",
+   "extraction": {
+    "anchors": [
+     {
+      "field": "facility_id",
+      "line": 1,
+      "page": 1,
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "extractor": "local-text/1",
+    "fields": {
+     "admission_date": "2026-10-10",
+     "admission_reason": "Synthetic fever",
+     "claim_ref": "SYN-CLAIM-1",
+     "course": "Improved",
+     "diagnosis": "Synthetic pneumonia",
+     "diagnosis_code": "J18.9",
+     "discharge_date": "2026-10-14",
+     "disposition": "Discharged",
+     "dob": "1980-04-12",
+     "encounter_ref": "SYN-ENCOUNTER-1",
+     "facility_id": "SYN-FACILITY",
+     "mark": "Fictional sample mark",
+     "outcome": "Improved",
+     "patient_id": "SYN-PATIENT-1",
+     "printed_name": "Sample Signatory",
+     "scope": "adult medical inpatient",
+     "signed_date": "2026-10-14",
+     "treatment": "Sample treatment"
+    },
+    "pages": [
+     "Facility ID: SYN-FACILITY\nEncounter Ref: SYN-ENCOUNTER-1\nClaim Ref: SYN-CLAIM-1\nPatient ID: SYN-PATIENT-1\nScope: adult medical inpatient\nDOB: 1980-04-12\nAdmission Date: 2026-10-10\nDischarge Date: 2026-10-14\nDiagnosis: Synthetic pneumonia\nDiagnosis Code: J18.9\nDisposition: Discharged\nAdmission Reason: Synthetic fever\nCourse: Improved\nTreatment: Sample treatment\nOutcome: Improved\nMark: Fictional sample mark\nPrinted Name: Sample Signatory\nSigned Date: 2026-10-14\n"
+    ]
+   },
+   "filename": "cf4.txt",
+   "id": "e8e91a3b2e054f5ea7d0b59c2c360696",
+   "page_count": 1,
+   "problems": [],
+   "sha256": "76b79b24cc9c25d882ca788e53af97d6260bde8a43c340ccf7cbf67b317b3d62",
+   "status": "readable",
+   "type": "cf4"
+  },
+  {
+   "byte_count": 814,
+   "content_type": "application/xml",
+   "extraction": {
+    "anchors": [
+     {
+      "field": "facility_id",
+      "page": 1,
+      "path": "/SampleESOA/FacilityID[1]",
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "extractor": "local-text/1",
+    "fields": {
+     "admission_date": "2026-10-10",
+     "admission_reason": "Synthetic fever",
+     "claim_ref": "SYN-CLAIM-1",
+     "course": "Improved",
+     "currency": "PHP",
+     "diagnosis": "Synthetic pneumonia",
+     "diagnosis_code": "J18.9",
+     "discharge_date": "2026-10-14",
+     "disposition": "Discharged",
+     "dob": "1980-04-12",
+     "encounter_ref": "SYN-ENCOUNTER-1",
+     "facility_id": "SYN-FACILITY",
+     "mark": "Fictional sample mark",
+     "outcome": "Improved",
+     "patient_id": "SYN-PATIENT-1",
+     "printed_name": "Sample Signatory",
+     "scope": "adult medical inpatient",
+     "signed_date": "2026-10-14",
+     "total": "90.00",
+     "treatment": "Sample treatment"
+    },
+    "financial": {
+     "currency": "PHP",
+     "lines": [
+      {
+       "discount": "10.00",
+       "gross": "100.00"
+      }
+     ],
+     "total": "90.00"
+    },
+    "pages": [
+     "<SampleESOA version=\"1\"><FacilityID>SYN-FACILITY</FacilityID><EncounterRef>SYN-ENCOUNTER-1</EncounterRef><ClaimRef>SYN-CLAIM-1</ClaimRef><PatientID>SYN-PATIENT-1</PatientID><Scope>adult medical inpatient</Scope><DOB>1980-04-12</DOB><AdmissionDate>2026-10-10</AdmissionDate><DischargeDate>2026-10-14</DischargeDate><Diagnosis>Synthetic pneumonia</Diagnosis><DiagnosisCode>J18.9</DiagnosisCode><Disposition>Discharged</Disposition><AdmissionReason>Synthetic fever</AdmissionReason><Course>Improved</Course><Treatment>Sample treatment</Treatment><Outcome>Improved</Outcome><Mark>Fictional sample mark</Mark><PrintedName>Sample Signatory</PrintedName><SignedDate>2026-10-14</SignedDate><Currency>PHP</Currency><Lines><Line><Gross>100.00</Gross><Discount>10.00</Discount></Line></Lines><Total>90.00</Total></SampleESOA>"
+    ],
+    "xml_root": "SampleESOA"
+   },
+   "filename": "esoa.xml",
+   "id": "4b055f963ca4416189c928a8dd4c0b2a",
+   "page_count": 1,
+   "problems": [],
+   "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+   "status": "readable",
+   "type": "esoa"
+  }
+ ],
+ "import_job_id": "b82ecb147d01473aa8c7e7c31281ec03",
+ "manifest": {
+  "claim_ref": "SYN-CLAIM-1",
+  "documents": [
+   {
+    "filename": "printed-cf2.png",
+    "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+    "type": "cf2"
+   }
+  ],
+  "encounter_ref": "SYN-ENCOUNTER-1",
+  "facility_id": "SYN-FACILITY",
+  "patient_id": "SYN-PATIENT-1"
+ },
+ "manifest_hash": "917e9a3c1aa7966380b0eb3db4ee0d0f45d280ab09b5ef9d2fe1bb62b8b5c58c",
+ "profile_version": "SAMPLE-ADULT-MEDICAL-1",
+ "revision": 1,
+ "status": "incomplete",
+ "version": 1
+}

@@ -1,0 +1,367 @@
+{
+ "confirmation_id": "dffe1e8f208c4a5bbcd918eb99bbcf85",
+ "review_state": {
+  "blockers": [
+   {
+    "id": "P01",
+    "reasons": [
+     "Confirm the birth and admission dates against source."
+    ]
+   }
+  ],
+  "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+  "bundle_version": 1,
+  "can_finalize": false,
+  "checks": [
+   {
+    "anchors": [
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "facility_id",
+      "line": 1,
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "SYN-FACILITY"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "confirmation_id": "dffe1e8f208c4a5bbcd918eb99bbcf85",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "admission_date",
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "2026-10-10"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+      "field": "facility_id",
+      "page": 1,
+      "path": "/SampleESOA/FacilityID[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "blocking_reasons": [
+     "Confirm the birth and admission dates against source."
+    ],
+    "differences": [],
+    "id": "P01",
+    "label": "Adult medical inpatient scope",
+    "status": "incomplete"
+   },
+   {
+    "anchors": [
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "facility_id",
+      "line": 1,
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "SYN-FACILITY"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+      "field": "facility_id",
+      "page": 1,
+      "path": "/SampleESOA/FacilityID[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "blocking_reasons": [],
+    "differences": [],
+    "id": "P04",
+    "label": "Patient and encounter agreement",
+    "status": "passed"
+   },
+   {
+    "anchors": [
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "dob",
+      "line": 8,
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "1980-04-12"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "confirmation_id": "dffe1e8f208c4a5bbcd918eb99bbcf85",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "admission_date",
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "2026-10-10"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+      "field": "dob",
+      "page": 1,
+      "path": "/SampleESOA/DOB[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "1980-04-12"
+     }
+    ],
+    "blocking_reasons": [
+     "Conflicting discharge_date values across sources."
+    ],
+    "differences": [
+     {
+      "expected": null,
+      "field": "discharge_date",
+      "sources": [
+       {
+        "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+        "document_id": "e8e91a3b2e054f5ea7d0b59c2c360696",
+        "page": 1,
+        "type": "cf4",
+        "value": "2026-10-14"
+       }
+      ]
+     }
+    ],
+    "id": "P05",
+    "label": "Dates and disposition",
+    "status": "flagged"
+   },
+   {
+    "anchors": [
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+      "field": "facility_id",
+      "page": 1,
+      "path": "/SampleESOA/FacilityID[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "blocking_reasons": [],
+    "differences": [],
+    "id": "P06",
+    "label": "Sample eSOA arithmetic",
+    "status": "passed"
+   },
+   {
+    "anchors": [
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "mark",
+      "line": 21,
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "Fictional sample mark"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+      "field": "mark",
+      "page": 1,
+      "path": "/SampleESOA/Mark[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "Fictional sample mark"
+     }
+    ],
+    "blocking_reasons": [
+     "cf2: missing/unknown mark"
+    ],
+    "differences": [],
+    "id": "P08",
+    "label": "Marks, printed signatory and date",
+    "status": "incomplete"
+   },
+   {
+    "anchors": [
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "facility_id",
+      "line": 1,
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "SYN-FACILITY"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "confirmation_id": "dffe1e8f208c4a5bbcd918eb99bbcf85",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "admission_date",
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "2026-10-10"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+      "field": "facility_id",
+      "page": 1,
+      "path": "/SampleESOA/FacilityID[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "blocking_reasons": [],
+    "differences": [],
+    "id": "P09",
+    "label": "Expected extra attachments",
+    "status": "passed"
+   }
+  ],
+  "confirmations": [
+   {
+    "confirmed": {
+     "admission_date": {
+      "actor_id": "9b32bc79559a4aedbd171f9524dd91ad",
+      "confirmation_id": "dffe1e8f208c4a5bbcd918eb99bbcf85",
+      "page": 1,
+      "value": "2026-10-10"
+     }
+    },
+    "document_id": "26fa579a10564dd98ab6c05ac0851026",
+    "fields": [
+     "admission_date"
+    ],
+    "pending": [
+     "admission_reason"
+    ],
+    "status": "needs_confirmation",
+    "type": "cf2"
+   },
+   {
+    "confirmed": {},
+    "document_id": "e8e91a3b2e054f5ea7d0b59c2c360696",
+    "fields": [
+     "admission_date"
+    ],
+    "pending": [],
+    "status": "readable",
+    "type": "cf4"
+   }
+  ],
+  "coverage": [
+   {
+    "document_id": "26fa579a10564dd98ab6c05ac0851026",
+    "problems": [
+     "Confirm legible printed values against the original. Handwriting is unsupported."
+    ],
+    "status": "needs_confirmation",
+    "type": "cf2"
+   },
+   {
+    "document_id": "e8e91a3b2e054f5ea7d0b59c2c360696",
+    "problems": [],
+    "status": "readable",
+    "type": "cf4"
+   }
+  ],
+  "events": [
+   {
+    "action": "extraction_confirmed",
+    "actor": "reviewer",
+    "actor_id": "9b32bc79559a4aedbd171f9524dd91ad",
+    "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+    "created_at": 1792625525.2147384,
+    "id": "d617cdcd68084d08b6e9f8972188fc65",
+    "payload": {
+     "anchor": {
+      "field": "admission_date",
+      "page": 1
+     },
+     "confirmation_id": "dffe1e8f208c4a5bbcd918eb99bbcf85",
+     "document_id": "26fa579a10564dd98ab6c05ac0851026",
+     "reason": "Read the legible printed source",
+     "value": "2026-10-10"
+    },
+    "revision": 2,
+    "rule_version": "SAMPLE-ADULT-MEDICAL-1/1"
+   }
+  ],
+  "expectations": [],
+  "fields": {
+   "claim_id": "SYN-CLAIM-1",
+   "patient_id": "SYN-PATIENT-1"
+  },
+  "findings": [
+   {
+    "anchors": [
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "facility_id",
+      "line": 1,
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "SYN-FACILITY"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "confirmation_id": "dffe1e8f208c4a5bbcd918eb99bbcf85",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "admission_date",
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "2026-10-10"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+      "field": "facility_id",
+      "page": 1,
+      "path": "/SampleESOA/FacilityID[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "SYN-FACILITY"
+     }
+    ],
+    "code": "P01",
+    "explanation": "Confirm the birth and admission dates against source. Facility, encounter, claim and patient anchors are required.",
+    "id": "P01",
+    "resolution_status": "incomplete",
+    "rule": "SAMPLE-ADULT-MEDICAL-1/1",
+    "severity": "blocking",
+    "title": "Adult medical inpatient scope"
+   },
+   {
+    "anchors": [
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "26fa579a10564dd98ab6c05ac0851026",
+      "field": "mark",
+      "line": 21,
+      "page": 1,
+      "sha256": "e2a0d4efdc131bf70fa4b065a173548c35f0dfd3067c2f34e77e9309036bb60e",
+      "value": "Fictional sample mark"
+     },
+     {
+      "bundle_id": "30c5b5cf80fa456c864692cb89343cbe",
+      "document_id": "4b055f963ca4416189c928a8dd4c0b2a",
+      "field": "mark",
+      "page": 1,
+      "path": "/SampleESOA/Mark[1]",
+      "sha256": "cdaa57ddb446087eb075343025a4096baadd59b83d12c54f8168421c3db3e04c",
+      "value": "Fictional sample mark"
+     }
+    ],
+    "code": "P08",
+    "explanation": "cf2: missing/unknown mark cf2: missing/unknown printed_name cf2: missing/unknown signed_date Named manual presence review is required.",
+    "id": "P08",
+    "resolution_status": "incomplete",
+    "rule": "SAMPLE-ADULT-MEDICAL-1/1",
+    "severity": "blocking",
+    "title": "Marks, printed signatory and date"
+   }
+  ],
+  "model_status": "not_run_offline",
+  "outcome": "incomplete",
+  "profile_status": "evaluated",
+  "revision": 2,
+  "rule_version": "SAMPLE-ADULT-MEDICAL-1/1",
+  "tasks": []
+ }
+}

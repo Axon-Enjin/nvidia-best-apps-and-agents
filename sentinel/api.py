@@ -41,6 +41,7 @@ from sentinel.bundles import (
     read_source,
 )
 from sentinel.config import Settings, migrate
+from sentinel.confirmations import ConfirmationInput, confirm_extraction
 from sentinel.db import AccessEvent, Account, Bundle, Claim, Database, Job, ReportSnapshot, Review
 from sentinel.documents import MAX_FILE_BYTES, extract_chart
 from sentinel.reports import export_report, finalize_review, get_report, metrics, report_public
@@ -381,6 +382,19 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
         filename, original = read_source(db, settings, actor, document_id)
         return Response(original, media_type="application/octet-stream",
                         headers={"Content-Disposition": f"attachment; filename=source; filename*=UTF-8''{quote(filename, safe='')}"})
+
+    @app.post("/api/documents/{document_id}/confirm")
+    def confirm_source(document_id: str, body: ConfirmationInput, actor: Actor = Depends(require_actor)):
+        return confirm_extraction(db, actor, document_id, body.anchor, body.value, body.reason, body.expected_revision, body.source_kind)
+
+    @app.get("/api/documents/{document_id}/preview")
+    def preview_source(document_id: str, actor: Actor = Depends(require_actor)):
+        from sentinel.document_parser import detect_type
+        _, content = read_source(db, settings, actor, document_id)
+        kind = detect_type(content)
+        if kind not in {"image/png", "image/jpeg", "application/pdf"}:
+            raise HTTPException(422,"Preview supports PNG, JPEG and PDF. Download other originals.")
+        return Response(content, media_type=kind)
 
     @app.get("/api/assignees")
     def assignees(actor: Actor = Depends(require_actor)):

@@ -134,7 +134,7 @@ def extract(content):
     return result
 
 
-def restrict_parser():
+def restrict_parser(allowed_executable=None):
     """Apply a process memory cap before a potentially explosive PDF/XML parse."""
     if os.name == "nt":
         import ctypes
@@ -171,7 +171,7 @@ def restrict_parser():
         resource.setrlimit(resource.RLIMIT_CPU, (10, 10))
 
     def audit(event, args):
-        if event in {"socket.connect", "socket.getaddrinfo", "subprocess.Popen"}:
+        if event in {"socket.connect", "socket.getaddrinfo"} or (event == "subprocess.Popen" and args[0] != allowed_executable):
             raise PermissionError("Parser network and subprocess access is disabled.")
     sys.addaudithook(audit)
 

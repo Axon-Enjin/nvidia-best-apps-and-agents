@@ -1,0 +1,11 @@
+# Local printed OCR
+
+Windows development uses Tesseract 5.5.3.20260724 from the official Tesseract release, extracted into ignored `data/tools/tesseract`. Run `uv run --locked python scripts/install_ocr.py` while connected, then disconnect. The script verifies pinned SHA-256 values before executing the archive tools and never runs an installer. No administrator access or PATH change is needed. Set `OCR_BINARY` for another installed binary and `OCR_EXPECTED_VERSION` to its pinned version.
+
+The English model is `tessdata_fast` tag 4.1.0, SHA-256 `7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2`. OCR checks the model hash before every extraction. Linux packaging selects Debian Tesseract 5.5.0-1 and the same model; its execution is a separate acceptance gate.
+
+Tesseract and English traineddata use Apache-2.0. Keep the extracted documentation and bundled third-party notices with any redistributed binaries. The development extractor uses 7-Zip 26.05 (LGPL with the unRAR restriction); it is installation tooling only. PDF rendering uses the locked pypdfium2/PDFium wheels, whose bundled license files cover the wrapper and its upstream components. Pillow includes its HPND license in the installed distribution.
+
+Sources: [Tesseract installation/license](https://tesseract-ocr.github.io/tessdoc/Installation.html), [official Windows release](https://github.com/tesseract-ocr/tesseract/releases/tag/5.5.3), [English model](https://github.com/tesseract-ocr/tessdata_fast/tree/4.1.0), [7-Zip licensing](https://www.7-zip.org/license.txt), [pypdfium2 licensing](https://github.com/pypdfium2-team/pypdfium2#licensing), [Debian package](https://packages.debian.org/trixie/tesseract-ocr).
+
+Supported OCR inputs are legible printed PNG/JPEG and image-only/mixed PDFs, up to 20 OCR pages per document and 40 million pixels per page, within the bundle limits. The full source remains preserved when a bound is exceeded. Each OCR field needs source confirmation; all core checks remain blocked when required values are absent. Handwriting, authenticity and legal-signature certification are unsupported. The scan fixtures are raster renderings of fictional printed forms, with no embedded text in the scan PDF.

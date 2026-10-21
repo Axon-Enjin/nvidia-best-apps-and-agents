@@ -3,7 +3,7 @@
 **Date:** 2026-10-21
 **Overall:** FAIL
 
-FAIL means the complete prototype is not finished. Tasks 1-7 are verified; Tasks 8-10 remain pending. Do not archive or report the entire change complete.
+FAIL means the complete prototype is not finished. Tasks 1-8 are verified; Tasks 9-10 remain pending. Do not archive or report the entire change complete.
 
 ## Completeness
 
@@ -102,3 +102,13 @@ FAIL means the complete prototype is not finished. Tasks 1-7 are verified; Tasks
 - Finalization locks the current case through guard evaluation, snapshot creation and final event. Snapshots retain actors, source hashes, checks/findings/decisions, manual/AI coverage and sample provenance. Later revisions mark reports stale; old snapshots remain inspectable.
 - Legacy versioned-job JSON export is denied so it cannot bypass finalization.
 - Queue, completion and correction-duration metrics derive from assigned cases and stored events, with case/correction/duration denominators.
+
+## Task 8 evidence
+
+- RED: four scenarios failed for absent OCR/confirmation contracts and unsupported scan status. GREEN: real printed PNG and image-only PDF extraction, pinned engine/model, missing binary, blank print, separate source confirmation and handwriting rejection pass. Full suite: 110 passed, one existing warning, in 161.53 seconds.
+- Windows engine: Tesseract 5.5.3.20260724 with leptonica 1.87.0. Official release SHA-256 bee9e3434bd94fd65387d9be28cd467a41f61b1275383b55b0f59a1331270ae4 verified against GitHub release metadata. English tessdata_fast 4.1.0 hash is pinned in code and OCR-NOTICES.md. Pillow 12.3.0 and pypdfium2 5.14.0 are locked.
+- Windows canceled installer execution. Extracting verified official binaries using verified 7-Zip required no administrator/PATH changes. The repeatable install_ocr.py command subsequently ran successfully. One attempted rerun while OCR held the executable open was blocked by Windows; the stopped-process rerun passed.
+- Local process isolation bounds text, pixels, pages, time and memory. OCR supports at most 20 pages/document and 40 million pixels/page; excess is explicit incomplete, never truncated. Original, OCR candidates and source-confirmed values remain separate. Every scan candidate requires source confirmation; later confirmations reopen manual review.
+- Source previews and confirmation controls are local and authorized. No claim of handwriting recognition, authenticity or clinical validation is made. Linux/container OCR execution remains Task 9.
+- Primary references: [Tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html), [pypdfium2 API and process guidance](https://pypdfium2.readthedocs.io/en/stable/python_api.html) and [Debian package](https://packages.debian.org/trixie/tesseract-ocr). Licenses and install commands are in OCR-NOTICES.md.
+- Ruling: require confirmation of every OCR candidate, beyond only critical fields, until scan quality is measured. Cost if wrong: reviewer effort; relax only with quality evidence.

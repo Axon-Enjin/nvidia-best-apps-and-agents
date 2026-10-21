@@ -6,7 +6,7 @@ from sqlalchemy import update
 
 from sentinel.bundles import MAX_BUNDLE_PAGES, REQUIRED_TYPES, ordered_documents
 from sentinel.db import Bundle, Claim, Document, Job
-from sentinel.documents import extract_original
+from sentinel.ocr import extract_document
 from sentinel.profile import evaluate_profile
 from sentinel.storage import PrivateStorage
 
@@ -22,7 +22,7 @@ def process_bundle_job(db, settings, job_id, token):
     for document in documents:
         try:
             content = storage.read(document.object_key, document.source_hash)
-            result = extract_original(content)
+            result = extract_document(content)
         except HTTPException:
             result = {"status": "unreadable", "content_type": "application/octet-stream", "page_count": 0,
                       "problems": ["Original source is missing or damaged; recovery is required."],

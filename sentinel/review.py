@@ -7,6 +7,7 @@ from sqlalchemy import select, update
 
 from sentinel.accounts import require_case_access
 from sentinel.bundles import ordered_documents
+from sentinel.confirmations import confirmed_documents
 from sentinel.db import Bundle, Claim, Job, ReviewEvent, new_id
 from sentinel.profile import RULE_VERSION, evaluate_profile
 
@@ -53,13 +54,12 @@ def review_state(session, case):
             if p.get("expectation_id") in expectations:
                 expectations[p["expectation_id"]]["reviewed"] = True
     docs = ordered_documents(session, bundle.id) if bundle else []
+    effective, confirmations = confirmed_documents(session, docs)
     profile_bundle = {"id":bundle.id if bundle else "", "manifest":bundle.manifest if bundle else {},
-                      "expectations":list(expectations.values()), "documents":[
-                          {"id":d.id, "type":d.declared_type, "sha256":d.source_hash, "status":d.status,
-                           "page_count":d.page_count, "problems":d.problems, "extraction":d.extraction} for d in docs]}
+                      "expectations":list(expectations.values()), "documents":effective}
     result = evaluate_profile(profile_bundle)
     current = [e for e in events if e.bundle_id == case.current_bundle_id and e.rule_version == RULE_VERSION]
-    cutoff = max((e.revision for e in current if e.action == "recheck"), default=-1)
+    cutoff = max((e.revision for e in current if e.action in {"recheck", "extraction_confirmed"}), default=-1)
     current = [e for e in current if e.revision > cutoff]
     p07 = next((e for e in reversed(current) if e.action == "manual_p07"), None)
     ack = next((e for e in reversed(current) if e.action == "supervisor_ack"), None)
@@ -79,7 +79,7 @@ def review_state(session, case):
         blockers.append({"id":"corrections", "reasons":["Open correction tasks must be resolved or reasonedly cancelled."]})
     return {**result, "revision":case.revision, "bundle_version":bundle.sequence if bundle else None,
             "tasks":list(tasks.values()), "expectations":list(expectations.values()), "events":[event_public(e) for e in events],
-            "blockers":blockers, "can_finalize":not blockers}
+            "blockers":blockers, "can_finalize":not blockers, "confirmations":confirmations}
 
 
 def fence_case(session, actor, case, expected_revision, bundle_id):
@@ -102,7 +102,8 @@ def validate_anchors(session, bundle_id, anchors, required_types=()):
         page = a.get("page")
         if not doc or not isinstance(page, int) or isinstance(page, bool) or not 1 <= page <= doc.page_count:
             raise HTTPException(422, "Evidence must reference a page of the current bundle.")
-        if doc.status != "readable":
+        effective, _ = confirmed_documents(session, [doc])
+        if effective[0]["status"] != "readable":
             raise HTTPException(422, "Inspect, confirm or replace unreadable/unmatched evidence first.")
         covered.add(doc.declared_type)
     if not set(required_types) <= covered:
@@ -128,8 +129,9 @@ def record_review(db, actor, case_id, expected_revision, action):
             required = {"manual_p07":("cf2", "cf4", "cf5", "discharge"), "manual_p08":("cf2", "cf4", "cf5", "csf"), "extra_reviewed":("attachment",)}.get(kind, ())
             validate_anchors(session, case.current_bundle_id, action.get("anchors", []), required)
         if kind == "manual_p08":
-            for doc in ordered_documents(session, case.current_bundle_id):
-                if doc.declared_type in {"cf2", "cf4", "cf5", "csf"} and any(not doc.extraction.get("fields", {}).get(key) for key in ("mark", "printed_name", "signed_date")):
+            effective, _ = confirmed_documents(session, ordered_documents(session, case.current_bundle_id))
+            for doc in effective:
+                if doc["type"] in {"cf2", "cf4", "cf5", "csf"} and any(not doc["extraction"].get("fields", {}).get(key) for key in ("mark", "printed_name", "signed_date")):
                     raise HTTPException(409, "Missing mark, printed signatory or date requires a completed source.")
         elif kind == "supervisor_ack":
             if "supervisor" not in actor.roles:

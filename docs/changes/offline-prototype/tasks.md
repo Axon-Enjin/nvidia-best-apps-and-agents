@@ -108,9 +108,9 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 **Files:** extend `documents.py`, add `sentinel/ocr.py`, extraction-confirmation migration and `tests/test_local_ocr.py`; update UI.
 **Interfaces:** Produce `extract_document(source, limits) -> ExtractionResult` and `confirm_extraction(actor, document_id, anchor, value, reason, expected_revision) -> confirmation_id`. Keep original, extracted and confirmed values separate.
 
-- [ ] 8.1 Select/pin a locally available OCR engine and English data; verify license and installation instructions. Test actual printed scan fixtures, not an OCR mock presented as capability.
-- [ ] 8.2 Implement bounded local OCR with page anchors and no network fallback. Critical IDs/dates/amounts require source confirmation before blocking checks use them.
-- [ ] 8.3 Run `uv run --locked pytest tests/test_local_ocr.py -q`. Expected text/scan equivalents reach the same reviewed result, while handwriting, failed binaries and unreadable passages remain incomplete. Commit `feat: support locally verified printed scans`.
+- [x] 8.1 Select/pin a locally available OCR engine and English data; verify license and installation instructions. Test actual printed scan fixtures, not an OCR mock presented as capability.
+- [x] 8.2 Implement bounded local OCR with page anchors and no network fallback. Critical IDs/dates/amounts require source confirmation before blocking checks use them.
+- [x] 8.3 Run `uv run --locked pytest tests/test_local_ocr.py -q`. Expected text/scan equivalents reach the same reviewed result, while handwriting, failed binaries and unreadable passages remain incomplete. Commit `feat: support locally verified printed scans`.
 
 ## Task 9: Local packaging, worker recovery and restore
 

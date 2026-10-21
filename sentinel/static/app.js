@@ -36,6 +36,7 @@ function renderCase() {
   root.append(button("Import corrected version",()=>showImport(true)));
   if(!b||!d.latest?.result){root.append(node("p",d.latest?.error||"Sources are queued for bounded local extraction. Refresh this claim if processing does not finish."));return;}
   const version=node("p",`Version ${b.version} · ${d.latest.result.rule_version}`,"case-meta");version.setAttribute("aria-label","Source version");root.append(version);
+  if(window.renderConfirmations)window.renderConfirmations(root);
   const coverage=node("details");coverage.append(node("summary","Document coverage"));const list=node("ul",undefined,"coverage");
   for(const doc of b.documents)list.append(node("li",`${doc.type}: ${doc.status} · ${doc.filename} · ${doc.page_count} pages${doc.problems.length?" · "+doc.problems.join(", "):""}`));coverage.append(list);root.append(coverage);
   root.append(node("p",`AI review: ${d.latest.result.model_status}. Narrative comparison requires a named manual review and supervisor acknowledgement.`,"muted"));

@@ -181,6 +181,18 @@ class ReportSnapshot(Base):
     __table_args__ = (UniqueConstraint("claim_id", "revision"),)
 
 
+class ExtractionConfirmation(Base):
+    __tablename__ = "extraction_confirmations"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    document_id: Mapped[str] = mapped_column(ForeignKey("documents.id"), index=True)
+    actor_id: Mapped[str] = mapped_column(ForeignKey("accounts.id"))
+    anchor: Mapped[dict] = mapped_column(JSON)
+    value: Mapped[str] = mapped_column(Text)
+    reason: Mapped[str] = mapped_column(Text)
+    revision: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
 class Database:
     def __init__(self, url: str):
         if url.startswith("sqlite:///"):

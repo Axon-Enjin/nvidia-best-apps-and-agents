@@ -175,7 +175,8 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
             origin = request.headers.get("origin")
             if origin:
                 parsed = urlsplit(origin)
-                if (parsed.scheme, parsed.netloc) != (request.url.scheme, request.url.netloc):
+                same_origin = (parsed.scheme, parsed.netloc) == (request.url.scheme, request.url.netloc)
+                if not same_origin and f"{parsed.scheme}://{parsed.netloc}" not in settings.trusted_origins:
                     return JSONResponse({"detail": "Cross-origin changes are not allowed."}, status_code=403)
         raw = request.cookies.get("sentinel_session", "")
         if settings.auth_mode == "legacy":

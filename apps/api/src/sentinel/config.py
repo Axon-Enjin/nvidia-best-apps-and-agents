@@ -1,4 +1,5 @@
 import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -60,6 +61,8 @@ class Settings:
     session_hours: int = 8
     session_idle_minutes: int = 20
     allowed_hosts: tuple[str, ...] = ("localhost", "127.0.0.1", "testserver")
+    # Browser origins of the web frontend whose same-origin proxy forwards changes here.
+    trusted_origins: tuple[str, ...] = ()
     nebius_api_key: str = ""
     nebius_base_url: str = "https://api.tokenfactory.nebius.com/v1"
     nebius_model: str = "nvidia/nemotron-3-super-120b-a12b"
@@ -68,6 +71,7 @@ class Settings:
         object.__setattr__(self, "database_url", _workspace_database_url(self.database_url))
         object.__setattr__(self, "secret_key_file", _workspace_path(self.secret_key_file))
         object.__setattr__(self, "source_storage_root", _workspace_path(self.source_storage_root))
+        object.__setattr__(self, "trusted_origins", tuple(self.trusted_origins))
 
     @classmethod
     def from_env(cls):
@@ -89,6 +93,7 @@ class Settings:
             source_storage_root=os.getenv("SOURCE_STORAGE_ROOT", cls.source_storage_root),
             secure_cookies=os.getenv("SECURE_COOKIES", "false").lower() == "true",
             allowed_hosts=tuple(h.strip() for h in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",") if h.strip()),
+            trusted_origins=tuple(o.strip() for o in os.getenv("TRUSTED_ORIGINS", "").split(",") if o.strip()),
             nebius_api_key=os.getenv("NEBIUS_API_KEY", ""),
             nebius_base_url=os.getenv("NEBIUS_BASE_URL", cls.nebius_base_url),
             nebius_model=os.getenv("NEBIUS_MODEL", cls.nebius_model),
@@ -114,6 +119,11 @@ class Settings:
                 raise ValueError("Production requires PostgreSQL. Use SQLite only for local development.")
             if not self.allowed_hosts or "*" in self.allowed_hosts:
                 raise ValueError("Production requires explicit ALLOWED_HOSTS.")
+        for origin in self.trusted_origins:
+            if not re.fullmatch(r"https?://[^/\s*]+", origin):
+                raise ValueError("TRUSTED_ORIGINS entries must be bare origins such as http://localhost:3000.")
+            if self.environment == "production" and not origin.startswith("https://"):
+                raise ValueError("Production TRUSTED_ORIGINS must use HTTPS.")
         if not self.nebius_base_url.startswith("https://"):
             raise ValueError("NEBIUS_BASE_URL must use HTTPS.")
 

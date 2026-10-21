@@ -1,95 +1,28 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="An evidence-linked workspace for reviewing draft claim bundles.">
-  <title>Sentinel Node · Claim review</title>
-  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
-  <link rel="stylesheet" href="/static/app.css">
-  <script defer src="/static/app.js"></script>
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sentinel Claims | Review workspace</title><link rel="icon" href="/static/favicon.svg"><link rel="stylesheet" href="/static/app.css"><script defer src="/static/app.js"></script></head>
 <body>
-  <a class="skip" href="#main">Skip to claim review</a>
-  <aside class="sidebar">
-    <a class="brand" href="/" aria-label="Sentinel Node home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 27 8v9c0 6-6 10-11 13C11 27 5 23 5 17V8Z"/><path d="m10 16 4 4 8-9"/></svg><span>sentinel<span class="brand-node">node</span></span></a>
-    <div class="workspace-label"><span class="workspace-avatar">S</span><div>Claims workspace<small>Independent prototype</small></div></div>
-    <nav aria-label="Workspace navigation">
-      <a href="#queue" class="nav-item active" id="queue-nav"><span data-icon="queue"></span>Review queue<span id="nav-count" class="nav-count">0</span></a>
-      <button class="nav-item" id="nav-import"><span data-icon="upload"></span>Import a bundle</button>
-      <a class="nav-item" href="/api/samples/bundles.zip" download><span data-icon="download"></span>Sample files</a>
-      <button class="nav-item" id="nav-guide"><span data-icon="book"></span>Supported format</button>
-    </nav>
-    <div class="sidebar-bottom">
-      <div class="engine-state"><span class="status-dot"></span><span id="engine-label">Connecting to workspace</span></div>
-      <p>Evidence first.<br>Human judgment always.</p>
-      <button id="logout" class="text-button" hidden>Lock workspace</button>
-    </div>
-  </aside>
-  <div class="app-shell">
-    <header class="topbar"><div><span class="breadcrumb">Workspace</span><span class="breadcrumb-divider">/</span><span>Claim review</span></div><span class="prototype-label">Synthetic / de-identified records only</span></header>
-    <main id="main">
-      <div class="page-heading"><div><h1>A clearer path to submission.</h1><p>Find the discrepancy. Check the evidence. Keep the decision yours.</p></div><div class="heading-actions"><button class="button secondary" id="load-samples"><span data-icon="layers"></span>Load sample batch</button><button class="button primary" id="import-button"><span data-icon="plus"></span>Import bundle</button></div></div>
-      <div id="notice" class="notice" role="status" hidden></div>
-      <section class="summary-strip" aria-label="Workspace audit counts">
-        <button data-filter="all" class="summary-item selected"><span>All claims</span><strong id="count-all">0</strong></button>
-        <button data-filter="needs_review" class="summary-item"><span><i class="state-dot amber"></i>Needs review</span><strong id="count-needs_review">0</strong></button>
-        <button data-filter="incomplete" class="summary-item"><span><i class="state-dot red"></i>Incomplete</span><strong id="count-incomplete">0</strong></button>
-        <button data-filter="no_findings" class="summary-item"><span><i class="state-dot teal"></i>No findings</span><strong id="count-no_findings">0</strong></button>
-      </section>
-      <div class="workbench" id="queue">
-        <section class="queue-panel" aria-label="Claims queue">
-          <div class="queue-heading"><h2>Review queue</h2><span id="queue-total" class="small-muted">0 claims</span></div>
-          <label class="search-box"><span data-icon="search"></span><input id="search" type="search" placeholder="Find a claim or patient ID" aria-label="Search claims"></label>
-          <div id="queue-list" class="queue-list" aria-live="polite"></div>
-          <div class="queue-pagination"><button id="prev-page" class="icon-button" aria-label="Previous page" disabled><span data-icon="left"></span></button><span id="page-label">No claims yet</span><button id="next-page" class="icon-button" aria-label="Next page" disabled><span data-icon="right"></span></button></div>
-          <div class="queue-footnote"><span data-icon="shield"></span>Findings support review. They do not approve a claim or guarantee payment.</div>
-        </section>
-        <section class="detail-panel" id="detail" aria-label="Selected claim"></section>
-      </div>
-      <footer class="page-footer"><span>Sentinel Node · Research prototype</span><span>Local rules + optional NVIDIA Nemotron on Nebius</span></footer>
-    </main>
-  </div>
-
-  <dialog id="import-dialog" aria-labelledby="import-title">
-    <form id="import-form">
-      <div class="dialog-heading"><div><h2 id="import-title">Import a claim bundle</h2><p id="import-description">Add a draft XML and its supporting chart.</p></div><button type="button" class="icon-button close-dialog" aria-label="Close import"><span data-icon="close"></span></button></div>
-      <p class="form-note">This prototype reads SentinelClaim v1 files. <button type="button" class="inline-button" id="import-guide">View the format</button> or <a href="/api/samples/bundles.zip" download>download sample bundles</a>.</p>
-      <label class="file-drop" for="claim-file"><span data-icon="file"></span><strong>Draft claim XML</strong><span id="claim-file-label">Choose a .xml file · up to 256 KB</span><input id="claim-file" name="claim_file" type="file" accept=".xml" required></label>
-      <label class="file-drop" for="chart-file"><span data-icon="document"></span><strong>Supporting chart</strong><span id="chart-file-label">Choose a text-based PDF or UTF-8 text · up to 5 MB</span><input id="chart-file" name="chart_file" type="file" accept=".txt,.pdf"></label>
-      <p class="field-help">Without a readable, matched chart, the audit will be marked incomplete. Scanned PDFs require OCR first.</p>
-      <label class="model-option"><input type="checkbox" name="use_model" id="use-model"><span><strong>Add Nemotron evidence review</strong><small id="model-help">Checking server configuration…</small></span></label>
-      <p id="import-error" class="form-error" role="alert" hidden></p>
-      <div class="dialog-actions"><button type="button" class="button secondary close-dialog">Cancel</button><button type="submit" class="button primary" id="submit-import">Import &amp; run checks<span data-icon="right"></span></button></div>
-    </form>
-  </dialog>
-
-  <dialog id="guide-dialog" class="guide-dialog" aria-labelledby="guide-title">
-    <div class="dialog-heading"><div><h2 id="guide-title">A small, explicit bundle contract.</h2><p>SentinelClaim v1 · internal prototype format</p></div><button class="icon-button close-dialog" aria-label="Close format guide"><span data-icon="close"></span></button></div>
-    <p>This format lets you test the complete review loop independently. It is not an official PhilHealth CF4, CF5, or eClaims schema.</p>
-    <h3>Draft claim · XML</h3>
-    <pre class="source-code">&lt;SentinelClaim version="1"&gt;
-  &lt;ClaimId&gt;SYN-1042&lt;/ClaimId&gt;
-  &lt;PatientId&gt;SYN-P042&lt;/PatientId&gt;
-  &lt;AdmissionDate&gt;2026-10-12&lt;/AdmissionDate&gt;
-  &lt;DischargeDate&gt;2026-10-17&lt;/DischargeDate&gt;
-  &lt;Diagnosis code="J18.9"&gt;Pneumonia&lt;/Diagnosis&gt;
-  &lt;ClaimAmount&gt;18000.00&lt;/ClaimAmount&gt;
-&lt;/SentinelClaim&gt;</pre>
-    <h3>Chart · UTF-8 text or text-based PDF</h3>
-    <pre class="source-code">Claim ID: SYN-1042
-Patient ID: SYN-P042
-Admission date: 2026-10-12
-Discharge date: 2026-10-17
-Diagnosis code: J18.9
-
-Clinical narrative and supporting observations…</pre>
-    <p>The Patient ID line is required to match the chart. Explicit dates and diagnosis codes are compared when present. Local checks do not interpret a narrative diagnosis. Optional Nemotron review compares the narrative and must quote both sources.</p>
-    <div class="dialog-actions"><a class="button secondary" href="/api/samples/bundles.zip" download><span data-icon="download"></span>Download examples</a><button class="button primary close-dialog">Got it</button></div>
-  </dialog>
-
-  <dialog id="login-dialog" aria-labelledby="login-title">
-    <form id="login-form"><div class="dialog-heading"><div><h2 id="login-title">Unlock your workspace</h2><p>Enter the access token supplied by your deployment administrator.</p></div></div><label class="form-label" for="access-token">Workspace access token</label><input class="text-input" id="access-token" type="password" autocomplete="current-password" required><p id="login-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button class="button primary" type="submit">Unlock workspace<span data-icon="right"></span></button></div></form>
-  </dialog>
-</body>
-</html>
+<a class="skip" href="#main">Skip to review</a>
+<header class="topbar"><a class="brand" href="/">Sentinel Claims</a><span id="identity"></span><button id="logout">Sign out</button></header>
+<p class="environment">Synthetic patient records only · Local review workspace</p>
+<main id="main">
+<div class="heading"><div><h1>Review workspace</h1><p>Compare the evidence. Record the correction. Keep the history.</p></div><button id="import-button" class="primary">Import bundle</button></div>
+<p id="notice" role="status" tabindex="-1" hidden></p>
+<div class="workspace">
+<aside class="queue" aria-label="Claims queue"><h2>Review queue</h2>
+<label>Search claims<input id="search" type="search" placeholder="Claim or patient ID"></label>
+<label>Queue filter<select id="filter"><option value="all">All assigned claims</option><option value="incomplete">Incomplete</option><option value="needs_review">Needs review</option><option value="no_findings">No findings</option></select></label>
+<p id="queue-count"></p><div id="queue-list"></div><div class="pagination"><button id="previous">Previous</button><button id="next">Next</button></div>
+</aside>
+<section id="detail" aria-label="Selected claim"><h2>Start with the source</h2><p>Import a sample bundle or select a claim from your queue.</p></section>
+</div>
+</main>
+<footer>Internal review supports human judgment. Submission remains in the hospital’s existing system.</footer>
+<dialog id="import-dialog" aria-labelledby="import-title"><form id="import-form"><h2 id="import-title">Import a versioned bundle</h2>
+<p>Use the internal sample manifest with all seven originals. This sample contract is not an official eClaims schema.</p><p>Limits: 25 MB/file, 100 MB/version, 150 pages, 30 files. Replacements preserve earlier evidence.</p>
+<label>Bundle manifest<input id="manifest-file" type="file" accept=".json" required></label>
+<label>Original documents<input id="original-files" type="file" multiple required></label>
+<p id="import-preview"></p><p id="import-error" role="alert" tabindex="-1" hidden></p>
+<div class="actions"><button type="button" id="cancel-import">Cancel</button><button type="submit" class="primary">Import and check</button></div>
+</form></dialog>
+</body></html>

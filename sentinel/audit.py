@@ -101,4 +101,3 @@ def outcome_for(findings: list[dict]) -> str:
     if any(f["severity"] == "blocking" for f in findings):
         return "incomplete"
     return "needs_review" if findings else "no_findings"
-

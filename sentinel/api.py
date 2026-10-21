@@ -281,6 +281,7 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
             latest = session.get(Job, claim.latest_job_id) if claim.latest_job_id else None
             history = session.scalars(select(Job).where(Job.claim_id == claim.id).order_by(Job.created_at.desc())).all()
             return {**case_public(claim), "reference": claim.reference,
+                    "bundles": [bundle_receipt(session, b) for b in session.scalars(select(Bundle).where(Bundle.claim_id == claim.id).order_by(Bundle.sequence.desc()))],
                     "sample": bool(claim.sample_key), "assignee_id": claim.assignee_id,
                     "latest": job_detail(session, latest) if latest else None,
                     "history": [job_summary(job) for job in history]}

@@ -3,7 +3,7 @@
 **Date:** 2026-10-21
 **Overall:** FAIL
 
-FAIL means the complete prototype is not finished. Tasks 1-4 are verified; Tasks 5-10 remain pending. Do not archive or report the entire change complete.
+FAIL means the complete prototype is not finished. Tasks 1-5 are verified; Tasks 6-10 remain pending. Do not archive or report the entire change complete.
 
 ## Completeness
 
@@ -79,3 +79,11 @@ FAIL means the complete prototype is not finished. Tasks 1-4 are verified; Tasks
 - P07/P08 remain manual obligations; P10 remains transactional closeout work. Supervisor-only P09 withdrawal is evaluated in the profile and will be authorized through stored events in Task 6.
 - Ruling: isolate the accepted profile in profile.py, re-exported through audit.py, preserving legacy audit records/contracts. Cost if wrong: relocate the implementation without changing its interface.
 - Primary references checked: [SQLAlchemy DML](https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html), [Python Decimal](https://docs.python.org/3/library/decimal.html) and [FastAPI static files](https://fastapi.tiangolo.com/tutorial/static-files/).
+
+## Task 5 evidence
+
+- RED: real Chromium could not activate the absent import workflow. An initial exact login-label mismatch was corrected before observing the missing-behavior failure.
+- GREEN: real manifest/seven-original upload, assigned queue/search, saved profile selection and version-correct source text pass at 1366x768, 375px and 200% CSS zoom. Controls are activated with Enter; focus/overflow, local asset HTTP 200, JavaScript errors and external browser requests are checked. Screenshots are in test-results/workbench-*.png (local, ignored). Full suite: 92 passed, existing Starlette warning.
+- The desktop/mobile captures were inspected together. The UI inherits the accepted forest/paper design and local system fonts. Source downloads retain server assignment checks.
+- Fixture bytes are marked binary in .gitattributes so checkout line-ending conversion cannot invalidate manifest hashes. A Task 4 trailing-blank-line diff-check finding was removed.
+- Ruling: import accepts an explicit JSON manifest and its originals, exposing declared types before upload. Cost if wrong: add a guided manifest editor without changing storage or membership semantics.

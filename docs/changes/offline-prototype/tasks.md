@@ -79,9 +79,9 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 **Files:** finish `sentinel/static/index.html`, `app.css`, `app.js`; extend authorized API contracts; add `tests/browser/test_review_workspace.py`.
 **Interfaces:** Consume authenticated queue/bundle/run/source contracts. Browser state retains explicit current version and revision; server remains authoritative. No remote scripts, fonts or viewers.
 
-- [ ] 5.1 Write browser scenarios for login, assigned queue/filtering, import/matching, coverage, finding selection and source anchors. Assert requested assets return 200 locally and no external origin is requested.
-- [ ] 5.2 Implement Sentinel Claims styling and keyboard-operable screens with empty/loading/error/success states. Show source beside finding and one sample-record environment notice.
-- [ ] 5.3 Exercise 1366x768, 375px, keyboard-only and 200% zoom. Run `uv run --locked pytest tests/browser/test_review_workspace.py -q`; expected source version matches selection and denied deep links stay denied. Commit `feat: complete the local evidence review workbench`.
+- [x] 5.1 Write browser scenarios for login, assigned queue/filtering, import/matching, coverage, finding selection and source anchors. Assert requested assets return 200 locally and no external origin is requested.
+- [x] 5.2 Implement Sentinel Claims styling and keyboard-operable screens with empty/loading/error/success states. Show source beside finding and one sample-record environment notice.
+- [x] 5.3 Exercise 1366x768, 375px, keyboard-only and 200% zoom. Run `uv run --locked pytest tests/browser/test_review_workspace.py -q`; expected source version matches selection and denied deep links stay denied. Commit `feat: complete the local evidence review workbench`.
 
 ## Task 6: Decisions, manual review, corrections and revisions
 

@@ -90,4 +90,3 @@ def development_bundle(label="complete"):
         files.append((name, content))
         members.append({"type": kind, "filename": name, "sha256": hashlib.sha256(content).hexdigest()})
     return files, {**anchors, "documents": members}
-

@@ -59,10 +59,10 @@ Extend `sentinel/config.py`, `api.py`, `db.py`, `documents.py`, `audit.py`, `wor
 **Files:** create `sentinel/bundles.py`, `storage.py`, bundle/document migration and `tests/test_bundles.py`; extend `db.py`, `api.py`, `documents.py`.
 **Interfaces:** Produce `import_bundle(actor, case_id, files, manifest, expected_revision, idempotency_key) -> BundleReceipt` and `read_source(actor, document_id) -> source bytes`. Receipt includes case ID, immutable version, import-job ID and coverage. Manifest carries document types, explicit facility/encounter/claim anchors and source hashes.
 
-- [ ] 3.1 Write failing tests for seven document types, immutable originals, duplicate idempotency requests, mismatched encounter, duplicate conflicting fields, concurrent versions, safe filenames and unauthorized source reads.
-- [ ] 3.2 Add immutable membership/source records, additive migrations and a private filesystem adapter using opaque keys. Quarantine imports before review visibility. Preserve existing database records.
-- [ ] 3.3 Enforce limits, detected content types, parser isolation, XML entity/network restrictions and per-file import reporting. Unsupported content remains inspectable without fake extracted values.
-- [ ] 3.4 Run `uv run --locked pytest tests/test_bundles.py -q` and the full suite; expected all limits, identity and persistence cases pass. Commit `feat: import immutable local claim bundles`.
+- [x] 3.1 Nine bundle scenarios failed before implementation. Added damaged-source and assignment-revision coverage; stale coverage and assignment behavior were observed failing before correction.
+- [x] 3.2 Added bundle/document migration, write-once encrypted private objects, immutable manifests, staging receipts and durable quarantined import jobs. Legacy source/result records remain intact.
+- [x] 3.3 Enforced byte/file/page bounds and content detection. Child parsers have time/memory caps; XML forbids DTDs/entities/external references. Per-file unsupported/unmatched/ambiguous/unreadable states stay visible.
+- [x] 3.4 Eleven bundle scenarios pass; full suite and affected Ruff checks recorded in `verify.md`. Commit `feat: import immutable local claim bundles`.
 
 ## Task 4: Synthetic profile and deterministic coverage
 

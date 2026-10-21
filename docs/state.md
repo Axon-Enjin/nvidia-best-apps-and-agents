@@ -65,13 +65,15 @@ The old nightly/revenue proposal and old prototype plan are historical. Keep loc
 
 ## 7. Next actions
 
-1. Task 3: immutable versioned bundles and private local originals.
-2. Tasks 4-7: profile, complete workbench, correction events/revisions and guarded reports.
+1. Task 4: content-derived P01-P10 coverage and synthetic development bundles.
+2. Tasks 5-7: complete workbench, correction events/revisions and guarded reports.
 3. Tasks 8-10: local OCR, PostgreSQL packaging/recovery, then disconnected acceptance.
 
 Task 1 is complete at `08b0c09`: dependency resolution restored; six offline tests RED to GREEN; 37 tests pass with one deprecation warning. This verifies the foundation, not the full prototype.
 
 Task 2 is implemented: named CLI-provisioned accounts, encrypted privileged TOTP, expiring/revocable sessions, assignment and child-resource authorization. Twenty account scenarios and a real Chromium desktop/mobile login check pass. Login is working; the evidence workbench is pending. Default named mode denies old tokens. Explicit development migration mode remains available. Keep the local encryption key private and backed up; full PostgreSQL/recovery evidence remains Task 9.
+
+Task 3 is implemented: versioned manifests and private encrypted original objects, quarantined durable import jobs, bounded process-isolated extraction, identity/ambiguity states, idempotent retries and case-revision fencing. Eleven bundle scenarios pass; the full suite passes 69 tests with one existing deprecation warning. Parsing/membership does not establish P01-P10 completion. JSON case creation uses `/api/cases` while legacy multipart imports retain `/api/claims`; versioned imports/downloads enforce named assignment. Staging receipts are retained for Task 9 reconciliation.
 
 Artifact plan: update STATE and draft product/system position; add BUILD and one CHANGE proposal/design/delta/tasks/verification set; engine generates INDEX/LOG and root build instructions. Do not regenerate the full suite.
 

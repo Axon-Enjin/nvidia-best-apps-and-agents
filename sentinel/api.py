@@ -4,14 +4,14 @@ import json
 import threading
 from contextlib import asynccontextmanager
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import quote, unquote, urlsplit
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, model_validator
-from sqlalchemy import func, select, text
+from sqlalchemy import func, select, text, update
 from sqlalchemy.exc import IntegrityError
 from starlette.concurrency import run_in_threadpool
 from starlette.middleware.trustedhost import TrustedHostMiddleware
@@ -27,8 +27,21 @@ from sentinel.accounts import (
     revoke_session,
     visible_claims,
 )
+from sentinel.bundles import (
+    MAX_BUNDLE_BYTES,
+    MAX_BUNDLE_FILES,
+    MAX_SOURCE_BYTES,
+    CaseInput,
+    bundle_receipt,
+    case_public,
+    create_case,
+    document_public,
+    import_bundle,
+    ordered_documents,
+    read_source,
+)
 from sentinel.config import Settings, migrate
-from sentinel.db import AccessEvent, Account, Claim, Database, Job, Review
+from sentinel.db import AccessEvent, Account, Bundle, Claim, Database, Job, Review
 from sentinel.documents import MAX_FILE_BYTES, extract_chart
 from sentinel.samples import bundle_zip, samples
 from sentinel.service import enqueue, job_detail, job_summary, save_review
@@ -46,14 +59,15 @@ class BodyLimitMiddleware:
         if scope["type"] != "http" or scope["method"] not in {"POST", "PUT", "PATCH"}:
             return await self.app(scope, receive, send)
         parts, size = [], 0
+        maximum = MAX_BUNDLE_BYTES + 2 * 1024 * 1024 if scope.get("path", "").endswith("/bundles") else self.maximum
         while True:
             message = await receive()
             if message["type"] == "http.disconnect":
                 return
             body = message.get("body", b"")
             size += len(body)
-            if size > self.maximum:
-                response = JSONResponse({"detail": "Upload is too large. XML is limited to 256 KB and charts to 5 MB."}, status_code=413)
+            if size > maximum:
+                response = JSONResponse({"detail": "Upload exceeds the supported request size."}, status_code=413)
                 return await response(scope, receive, send)
             parts.append(body)
             if not message.get("more_body"):
@@ -225,9 +239,9 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
             condition &= visible_claims(actor, Claim)
             if view != "all":
                 condition &= Job.result["outcome"].as_string() == view
-            total = session.scalar(select(func.count()).select_from(Claim).join(Job, Claim.latest_job_id == Job.id).where(condition))
+            total = session.scalar(select(func.count()).select_from(Claim).outerjoin(Job, Claim.latest_job_id == Job.id).where(condition))
             rows = session.execute(select(Claim, Job.id, Job.status, Job.result, Job.use_model)
-                                   .join(Job, Claim.latest_job_id == Job.id).where(condition)
+                                   .outerjoin(Job, Claim.latest_job_id == Job.id).where(condition)
                                    .order_by(Claim.created_at.desc(), Claim.id).offset(offset).limit(limit)).all()
             items = []
             job_ids = [row[1] for row in rows]
@@ -238,6 +252,7 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
                 findings = (result or {}).get("findings", [])
                 items.append({"id": claim.id, "reference": claim.reference, "patient_id": claim.patient_id,
                               "sample": bool(claim.sample_key), "created_at": claim.created_at, "assignee_id": claim.assignee_id,
+                              "revision": claim.revision, "current_bundle_id": claim.current_bundle_id, "state": claim.state,
                               "job_id": job_id, "status": status, "outcome": (result or {}).get("outcome"),
                               "finding_count": len(findings),
                               "pending_count": sum(decisions.get(f["id"], "pending") == "pending" for f in findings),
@@ -247,8 +262,8 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
     @app.get("/api/stats")
     def stats(actor: Actor = Depends(require_actor)):
         with db.session() as session:
-            rows = session.execute(select(Job.status, Job.result["outcome"].as_string(), func.count())
-                                   .join(Claim, Claim.latest_job_id == Job.id)
+            rows = session.execute(select(Job.status, Job.result["outcome"].as_string(), func.count()).select_from(Claim)
+                                   .outerjoin(Job, Claim.latest_job_id == Job.id)
                                    .where(visible_claims(actor, Claim))
                                    .group_by(Job.status, Job.result["outcome"].as_string())).all()
             counts = {"all": 0, "needs_review": 0, "incomplete": 0, "no_findings": 0, "processing": 0}
@@ -263,12 +278,64 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
         with db.session() as session:
             claim = session.get(Claim, claim_id)
             require_case_access(actor, claim)
-            latest = session.get(Job, claim.latest_job_id)
+            latest = session.get(Job, claim.latest_job_id) if claim.latest_job_id else None
             history = session.scalars(select(Job).where(Job.claim_id == claim.id).order_by(Job.created_at.desc())).all()
-            return {"id": claim.id, "reference": claim.reference, "patient_id": claim.patient_id,
+            return {**case_public(claim), "reference": claim.reference,
                     "sample": bool(claim.sample_key), "assignee_id": claim.assignee_id,
-                    "latest": job_detail(session, latest),
+                    "latest": job_detail(session, latest) if latest else None,
                     "history": [job_summary(job) for job in history]}
+
+    @app.post("/api/cases", status_code=201)
+    def new_case(body: CaseInput, actor: Actor = Depends(require_actor)):
+        return create_case(db, actor, body)
+
+    @app.post("/api/claims/{claim_id}/bundles", status_code=202)
+    async def upload_version(request: Request, claim_id: str, files: list[UploadFile] = File(...),
+                             manifest: str = Form(..., max_length=100000), expected_revision: int = Form(..., ge=0),
+                             actor: Actor = Depends(require_actor)):
+        with db.session() as session:
+            require_case_access(actor, session.get(Claim, claim_id))
+        if not 1 <= len(files) <= MAX_BUNDLE_FILES:
+            raise HTTPException(413, "A bundle supports up to 30 original files.")
+        originals, total = [], 0
+        for file in files:
+            content = await file.read(MAX_SOURCE_BYTES + 1)
+            total += len(content)
+            if len(content) > MAX_SOURCE_BYTES or total > MAX_BUNDLE_BYTES:
+                raise HTTPException(413, "Limit: 25 MB per file and 100 MB per bundle version.")
+            originals.append((unquote(file.filename or "source"), content))
+        try:
+            def unique_keys(pairs):
+                result = {}
+                for key, value in pairs:
+                    if key in result:
+                        raise ValueError("Duplicate manifest field.")
+                    result[key] = value
+                return result
+            parsed = json.loads(manifest, object_pairs_hook=unique_keys)
+        except (ValueError, TypeError) as exc:
+            raise HTTPException(422, "Manifest must contain valid JSON with unique fields.") from exc
+        return await run_in_threadpool(import_bundle, db, settings, actor, claim_id, originals, parsed,
+                                        expected_revision, request.headers.get("idempotency-key", ""))
+
+    @app.get("/api/claims/{claim_id}/bundles/{version}")
+    def get_bundle(claim_id: str, version: int, actor: Actor = Depends(require_actor)):
+        with db.session() as session:
+            require_case_access(actor, session.get(Claim, claim_id))
+            bundle = session.scalar(select(Bundle).where(Bundle.claim_id == claim_id, Bundle.sequence == version))
+            if not bundle:
+                raise HTTPException(404, "Bundle version not found.")
+            return {**bundle_receipt(session, bundle), "manifest": bundle.manifest, "manifest_hash": bundle.manifest_hash,
+                    "status": bundle.status, "profile_version": bundle.profile_version,
+                    "coverage": [{"document_id": doc.id, "type": doc.declared_type, "status": doc.status,
+                                  "problems": doc.problems} for doc in ordered_documents(session, bundle.id)],
+                    "documents": [document_public(doc) for doc in ordered_documents(session, bundle.id)]}
+
+    @app.get("/api/documents/{document_id}/content")
+    def document_content(document_id: str, actor: Actor = Depends(require_actor)):
+        filename, original = read_source(db, settings, actor, document_id)
+        return Response(original, media_type="application/octet-stream",
+                        headers={"Content-Disposition": f"attachment; filename=source; filename*=UTF-8''{quote(filename, safe='')}"})
 
     @app.get("/api/assignees")
     def assignees(actor: Actor = Depends(require_actor)):
@@ -289,7 +356,8 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
             if not target or not target.enabled or not set(target.roles) & {"reviewer", "supervisor"}:
                 raise HTTPException(422, "Assign an enabled reviewer or supervisor.")
             old = claim.assignee_id
-            claim.assignee_id = target.id
+            session.execute(update(Claim).where(Claim.id == claim.id)
+                            .values(assignee_id=target.id, revision=Claim.revision + 1))
             session.add(AccessEvent(actor_id=actor.id, action="case_assigned", resource_id=claim.id,
                                    detail={"previous": old, "assignee_id": target.id}))
             session.commit()
@@ -305,7 +373,10 @@ def create_app(settings: Settings | None = None, database: Database | None = Non
         require_clinical(actor)
         if claim_id:
             with db.session() as session:
-                require_case_access(actor, session.get(Claim, claim_id))
+                claim = session.get(Claim, claim_id)
+                require_case_access(actor, claim)
+                if claim.current_bundle_id:
+                    raise HTTPException(409, "Import a versioned bundle to revise this case.")
         if use_model and settings.network_mode != "online":
             raise HTTPException(409, "Remote review is disabled offline. Local checks remain available.")
         if use_model and not settings.nebius_api_key:

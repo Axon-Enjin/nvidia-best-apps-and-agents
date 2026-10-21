@@ -37,6 +37,10 @@ def process_one(db: Database, settings: Settings) -> bool:
     job_id, token = lease
     with db.session() as session:
         job = session.get(Job, job_id)
+        if job.bundle_id:
+            from sentinel.bundle_worker import process_bundle_job
+            process_bundle_job(db, settings, job_id, token)
+            return True
         result = None
         error = None
         try:

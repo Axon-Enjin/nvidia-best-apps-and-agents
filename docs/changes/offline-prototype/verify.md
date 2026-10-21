@@ -3,7 +3,7 @@
 **Date:** 2026-10-21
 **Overall:** FAIL
 
-FAIL means the complete prototype is not finished. Tasks 1-2 are verified; Tasks 3-10 remain pending. Do not archive or report the entire change complete.
+FAIL means the complete prototype is not finished. Tasks 1-3 are verified; Tasks 4-10 remain pending. Do not archive or report the entire change complete.
 
 ## Completeness
 
@@ -13,7 +13,8 @@ FAIL means the complete prototype is not finished. Tasks 1-2 are verified; Tasks
 - PASS: Task 1 committed as `08b0c09`, `fix: restore reproducible setup and enforce offline inference`; new test file passes Ruff.
 - PASS: `uv run --offline --locked pytest -q`: 37 passed, one Starlette/HTTPX deprecation warning.
 - PASS: Task 2 named accounts, local privileged MFA, revocable sessions and assigned case authorization implemented and tested.
-- FAIL: new bundle/profile workflow, evidence workbench, manual acknowledgement, correction tasks, closeout/reporting, local OCR and packaging/recovery remain unimplemented.
+- PASS: Task 3 encrypted immutable local originals, versioned membership, idempotent/revision-fenced imports, bounded child parsing and protected source downloads implemented.
+- FAIL: accepted profile checks, evidence workbench, manual acknowledgement, correction tasks, closeout/reporting, local OCR and packaging/recovery remain unimplemented.
 
 ## Correctness
 
@@ -56,3 +57,16 @@ FAIL means the complete prototype is not finished. Tasks 1-2 are verified; Tasks
 - Ruling: default named mode never falls back to an anonymous or shared identity, including a fresh database. Historical cases remain unassigned until a supervisor assigns them. Explicit legacy mode requires development and a configured token of at least 24 characters. Cost if wrong: adjust the migration instructions, not the named authorization boundary.
 - Migration deviation: SQLite's native nullable `ADD COLUMN ... REFERENCES` avoids table rebuilds and preserves historical records; PostgreSQL uses Alembic's normal column/constraint operations. Only SQLite execution is established here.
 - Limit: login browser verification covers authentication only. The evidence workbench and complete offline browser correction loop remain pending. The Starlette/HTTPX deprecation warning remains visible.
+
+## Task 3 evidence
+
+- Primary guidance checked 2026-10-21: [Python subprocess isolation/timeouts](https://docs.python.org/3.14/library/subprocess.html), [pypdf text extraction and memory concerns](https://pypdf.readthedocs.io/en/stable/user/extract-text.html) and [defusedxml security controls](https://github.com/tiran/defusedxml).
+- RED: nine API scenarios returned missing case/bundle routes before implementation. Later a coverage test caught a stale quarantine status after parsing, and an assignment test caught failure to advance case revision.
+- GREEN: eleven scenarios cover all seven artifact types, original-byte/hash preservation across revisions, encrypted objects, duplicate idempotency keys, manifest/source identity mismatch, ambiguous duplicate fields, concurrent imports, filenames, child-route assignment, XML entities, unsupported binary, blank scans, file/page bounds and source damage.
+- Final checks: `uv run --offline --locked pytest -q --tb=short --durations=10` returned **69 passed**, one existing Starlette/HTTPX warning, in 50.85 seconds. The preceding green run reported an anomalous 2:25:15 elapsed time; it was not reproduced and is not performance evidence. The slowest test on rerun took 6.40 seconds. Affected source/tests passed Ruff; `git diff --check` and change validation passed. Strict FMD validation of the tracked document snapshot returned zero failures/warnings; unrelated local research stayed excluded from that snapshot.
+- The database stores source hashes and opaque keys; originals use Fernet with the external local key and exclusive writes. Staging receipts survive interrupted object writes for later reconciliation; no orphan cleanup or restore claim is made yet.
+- Parsers execute in child processes with a twelve-second timeout, 512 MB process cap and bounded text/pages/nodes. Actual child execution on this Windows host parsed the fixtures. Linux resource-limit code and PostgreSQL execution remain unverified until packaging.
+- Ruling: retain the legacy multipart `POST /api/claims` contract and add JSON case creation at `POST /api/cases`. Versioned imports use the specified `/api/claims/{id}/bundles` path. Cost if wrong: add a JSON alias during API migration; source/version semantics stay the same.
+- Ruling: preserve oversized aggregate-page versions in quarantine with `limits_exceeded` and explicit page counts; never truncate. They cannot establish complete coverage. Cost if wrong: tighten admission before version publication, retaining the quarantined originals.
+- Assignment now advances revision, and import CAS checks both revision and assignment. Legacy rerun cannot replace a versioned case. Lease-fenced publication writes all extraction outcomes together; unsupported content receives no invented fields.
+- Limit: the import job evaluates content/membership only. Full P01-P10 evaluation is Task 4; every new version remains incomplete until the remaining review workflow is implemented. OCR, end-to-end browser review and PostgreSQL/container/restore acceptance are pending.

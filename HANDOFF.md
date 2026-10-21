@@ -39,7 +39,9 @@ PostgreSQL remains the standard local/container target. SQLite remains an option
 
 Task 2 now implements named local accounts, Argon2id passwords, encrypted TOTP for supervisors/admins, replay fencing, revocable sessions, CSRF and assigned case access. CLI provisioning/recovery and a local login page are tested. Twenty account scenarios and one real Chromium desktop/mobile login check pass. Default named mode never accepts the old shared token; explicit development migration mode requires a configured token. See README for commands and private key handling.
 
-Next task is **Task 3: immutable versioned bundles**. Tasks 3-10 remain unchecked. The change's overall verification is FAIL because the complete prototype is unfinished. Evidence workbench assets, full correction workflow, PostgreSQL/container/OCR/restore acceptance remain pending.
+Task 3 now adds JSON case creation (`POST /api/cases`), versioned manifests, private encrypted originals and durable quarantined parsing jobs. Eleven bundle tests cover idempotency, immutable versions, identity, ambiguity, limits, protected source access, concurrency and damage. Case assignment advances revision. Legacy rerun cannot replace a versioned case. Worker child parsing has time/memory bounds; profile completion is not inferred from successful extraction.
+
+Next task is **Task 4: deterministic profile and complete synthetic bundles**. Tasks 4-10 remain unchecked. The change's overall verification is FAIL because the complete prototype is unfinished. Evidence workbench assets, full correction workflow, PostgreSQL/container/OCR/restore acceptance remain pending.
 
 ## Product boundaries already accepted
 

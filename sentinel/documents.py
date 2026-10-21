@@ -1,5 +1,8 @@
 """Bounded extraction. Image-only PDFs remain incomplete; no pretend OCR."""
 
+import json
+import subprocess
+import sys
 from io import BytesIO
 
 from pypdf import PdfReader
@@ -7,6 +10,21 @@ from pypdf import PdfReader
 MAX_FILE_BYTES = 5 * 1024 * 1024
 MAX_TEXT_CHARS = 80_000
 MAX_PDF_PAGES = 30
+
+
+def extract_original(content):
+    """A parser crash/timeout remains an explicit unreadable state, never clearance."""
+    failed = {"content_type": "application/octet-stream", "status": "unreadable", "page_count": 0,
+              "problems": ["Local parser failed or exceeded its time/memory limit."],
+              "extraction": {"fields": {}, "anchors": [], "pages": [], "extractor": "local-text/1"}}
+    try:
+        child = subprocess.run([sys.executable, "-m", "sentinel.document_parser"], input=content,
+                               stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=12, check=True)
+        if len(child.stdout) > 8 * 1024 * 1024:
+            return failed
+        return json.loads(child.stdout)
+    except (subprocess.SubprocessError, OSError, ValueError):
+        return failed
 
 
 def extract_chart(content: bytes, filename: str) -> str:

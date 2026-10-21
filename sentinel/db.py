@@ -12,6 +12,7 @@ from sqlalchemy import (
     LargeBinary,
     String,
     Text,
+    UniqueConstraint,
     create_engine,
     event,
 )
@@ -73,6 +74,11 @@ class Claim(Base):
     sample_key: Mapped[str | None] = mapped_column(String(80), unique=True, nullable=True)
     latest_job_id: Mapped[str | None] = mapped_column(String(32), nullable=True)
     assignee_id: Mapped[str | None] = mapped_column(ForeignKey("accounts.id"), nullable=True, index=True)
+    facility_id: Mapped[str] = mapped_column(String(200), default="")
+    encounter_ref: Mapped[str] = mapped_column(String(200), default="")
+    revision: Mapped[int] = mapped_column(Integer, default=0)
+    current_bundle_id: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    state: Mapped[str] = mapped_column(String(60), default="Received")
     created_at: Mapped[float] = mapped_column(Float, default=time.time, index=True)
 
 
@@ -80,6 +86,7 @@ class Job(Base):
     __tablename__ = "audit_jobs"
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
     claim_id: Mapped[str] = mapped_column(ForeignKey("claims.id", ondelete="CASCADE"), index=True)
+    bundle_id: Mapped[str | None] = mapped_column(ForeignKey("bundles.id"), nullable=True, index=True)
     status: Mapped[str] = mapped_column(String(20), default="queued")
     use_model: Mapped[bool] = mapped_column(Boolean, default=False)
     attempts: Mapped[int] = mapped_column(Integer, default=0)
@@ -108,6 +115,42 @@ class Review(Base):
     decision: Mapped[str] = mapped_column(String(20))
     note: Mapped[str] = mapped_column(Text, default="")
     updated_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class Bundle(Base):
+    __tablename__ = "bundles"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    claim_id: Mapped[str] = mapped_column(ForeignKey("claims.id"), index=True)
+    sequence: Mapped[int] = mapped_column(Integer)
+    import_job_id: Mapped[str] = mapped_column(String(32))
+    manifest: Mapped[dict] = mapped_column(JSON)
+    manifest_hash: Mapped[str] = mapped_column(String(64))
+    request_hash: Mapped[str] = mapped_column(String(64))
+    idempotency_key: Mapped[str] = mapped_column(String(100))
+    profile_version: Mapped[str] = mapped_column(String(80), default="SAMPLE-ADULT-MEDICAL-1")
+    created_by: Mapped[str] = mapped_column(ForeignKey("accounts.id"))
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+    status: Mapped[str] = mapped_column(String(30), default="quarantined")
+    imported_revision: Mapped[int] = mapped_column(Integer)
+    __table_args__ = (UniqueConstraint("claim_id", "sequence"), UniqueConstraint("claim_id", "idempotency_key"))
+
+
+class Document(Base):
+    __tablename__ = "documents"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    bundle_id: Mapped[str] = mapped_column(ForeignKey("bundles.id"), index=True)
+    position: Mapped[int] = mapped_column(Integer)
+    declared_type: Mapped[str] = mapped_column(String(40))
+    filename: Mapped[str] = mapped_column(String(200))
+    source_hash: Mapped[str] = mapped_column(String(64))
+    object_key: Mapped[str] = mapped_column(String(32), unique=True)
+    byte_count: Mapped[int] = mapped_column(Integer)
+    content_type: Mapped[str] = mapped_column(String(80), default="application/octet-stream")
+    page_count: Mapped[int] = mapped_column(Integer, default=0)
+    status: Mapped[str] = mapped_column(String(30), default="quarantined")
+    extraction: Mapped[dict] = mapped_column(JSON, default=dict)
+    problems: Mapped[list] = mapped_column(JSON, default=list)
+    __table_args__ = (UniqueConstraint("bundle_id", "position"),)
 
 
 class Database:

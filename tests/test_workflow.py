@@ -17,7 +17,8 @@ from tests.test_audit import CHART, claim_xml
 @pytest.fixture
 def context(tmp_path):
     settings = Settings(database_url=f"sqlite:///{tmp_path / 'test.db'}", embedded_worker=False,
-                        auto_migrate=False, secret_key_file=str(tmp_path / "account.key"))
+                        auto_migrate=False, secret_key_file=str(tmp_path / "account.key"),
+                        source_storage_root=str(tmp_path / "sources"))
     db = Database(settings.database_url)
     db.initialize()
     provision_reviewer(db, settings.secret_key_file)

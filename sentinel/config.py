@@ -15,6 +15,7 @@ class Settings:
     access_token: str = ""
     auth_mode: str = "named"
     secret_key_file: str = "data/account.key"
+    source_storage_root: str = "data/sources"
     secure_cookies: bool = False
     session_hours: int = 8
     session_idle_minutes: int = 20
@@ -40,6 +41,7 @@ class Settings:
             access_token=os.getenv("APP_ACCESS_TOKEN", ""),
             auth_mode=os.getenv("AUTH_MODE", "named").strip().lower(),
             secret_key_file=os.getenv("SECRET_KEY_FILE", cls.secret_key_file),
+            source_storage_root=os.getenv("SOURCE_STORAGE_ROOT", cls.source_storage_root),
             secure_cookies=os.getenv("SECURE_COOKIES", "false").lower() == "true",
             allowed_hosts=tuple(h.strip() for h in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",") if h.strip()),
             nebius_api_key=os.getenv("NEBIUS_API_KEY", ""),

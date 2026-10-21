@@ -31,6 +31,8 @@ Sessions expire after eight hours or twenty idle minutes. HTTP on loopback uses 
 
 The old shared token works only with explicit `AUTH_MODE=legacy` in development and a configured token of at least 24 characters. This migration mode has no named accountability; use named mode for the new workflow. The full evidence workbench is still under construction.
 
+Versioned imports are available through the authenticated API: create a case with facility, encounter, claim and patient anchors at `POST /api/cases`, then upload files plus a typed SHA-256 manifest and expected revision at `/api/claims/{id}/bundles` with an `Idempotency-Key`. Get immutable membership and current extraction coverage at `/api/claims/{id}/bundles/{version}`; authorized original downloads use `/api/documents/{id}/content`. Original objects are encrypted beneath `SOURCE_STORAGE_ROOT` and require the local key. These import APIs do not yet establish complete review or finalization.
+
 ## Project context
 
 This repository also holds the Best Apps & Agents track research for the Nebius x NVIDIA Global AI Hackathon. Hospital workflow readiness takes priority over prize-specific features.

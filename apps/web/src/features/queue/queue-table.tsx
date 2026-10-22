@@ -57,6 +57,8 @@ export function QueueTable({ items, query }: { items: QueueItem[]; query: string
               <td className="py-3 pl-3 pr-4 align-top">
                 <Link
                   href={`/claims/${item.id}`}
+                  // Opening a claim renders it on demand; prefetching every row would read every case in advance.
+                  prefetch={false}
                   onClick={() => rememberOpened(item.id)}
                   className="doc-ref text-[0.9375rem] font-semibold text-forest after:absolute after:inset-0 after:content-['']"
                 >

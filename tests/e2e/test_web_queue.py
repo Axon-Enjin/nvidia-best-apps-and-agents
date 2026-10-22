@@ -55,3 +55,15 @@ def test_account_without_clinical_role_sees_an_explanation(web_stack):
     sign_in(page, web_stack, "admin")
     expect(page.get_by_text("Your account has no reviewer or supervisor role. Ask your operator to update it.")).to_be_visible()
     expect(page.get_by_role("table", name="Claims queue")).to_have_count(0)
+
+
+def test_queue_does_not_render_every_claim_in_advance(web_stack):
+    for ref in ("SYN-PREFETCH-1", "SYN-PREFETCH-2", "SYN-PREFETCH-3"):
+        seed_case(web_stack, "discrepant", claim_ref=ref)
+    page = web_stack.browser.new_page()
+    claim_renders = []
+    page.on("request", lambda r: claim_renders.append(r.url) if re.search(r"/claims/[0-9a-f]{32}(/[a-z]+)?\?_rsc=", r.url) else None)
+    sign_in(page, web_stack)
+    expect(page.get_by_role("table", name="Claims queue").get_by_role("link")).to_have_count(3)
+    page.wait_for_timeout(2000)
+    assert claim_renders == []

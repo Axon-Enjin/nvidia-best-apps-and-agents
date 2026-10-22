@@ -39,10 +39,11 @@ export function ReviewWorkspace({
   const openTasks = new Set(review.checks.filter((item) => openTask(item.id, review)).map((item) => item.id));
 
   function select(id: string) {
-    if (id === selected) return;
-    if (issueDirty && !window.confirm(DISCARD_DRAFT)) return;
-    setIssueDirty(false);
-    setSelected(id);
+    if (id !== selected) {
+      if (issueDirty && !window.confirm(DISCARD_DRAFT)) return;
+      setIssueDirty(false);
+      setSelected(id);
+    }
     const url = new URL(window.location.href);
     url.searchParams.set("issue", id);
     window.history.replaceState(null, "", url);

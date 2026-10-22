@@ -52,7 +52,7 @@ Confirmation pass: all screens recaptured after the corrections; every browser t
 
 ## Correctness
 
-- PASS: `./scripts/verify.ps1` (2026-10-22, this host): sync, Ruff, API tests 181 passed and 1 skipped (PostgreSQL, no `TEST_DATABASE_URL`), web install from the lockfile, 70 web unit tests, type check, lint, production build, then 48 browser tests passed (43 against the new frontend, 5 against the static UI), 1 warning (Starlette's HTTPX test-client deprecation).
+- PASS: `./scripts/verify.ps1` (2026-10-22, this host): sync, Ruff, API tests 181 passed and 1 skipped (PostgreSQL, no `TEST_DATABASE_URL`), web install from the lockfile, 70 web unit tests, type check, lint, production build, then 48 browser tests passed (43 against the new frontend, 5 against the static UI). After the final review: 51 browser tests passed (46 new frontend, 5 static UI), adding double-activation and queue-prefetch regressions, 1 warning (Starlette's HTTPX test-client deprecation).
 - PASS: web unit tests (`node --test`, 70 tests): proxy header rules, API error mapping without retries, safe return paths, token contrast from `globals.css`, queue parameters, manifest matching, import retry reusing the created case, labels and plain reasons, phase resolution, bounded polling that drops late answers, evidence marks and highlights, next-action rules, evidence page parsing.
 - PASS: `pnpm --dir apps/web typecheck`, `lint` and `build` (Next.js 16.4.2, Turbopack); every page renders per request.
 - PASS: API suite including the new `test_proxy_boundary.py` (trusted origin allowed; foreign origin denied with "Cross-origin changes are not allowed."; bare HTTPS origins enforced in production) and `test_differences.py` (P05 names each source value and page; P04 shows the case value; unconfirmed scan readings never appear; other checks empty).
@@ -78,6 +78,8 @@ Confirmation pass: all screens recaptured after the corrections; every browser t
 - N/A: AI paths. Remote inference stays off; the interface states "AI comparison: not run (offline)".
 
 ## Findings
+
+- FIXED (final review): queue rows prefetched every claim page, costing three API reads per row per queue view; rows now load on demand (`test_queue_does_not_render_every_claim_in_advance`).
 
 - WARNING: the frontend container image, Compose start and CI run have not executed on this host (no Docker engine, no hosted CI run).
 - WARNING: no session with a real screen reader; automated semantics checks only.

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { StatusProvider } from "@/components/ui/notice";
+import { LiveRegion, StatusProvider } from "@/components/ui/notice";
 import { QueueLink, QueueMemoryProvider } from "@/features/session/queue-memory";
 import { SessionProvider } from "@/features/session/session-provider";
 import { SignOutButton } from "@/features/session/sign-out-button";
@@ -38,6 +38,7 @@ export default async function WorkspaceLayout({ children }: { children: ReactNod
             </span>
           </p>
           <div className="mx-auto max-w-[90rem] px-4 pb-16 pt-6 md:px-6">
+            <LiveRegion />
             <main id="main" tabIndex={-1} className="outline-none">
               {clinical ? (
                 children

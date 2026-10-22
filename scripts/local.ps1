@@ -22,13 +22,13 @@ if (!(Test-Path -LiteralPath $localEnvironment)) { throw 'Run scripts/local.ps1 
 if ($Action -eq 'start') {
   & docker compose --env-file $localEnvironment up --build -d
 } elseif ($Action -eq 'stop') {
-  & docker compose --env-file $localEnvironment stop web worker
+  & docker compose --env-file $localEnvironment stop frontend web worker
 } else {
   if ($Checkpoint -notmatch '^[A-Za-z0-9._-]+$') { throw 'Use a simple checkpoint filename.' }
-  & docker compose --env-file $localEnvironment stop web worker
+  & docker compose --env-file $localEnvironment stop frontend web worker
   if ($LASTEXITCODE -ne 0) { throw 'Could not stop services; no backup attempted.' }
   & docker compose --env-file $localEnvironment run --rm --no-deps web python -m sentinel.recovery backup --services-stopped --backup-key /backups/recovery.key --target "/backups/$Checkpoint"
   if ($LASTEXITCODE -ne 0) { throw 'Backup failed; services remain stopped for inspection.' }
-  & docker compose --env-file $localEnvironment up -d web worker
+  & docker compose --env-file $localEnvironment up -d web worker frontend
 }
 if ($LASTEXITCODE -ne 0) { throw "Compose failed with exit $LASTEXITCODE" }

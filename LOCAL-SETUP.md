@@ -16,9 +16,9 @@ docker compose --env-file data/container.env run --rm web python -m sentinel acc
 docker compose --env-file data/container.env run --rm web python -m sentinel account-create supervisor --roles supervisor
 ```
 
-Privileged provisioning requires enrollment in a local TOTP authenticator. Keep the generated database password, `/data/account.key` and the separately generated recovery key private and backed up. There is no default account. Open `http://127.0.0.1:8000`; import a fixture folder's `manifest.json` and all originals under `tests/fixtures/development` (shared at the repository root). Use `discrepant`, then `corrected` as the next version of the same case. All required artifacts remain mandatory. The narrative comparison needs a reviewer and a different supervisor; the AI status remains not run offline.
+Privileged provisioning requires enrollment in a local TOTP authenticator. Keep the generated database password, `/data/account.key` and the separately generated recovery key private and backed up. There is no default account. Open the review workspace at `http://127.0.0.1:3000` (the earlier static UI stays at `http://127.0.0.1:8000` until the new frontend is accepted); import a fixture folder's `manifest.json` and all originals under `tests/fixtures/development` (shared at the repository root). Use `discrepant`, then `corrected` as the next version of the same case. All required artifacts remain mandatory. The narrative comparison needs a reviewer and a different supervisor; the AI status remains not run offline.
 
-Compose publishes only loopback port 8000 and uses an internal network for web, worker and database. Download images, Python dependencies, OCR English data and browser test binaries before disconnecting. No provider credential or remote identity service is selected. LAN publication requires an explicit Compose/allowed-host change; hosted HTTPS/private access remains outside this local milestone.
+Compose publishes loopback ports 3000 (frontend) and 8000 (API) and uses an internal network for frontend, web, worker and database. The `frontend` image is prepared but has not been built on this host. Download images, Python dependencies, OCR English data and browser test binaries before disconnecting. No provider credential or remote identity service is selected. LAN publication requires an explicit Compose/allowed-host change; hosted HTTPS/private access remains outside this local milestone.
 
 Stop with `./scripts/local.ps1 stop`; resume with `./scripts/local.ps1 start`. Do not remove volumes to stop the app. The migration service runs before web/worker startup. Containers run as UID 10001 with a read-only root, private data volume and temporary OCR directory.
 
@@ -56,6 +56,31 @@ uv run --project apps/api --locked python -m sentinel account-create supervisor 
 uv run --project apps/api --offline --locked python -m sentinel serve
 ```
 
+### The web app
+
+The review workspace is the Next.js app in `apps/web`. It needs Node.js 20.9 or later (verified locally with 25.4.0; CI and the image pin 24.22.1 LTS) and pnpm 11.10.0. Install while connected, then build:
+
+```powershell
+pnpm --dir apps/web install --frozen-lockfile
+$env:NEXT_TELEMETRY_DISABLED = '1'
+pnpm --dir apps/web build
+```
+
+Start the API with the web app's origin trusted, then the web app, each in its own terminal:
+
+```powershell
+$env:TRUSTED_ORIGINS = 'http://localhost:3000,http://127.0.0.1:3000'
+uv run --project apps/api --offline --locked python -m sentinel serve
+```
+
+```powershell
+$env:NEXT_TELEMETRY_DISABLED = '1'
+$env:BACKEND_URL = 'http://127.0.0.1:8000'   # the default
+pnpm --dir apps/web start
+```
+
+Open `http://127.0.0.1:3000`. The browser only talks to that origin; the web server forwards `/api/*` to the API with the session cookie, CSRF token and uploads intact. Both servers bind to loopback and need no network access after installation.
+
 Default binding is loopback and the embedded worker is enabled for this path. Windows OCR installation extracts verified binaries into `data/tools`, with no administrator/PATH changes; see [OCR-NOTICES.md](OCR-NOTICES.md). Stop the server before a checkpoint:
 
 ```powershell
@@ -73,6 +98,6 @@ uv run --project apps/api --offline --locked pytest apps/api/tests/test_recovery
 uv run --project apps/api --offline --locked pytest tests/e2e/test_offline_acceptance.py -q
 ```
 
-`scripts/verify.ps1` syncs the locked API environment, lints the API and `tests/e2e`, then runs the API tests and the browser acceptance suite as separate pytest sessions (`-SkipE2E` omits the browser suite). The API suite lives in `apps/api/tests`; cross-app browser flows live in `tests/e2e`; shared synthetic evidence is `tests/fixtures`.
+`scripts/verify.ps1` syncs the locked API environment, lints the API and `tests/e2e`, runs the API tests, installs the web app from its lockfile and runs its unit tests, type check, lint and production build, then runs the browser acceptance suite (`-SkipE2E` omits browser tests; `-SkipWeb` omits the web app and its browser tests). Browser tests start the built web app themselves with a loopback-only network guard. The API suite lives in `apps/api/tests`; cross-app browser flows live in `tests/e2e`; shared synthetic evidence is `tests/fixtures`.
 
 Set `TEST_DATABASE_URL` to an empty disposable PostgreSQL database to run `apps/api/tests/test_postgres.py`. The default local run explicitly skips it when absent. Run a full container correction loop and the isolated PostgreSQL restore before claiming the first prototype accepted. Browser request blocking and Python socket checks are not a whole-machine firewall; final container/OS isolation acceptance remains required.

@@ -20,10 +20,19 @@ Install the locked environment and provision named accounts from a private termi
 uv sync --project apps/api --locked
 uv run --project apps/api --locked python -m sentinel account-create reviewer --roles reviewer
 uv run --project apps/api --locked python -m sentinel account-create supervisor --roles supervisor
+$env:TRUSTED_ORIGINS = 'http://localhost:3000,http://127.0.0.1:3000'
 uv run --project apps/api --locked python -m sentinel serve
 ```
 
-Open `http://127.0.0.1:8000/login`. Password prompts do not echo. Supervisor/admin provisioning displays a fresh secret for a local TOTP authenticator and requires its code before saving. No shared or default password exists. Supervisor assignment can claim historical unassigned cases; administrator status alone cannot view records.
+Then build and start the review workspace (Node.js 20.9+, pnpm 11.10.0) in a second terminal:
+
+```powershell
+pnpm --dir apps/web install --frozen-lockfile
+pnpm --dir apps/web build
+pnpm --dir apps/web start
+```
+
+Open `http://127.0.0.1:3000`. The earlier static UI remains at `http://127.0.0.1:8000/login` until the new frontend is accepted. [LOCAL-SETUP.md](LOCAL-SETUP.md) has the full steps. Password prompts do not echo. Supervisor/admin provisioning displays a fresh secret for a local TOTP authenticator and requires its code before saving. No shared or default password exists. Supervisor assignment can claim historical unassigned cases; administrator status alone cannot view records.
 
 `account-disable USER`, `account-enable USER`, `account-revoke USER` and `account-reset USER` run through the same CLI. Resetting a privileged account reenrolls MFA; all these commands revoke existing sessions. Treat terminal access as operator authority. Restrict the data directory to the operator using local filesystem permissions, including Windows ACLs. Keep `data/account.key` private and backed up separately from database exports: it encrypts the stored MFA secrets. A missing or wrong key fails authentication closed.
 
@@ -38,7 +47,7 @@ Versioned imports are available through the authenticated API: create a case wit
 | Path | Owns |
 |---|---|
 | `apps/api/` | FastAPI app (`src/sentinel`, including the current static UI), Alembic `migrations/`, Python manifests and `uv.lock`, backend `tests/`, API-only `scripts/`, `Dockerfile` |
-| `apps/web/` | Reserved for the Next.js frontend; created with it |
+| `apps/web/` | Next.js review workspace (App Router, strict TypeScript, Tailwind CSS): routes in `src/app`, features in `src/features`, same-origin API proxy in `src/app/api`, `pnpm-lock.yaml`, `Dockerfile` |
 | `tests/e2e/` | Real-browser acceptance across the running app |
 | `tests/fixtures/` | The single copy of shared synthetic evidence and locked manifests |
 | `scripts/` | Cross-app commands: `verify.ps1`, `local.ps1` |

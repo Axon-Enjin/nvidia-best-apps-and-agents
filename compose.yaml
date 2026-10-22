@@ -45,6 +45,9 @@ services:
     environment:
       <<: *environment
       HOST: 0.0.0.0
+      # The frontend reaches the API as http://web:8000 and forwards browser changes from these origins.
+      ALLOWED_HOSTS: localhost,127.0.0.1,web
+      TRUSTED_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
     ports: ["127.0.0.1:8000:8000"]
     depends_on:
       migrate: {condition: service_completed_successfully}
@@ -53,6 +56,22 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    image: sentinel-claims-web:offline
+    environment:
+      BACKEND_URL: http://web:8000
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports: ["127.0.0.1:3000:3000"]
+    networks: [local]
+    init: true
+    read_only: true
+    tmpfs: [/tmp, /app/.next/cache]
+    mem_limit: 512m
+    depends_on:
+      web: {condition: service_healthy}
   worker:
     <<: *app
     command: [python, -m, sentinel, worker]

@@ -89,3 +89,15 @@ def test_retry_after_failed_upload_reuses_case_and_key(web_stack):
     queue = client.get("/api/claims").json()
     assert queue["total"] == 1
     assert len(client.get(f"/api/claims/{queue['items'][0]['id']}").json()["bundles"]) == 1
+
+
+def test_double_activation_imports_once(web_stack):
+    page = open_intake(web_stack)
+    page.get_by_label("Manifest (JSON)").set_input_files(str(FIXTURE / "manifest.json"))
+    page.get_by_label("Original documents").set_input_files([str(path) for path in originals(FIXTURE)])
+    rows = page.get_by_role("list", name="Documents named in the manifest")
+    expect(rows.get_by_text("Selected", exact=True)).to_have_count(7)
+    page.get_by_role("button", name="Import and check").dblclick()
+    page.wait_for_url(re.compile(r".*/claims/[0-9a-f]{32}/import$"))
+    page.wait_for_timeout(1000)
+    assert api_client(web_stack).get("/api/claims").json()["total"] == 1

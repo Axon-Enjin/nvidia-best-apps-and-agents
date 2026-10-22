@@ -102,3 +102,23 @@ def test_unreadable_and_unsupported_documents_are_distinguished(web_stack):
     table = page.get_by_role("table", name="Documents in version 1")
     expect(table.get_by_role("row", name=re.compile("CF2 claim summary"))).to_contain_text("Unreadable")
     expect(table.get_by_role("row", name=re.compile("Attachment attachment.bin"))).to_contain_text("Unsupported format")
+
+
+def test_double_activation_confirms_one_value(web_stack):
+    files, manifest = scan_bundle()
+    case_id = seed_case(web_stack, files=files, manifest=manifest)
+    client = api_client(web_stack)
+    before = pending(client, case_id)
+    page = web_stack.browser.new_page(viewport={"width": 1366, "height": 900})
+    sign_in(page, web_stack)
+    page.goto(f"{web_stack.base}/claims/{case_id}/import")
+    section = page.get_by_role("region", name="Confirm scanned values")
+    section.get_by_label("I can read this printed source").check()
+    section.get_by_label("Confirmation reason").fill("Read the legible printed source")
+    section.get_by_role("button", name="Confirm value").dblclick()
+    deadline = time.monotonic() + 15
+    while pending(client, case_id) == before and time.monotonic() < deadline:
+        time.sleep(0.1)
+    page.wait_for_timeout(1000)
+    assert pending(client, case_id) == before - 1
+    expect(page.get_by_role("alert").filter(has_text="Case changed")).to_have_count(0)

@@ -16,7 +16,7 @@
 
 ## 1. How to Build From These Docs
 
-At session start, read root `HANDOFF.md`, `docs/state.md`, then the active change's `docs/changes/offline-prototype/tasks.md` and `verify.md`. Product scope is already accepted and the owner explicitly resumed implementation on 2026-10-21. Work on `feat/offline-prototype`. Draft release/assurance documents record pending evidence; they do not reinstate the earlier owner pause. Repository layout and path moves are recorded in `docs/changes/repository-organization/`.
+At session start, read root `HANDOFF.md`, `docs/state.md`, then the active change's `docs/changes/offline-prototype/tasks.md` and `verify.md`. Product scope is already accepted and the owner explicitly resumed implementation on 2026-10-21. Work on `feat/offline-prototype`. Draft release/assurance documents record pending evidence; they do not reinstate the earlier owner pause. Repository layout and path moves are recorded in `docs/changes/repository-organization/`. The Next.js frontend is the change `docs/changes/frontend-redesign/` (tasks and verification there).
 
 For behavior use PRD and the active change's delta spec; for architecture use SDD; for UI use DSD; for tests use QAD. The task list owns progress. When a Locked artifact must change, write and propagate a Change Record. Preserve existing source/results through additive migrations.
 
@@ -43,6 +43,10 @@ Work inline. Test new behavior before implementing it, run the affected tests th
 | Uvicorn / HTTPX | 0.54.0 / 0.28.1 | 2026-10-21, installed metadata | [Uvicorn settings](https://www.uvicorn.org/settings/), [HTTPX transports](https://www.python-httpx.org/advanced/transports/) |
 | pytest / Ruff / Playwright | 9.1.1 / 0.17.1 / 1.64.0 | 2026-10-21, installed metadata | [pytest](https://docs.pytest.org/), [Ruff](https://docs.astral.sh/ruff/), [Playwright Python](https://playwright.dev/python/docs/intro) |
 | pypdf | 6.21.1 | 2026-10-21, installed metadata | [pypdf](https://pypdf.readthedocs.io/en/stable/) |
+| Node.js / pnpm | 25.4.0 local (engines `>=20.9.0`); CI and image 24.22.1 LTS / pnpm 11.10.0 | 2026-10-22, nodejs.org release index, npm registry | [Next.js installation](https://nextjs.org/docs/app/getting-started/installation) |
+| Next.js / React | 16.4.2 / 19.3.1 | 2026-10-22, `apps/web/pnpm-lock.yaml` | [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components) |
+| TypeScript / ESLint / eslint-config-next | 6.0.3 / 9.39.5 / 16.4.2 | 2026-10-22, peer ranges checked | [typescript-eslint](https://typescript-eslint.io/) |
+| Tailwind CSS / lucide-react | 4.3.3 / 1.57.0 | 2026-10-22 | [Tailwind with Next.js](https://tailwindcss.com/docs/installation/framework-guides/nextjs) |
 
 Windows printed OCR is verified with Tesseract 5.5.3.20260724 and English tessdata_fast 4.1.0 (pinned SHA-256 in OCR-NOTICES.md). Pillow 12.3.0 and pypdfium2 5.14.0 are locked. Container artifacts pin Python 3.14.5, PostgreSQL 17.11 image digests and Debian Tesseract 5.5.0-1+b1, but those images have not run. Docker engine, WSL, Podman and PostgreSQL remain unavailable on this host. Compose 5.6.1 configuration validation passes; this is not container/database acceptance.
 
@@ -51,8 +55,14 @@ Windows printed OCR is verified with Tesseract 5.5.3.20260724 and English tessda
 | Unresolvable `httpx2>=0.22,<1` development constraint | Remove that invalid constraint and use the existing locked test environment | `uv sync --locked` succeeds; baseline tests run |
 | Starlette TestClient warns about deprecated HTTPX support | Record the warning; verify a supported migration before adding a different transport package | One deprecation warning in the 37-test run; no warning suppression |
 | Assuming `uv --offline` blocks application traffic | It controls package operations only; test application provider guards and independently block egress for final acceptance | Offline change design and Task 10 |
+| TypeScript 7.0 and ESLint 10 look current | `typescript-eslint` peers `typescript <6.1.0`; React, jsx-a11y and import lint plugins peer ESLint 9 | npm peer ranges, 2026-10-22 |
+| Next.js `proxy.ts` on upload routes | When proxy runs, request bodies over 10 MB are silently truncated; the matcher excludes `/api` | Next.js `proxyClientMaxBodySize` docs; `test_large_original_passes_through_the_proxy_intact` |
+| pnpm 11 build scripts | Ignored scripts fail install; `apps/web/pnpm-workspace.yaml` denies `unrs-resolver`'s download fallback | `pnpm install --frozen-lockfile` exit 0 |
+| Python text writes on Windows | Default encoding is cp1252; pass `encoding="utf-8"` when scripting edits to source files | Silent non-match on `·` during this change |
 
 ## 4. Golden-Path Patterns
+
+Web app, verified 2026-10-22: pure modules are tested with `node --test` (relative `.ts` imports, no aliases); interaction is tested in real Chromium through `tests/e2e/test_web_*.py`, whose `web_stack` fixture starts FastAPI and the built app (`next start`) behind a loopback-only Node network guard. Run `pnpm --dir apps/web build` before those tests.
 
 Verified 2026-10-21 against the installed stack: use `TestClient(create_app(settings, database))` as a context manager so lifespan runs; inject a temporary database/settings explicitly. The real examples are `apps/api/tests/test_workflow.py` and `apps/api/tests/test_offline.py`.
 
@@ -60,7 +70,7 @@ For remote adapters, test the transport boundary with `httpx.MockTransport` and 
 
 ## 5. Conventions & Guardrails
 
-When creating, moving or renaming files, read `.cursor/rules/repository-structure.mdc`. It owns file placement, naming and migration safeguards. The FastAPI app, migrations, Python manifests and backend tests live under `apps/api/` (installed from `apps/api/src/sentinel`); browser acceptance is `tests/e2e/`; shared synthetic evidence is `tests/fixtures/`. `apps/web/` is reserved for the Next.js app and is created with it, not before. Relative `data/...` settings resolve against the workspace root (`WORKSPACE_ROOT`, else the repository root), so root and app-directory starts share one private data directory. Use `prompts/organize-repository.md` for the full reorganization procedure.
+When creating, moving or renaming files, read `.cursor/rules/repository-structure.mdc`. It owns file placement, naming and migration safeguards. The FastAPI app, migrations, Python manifests and backend tests live under `apps/api/` (installed from `apps/api/src/sentinel`); browser acceptance is `tests/e2e/`; shared synthetic evidence is `tests/fixtures/`. `apps/web/` holds the Next.js app (routes in `src/app`, features in `src/features`, shared primitives in `src/components/ui`, infrastructure in `src/lib`). Relative `data/...` settings resolve against the workspace root (`WORKSPACE_ROOT`, else the repository root), so root and app-directory starts share one private data directory. Use `prompts/organize-repository.md` for the full reorganization procedure.
 
 Use existing focused modules; introduce account, bundle/storage, review and report modules only as their tasks require. Server transactions own case revisions and completion. UI state cannot authorize operations. Original evidence and published review snapshots are immutable; decisions append events.
 
@@ -73,6 +83,9 @@ Task verification:
 ```powershell
 uv sync --project apps/api --locked
 uv run --project apps/api --offline --locked pytest apps/api/tests/test_offline.py -q
+pnpm --dir apps/web test
+pnpm --dir apps/web typecheck
+pnpm --dir apps/web lint
 ./scripts/verify.ps1
 git diff --check
 ```
@@ -81,7 +94,7 @@ Run the task-specific tests in `tasks.md` when they exist. A passing legacy suit
 
 ## 5.1 Change Workflow
 
-The active product change is `docs/changes/offline-prototype/`; `docs/changes/repository-organization/` records the layout migration and does not close that change's runtime gates. Keep proposal, design, tasks, delta spec and verification coherent. Validate using the external engine's `scripts/change.py validate <slug> docs/`. Archive only after the change is actually verified; uncompleted tasks remain unchecked.
+The active product change is `docs/changes/offline-prototype/`; `docs/changes/repository-organization/` records the layout migration and `docs/changes/frontend-redesign/` the Next.js frontend. Neither closes the offline prototype's runtime gates. Keep proposal, design, tasks, delta spec and verification coherent. Validate using the external engine's `scripts/change.py validate <slug> docs/`. Archive only after the change is actually verified; uncompleted tasks remain unchecked.
 
 ## 5.2 Public Surface and Crawler Policy
 

@@ -10,6 +10,7 @@
 **Exit condition:** Complete the local import, evidence review, correction, revised-source review, guarded closeout/export, local OCR and recovery tasks; execute disconnected browser acceptance.
 **Current blocker:** Docker engine, WSL, Podman and PostgreSQL are unavailable on this host. Local implementation and SQLite browser/recovery tests run; container build, PostgreSQL workflow/restore, Linux OCR, OS/container isolation and hosted CI execution remain unverified. No owner pause remains.
 **Product:** Hospital PhilHealth reviewers reconcile prepared adult medical inpatient claims and source corrections before submission through the existing hospital system.
+**Frontend:** The Next.js review workspace in `apps/web` (change `frontend-redesign`) is implemented and verified locally; the static UI stays available until the owner accepts the new frontend.
 **Engagement:** Hospital readiness first; local offline prototype before hosted evaluation. **Vault status:** none.
 
 ## 2. Active signals
@@ -43,6 +44,7 @@ L1 is required by multiple contributors; current evidence is local tests only, n
 | A7 | Current design defaults remain reversible | Tests and reviewer evidence govern refinement |
 | A8 | Yushin operates supervised evaluation | Confirm alert channel/availability before invitations |
 | A9 | Offline means local server after dependency/image installation, without external runtime calls | Not an air-gapped installer or cross-device synchronization; final task independently blocks egress |
+| A10 | This host runs Node.js 25.4.0, an odd-numbered release | CI and the frontend image pin 24.22.1 LTS; install an LTS Node locally before long-term use |
 
 No further product approval is required to continue the already authorized tasks. External runtime or data-scope changes still require the applicable facts/authorization.
 
@@ -59,6 +61,7 @@ No further product approval is required to continue the already authorized tasks
 | D7 | Owner resumed implementation and authorized project commits/branch on 2026-10-21 | Latest explicit instruction supersedes pause |
 | D8 | Offline default; online inference requires explicit opt-in plus credentials | Agent implementation choice under offline-first instruction; tests in Task 1 |
 | D9 | Two-app layout: `apps/api` executed, `apps/web` reserved; shared fixtures and browser acceptance at the repository root | Human direction in `prompts/organize-repository.md`; record in `docs/changes/repository-organization/` |
+| D10 | Next.js frontend in `apps/web` behind a same-origin `/api` proxy; FastAPI keeps authentication, permissions, transitions, jobs, storage and closeout; FastAPI accepts configured `TRUSTED_ORIGINS`; checks gain an additive `differences` field | Owner brief (2026-10-22) with agent implementation choices recorded in `docs/changes/frontend-redesign/design.md`; static UI retired only after owner acceptance |
 
 ## 6. Context exclusions
 
@@ -70,6 +73,7 @@ The old nightly/revenue proposal and old prototype plan are historical. Keep loc
 2. Execute the prepared CI workflow before claiming established L1 practice. No push or hosted run occurred in this session.
 3. Repeat browser acceptance with OS/container egress isolation and inspect traffic. The current test independently blocks browser external origins and Python server non-loopback sockets; it is not a whole-machine firewall.
 4. Retain hosted release, live-model quality and hospital qualification as later gates.
+5. Owner review of the new frontend (screens in `test-results/web/screens/`); after acceptance, retire the static UI (frontend-redesign task 5.4). Hosting the frontend needs the owner's choice of host, cost limit and permission to push.
 
 Tasks 1-8 are implemented and verified. Tasks 4-8 added the bounded profile, evidence workspace, correction/manual review events, guarded reports and real printed OCR. Task 9 adds encrypted checkpoints, isolated SQLite restore, retirement-ledger reconciliation, bounded worker retries and container/CI artifacts. Its PostgreSQL/container gate remains open.
 

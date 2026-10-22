@@ -27,6 +27,7 @@
 | 14 | 2026-10-21 17:10 | Verify local correction acceptance and fresh-review fixes; retain standard-runtime isolation and CI gates | STATE_Template.md | docs/changes/offline-prototype/verify.md, docs/state.md | - | not run |
 | 15 | 2026-10-21 17:13 | Record 168 passing local tests, one unavailable PostgreSQL skip and open prototype sign-off gates | - | docs/changes/offline-prototype/verify.md | - | not run |
 | 16 | 2026-10-22 | Execute repository organization: apps/api backend, tests/e2e, shared fixtures, root verify script | BUILD_Template.md, STATE_Template.md | docs/build-sentinel-node.md, docs/state.md, docs/changes/repository-organization/ | - | not run |
+| 17 | 2026-10-22 01:05 | Implemented and verified the Next.js frontend redesign (change frontend-redesign tasks 1.1-5.3) | BUILD_Template.md, DSD_Template.md, SDD_Template.md, STATE_Template.md | docs/build-sentinel-node.md, docs/changes/frontend-redesign/tasks.md, docs/changes/frontend-redesign/verify.md, docs/dsd-sentinel-node.md, docs/sdd-sentinel-node.md, docs/state.md, docs/sentinel-node-claims-interoperability-research.md | - | not run |
 
 ---
 

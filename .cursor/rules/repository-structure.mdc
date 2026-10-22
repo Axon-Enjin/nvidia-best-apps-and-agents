@@ -6,13 +6,13 @@ alwaysApply: true
 # Repository structure
 
 - Apply this rule when creating, moving or renaming files, or changing imports, tooling and build paths.
-- The repository holds two apps. Backend work happens in `apps/api/`; create the Next.js application under `apps/web/` when it begins. Do not scaffold empty target directories.
+- The repository holds two apps. Backend work happens in `apps/api/`; the Next.js review workspace lives in `apps/web/`. Do not scaffold empty target directories.
 - `apps/web/`: Next.js application and its package manifest, one JavaScript lockfile, framework configuration, `public/` and frontend tests.
 - `apps/web/src/app/`: App Router routes, layouts, loading/error boundaries and route composition; keep domain behavior in feature modules.
 - `apps/web/src/features/<feature>/`: feature-owned components, hooks, types and tests; start with the features the implementation actually needs.
 - `apps/web/src/components/ui/`: UI primitives shared by real consumers. `src/lib/`: focused infrastructure such as API transport and server-side session handling. Keep server-only code outside client imports.
 - `apps/api/`: Python project manifest, its `uv.lock`, Alembic configuration, migrations, backend tests (package `tests`), API-only `scripts/` and the app `Dockerfile`. Run its tools with `uv run --project apps/api`; the image builds from the repository root context.
-- `apps/api/src/sentinel/`: installed FastAPI package; retain the `sentinel` import name and existing focused modules. The static UI lives in the package until the web app replaces it. The wheel force-includes `migrations/` and `alembic.ini` as `sentinel/_alembic/`; edit only the copies in `apps/api/`.
+- `apps/api/src/sentinel/`: installed FastAPI package; retain the `sentinel` import name and existing focused modules. The static UI lives in the package until the owner accepts the web app; it is then retired (frontend-redesign task 5.4). The wheel force-includes `migrations/` and `alembic.ini` as `sentinel/_alembic/`; edit only the copies in `apps/api/`.
 - `tests/e2e/`: flows spanning frontend and backend (package `e2e`, own `pytest.ini`, run in the API environment). `tests/fixtures/`: shared synthetic evidence and locked evaluation manifests. App-local tests belong with their app; keep each fixture authoritative in one place. Run the API and e2e suites as separate pytest sessions; they must not share a package name.
 - `scripts/`: repository-wide development and maintenance commands. Put scripts serving only one app under that app's `scripts/`.
 - `infra/`: deployment configuration shared across apps, when needed. Root `compose.yaml` may remain the local orchestration entry point; app Dockerfiles belong with their app.

@@ -23,7 +23,7 @@
 **Anti-references:** Consumer wellness dashboards obscure document work; trading terminals encourage alarm; insurer approval stamps imply authority the app does not have.
 ## 0.5 Concept Visuals
 
-No approved concept images exist. The earlier walkthrough is explanatory material. Screen composition below is a design specification; screenshots and interactive audit remain pending.
+No approved concept images exist. The implemented screens are the reference: `tests/e2e/test_web_screens.py` captures sign-in, queue, intake, Import with scan confirmation, Review, correction progress and Complete at 1366x768 and 375x812 into `test-results/web/screens/`. `docs/changes/frontend-redesign/verify.md` records the visual review and its corrections.
 ## 1. Design Philosophy & Vision
 
 Keep evidence near the question it answers. Use a light paper background, dark forest navigation and restrained teal actions. Amber indicates attention and red a blocking issue, always with text and icons. White space separates the source from the reviewer decision.
@@ -35,7 +35,7 @@ Identify the environment once as ?Evaluation workspace: sample patient records?;
 
 ### 2.0 Token Architecture
 
-Use primitive values, semantic meanings and component aliases. For example primitive forest `#174A3B` ? `--color-primary` ? `--button-bg`. Tokens are specified here; no implemented stylesheet is claimed.
+Use primitive values, semantic meanings and component aliases, for example primitive forest `#174A3B` to `--color-forest` to `.btn-primary`. The implemented tokens live in the `@theme` block of `apps/web/src/app/globals.css`; `apps/web/src/app/tokens.test.ts` measures every text and indicator pairing from that file.
 
 ### 2.1 Colors
 
@@ -43,7 +43,7 @@ Use primitive values, semantic meanings and component aliases. For example primi
 |---|---|
 | `--color-bg` | `#F7F6F2` |
 | `--color-surface` | `#FFFFFF` |
-| `--color-border` | `#8A9790` |
+| `--color-border` (`--color-rule`) | `#7A8780` (was `#8A9790`, which measured 2.81:1 on paper; boundaries need 3:1) |
 | `--color-primary` | `#174A3B` |
 | `--color-primary-hover` | `#10382C` |
 | `--color-accent` | `#176B68` |
@@ -52,6 +52,9 @@ Use primitive values, semantic meanings and component aliases. For example primi
 | `--color-success` | `#245B3D` |
 | `--color-warning` | `#825000` |
 | `--color-error` | `#A32D2D` |
+| Tints (passed, attention, blocking, teal) | `#E7EEE8`, `#FBF1DC`, `#FBE9E7`, `#E3EFEC` |
+| Evidence highlight | `#FFE3A0` with an amber underline |
+| Faint divider (decorative only) | `#DCDFD8` |
 
 White action text on primary/accent; text and muted text on paper/white. Verify actual combinations and states before release. Borders convey boundaries; avoid relying on pale fills for actionable states.
 
@@ -67,6 +70,8 @@ Text wordmark ?Sentinel Claims? for the initial release; no approved pictorial l
 | Body | System UI | 400 / 16px / 1.5 |
 | Caption and dense rows | System UI | 400 / 14px / 1.4 |
 | Document references | System monospace | 400 / 13px / 1.5 |
+| Archive labels (eyebrows) | System UI | 600 / 12px, uppercase, 0.08em tracking |
+| Claim reference (page title) | System monospace | 600 / 24px |
 
 Use Segoe UI where installed, then system-ui/sans-serif; monospace uses ui-monospace/Consolas/monospace. No downloaded fonts or font redistribution. Use tabular numerals for counts, dates and amounts.
 
@@ -79,7 +84,7 @@ Evidence documents and source crops do the visual work. No stock clinicians, gen
 Inline panels use borders without shadows. Floating menus: `0 4px 16px #172B2414`; modal: `0 12px 40px #172B2426`. No decorative glass or oversized gradients.
 ## 8. Quality Gate
 
-No implemented-screen audit has been completed. Accessibility, performance, theming, responsiveness and implementation integrity are each unscored. Before release, each must score at least 3/4 with no unresolved critical or major issue.
+One batched visual review and a confirmation pass were completed on 2026-10-22 (see the frontend redesign verification record). Scores for the local prototype: accessibility 3/4 (automated checks pass; no screen-reader session yet), performance 3/4 (server-rendered pages, no remote assets; not load-tested), theming 3/4 (light theme only by design; tokens measured), responsiveness 3/4 (375px to 1366px and 200% zoom tested), implementation integrity 3/4 (typed against captured API responses; container image unbuilt). Before release, each must hold at least 3/4 with no unresolved critical or major issue.
 
 | Surface | Do | Avoid |
 |---|---|---|
@@ -91,4 +96,4 @@ No implemented-screen audit has been completed. Accessibility, performance, them
 Design rationale satisfies the records-desk reference. Human detail comes from reasoned reviewer notes and correction ownership. Whether these choices work for reviewers must be established in the actual UI.
 ## 9. Materialization
 
-Root brand and design guides are derived from this source. Asset version 0.1.0; future approved assets belong in `docs/assets/brand/`, with descriptive names and source/license records. Yushin approves changes; retire older versions through repository history. No new asset files exist.
+Root brand and design guides are derived from this source. Asset version 0.1.0; future approved assets belong in `docs/assets/brand/`, with descriptive names and source/license records. Yushin approves changes; retire older versions through repository history. The only implemented assets are the existing favicon and the lucide-react icon set (ISC licence), bundled into the web app.

@@ -2,15 +2,15 @@
 
 **Project:** Sentinel Claims
 **Date:** 2026-10-21
-**Version:** 0.2
+**Version:** 0.3
 **Owner:** Yushin
 **Status:** Draft
-**Last reconciled:** 2026-10-21
+**Last reconciled:** 2026-10-22
 **PRD:** [Requirements](prd-sentinel-node.md)
 
 Rapid design baseline for the approved slice. It describes target architecture, not the provisional scaffold's behavior. Finalize exact dependency versions, migration columns and executable deployment contracts before implementing each corresponding task.
 
-Implementation resumed 2026-10-21 on `feat/offline-prototype`. The [active change design](changes/offline-prototype/design.md) adds default offline operation and the local prototype sequence. Provider credentials cannot enable inference without explicit online mode. Local manual review preserves the approved completion rules. Installed versions are recorded in [the build guide](build-sentinel-node.md); local PostgreSQL/OCR packaging and the complete workflow remain pending.
+Implementation resumed 2026-10-21 on `feat/offline-prototype`. The [active change design](changes/offline-prototype/design.md) adds default offline operation and the local prototype sequence. Provider credentials cannot enable inference without explicit online mode. Local manual review preserves the approved completion rules. Installed versions are recorded in [the build guide](build-sentinel-node.md); local PostgreSQL/OCR packaging and the complete workflow remain pending. The [frontend redesign change](changes/frontend-redesign/design.md) (2026-10-22) replaces the static client with a Next.js app in `apps/web` behind a same-origin proxy; FastAPI keeps every authority it had.
 
 ## 1. Architectural Vision & Principles
 
@@ -22,7 +22,8 @@ PostgreSQL is standard locally and hosted. Optional SQLite supports lightweight 
 
 ```mermaid
 flowchart LR
-  Browser -->|HTTPS session| Web[FastAPI web]
+  Browser -->|same origin| App[Next.js web app]
+  App -->|/api proxy and server reads, session cookie| Web[FastAPI web]
   Web --> DB[(PostgreSQL)]
   Web --> Storage[Private source storage]
   Worker[Durable worker] --> DB
@@ -35,7 +36,7 @@ flowchart LR
 
 | Layer | Choice | Responsibility |
 |---|---|---|
-| Client | HTML/CSS and small JavaScript client | Queue, workbench, source viewing, explicit job/check state |
+| Client | Next.js App Router, React, strict TypeScript, Tailwind CSS (`apps/web`, Node.js runtime) | Sign-in, queue, intake, Import/Review/Complete phases, source viewing; Server Components read with the reviewer's cookie; Client Components own selection, forms, uploads and bounded polling; a route handler streams `/api/*` to FastAPI on the same origin |
 | Web | Python/FastAPI, SQLAlchemy | Authentication, authorization, contracts, transactional review transitions |
 | Worker | Separate process, PostgreSQL durable queue | Parse/OCR, checks, bounded inference, publish run |
 | Data | PostgreSQL; private object storage | Versions, history, permissions and original documents |
@@ -137,6 +138,8 @@ Deny by default and check permissions on each request, including source/range do
 
 Private buckets/files, encryption in transit/at rest/backups, no source or prompt content in logs, secrets injected outside Git. Minimize model excerpts and use synthetic patient data only. Audit document access, exports and privilege/profile changes.
 
+The web app is a same-origin boundary, not an authority. Its `/api/*` route handler forwards an allow-list of headers (cookie, CSRF token, Origin, content type, idempotency key) and returns status, body, `Set-Cookie` and download headers with `Cache-Control: no-store`. FastAPI accepts state changes only from its own origin or a configured `TRUSTED_ORIGINS` entry (HTTPS in production) and still checks the session, CSRF token and case access on every request. Pages carry a per-request nonce CSP, frame denial and same-origin referrer policy, and render per request. The page proxy (`proxy.ts`) never runs on `/api`, because Next.js truncates request bodies above 10 MB where it runs. No token or draft is kept in browser storage; `BACKEND_URL` is server-only. Login throttling sees the web server's address for every browser, which is acceptable on one local machine; hosting needs trusted forwarded headers first.
+
 Enforce PRD limits before expensive parsing; inspect content signatures, quarantine and scan uploads, reject path traversal and active content, isolate extraction with CPU/memory/time limits. Disable XML external entities/network resolution, sanitize printable output and CSV formula cells, escape model text. Unknown schema stays unsupported. Account restriction and sample-only notice cannot prove an upload lacks real patient data; supervised operators control import access and quarantine unexpected records.
 
 ## 6. Infrastructure, CI/CD & Deployment
@@ -145,7 +148,7 @@ One image, separate web/worker; PostgreSQL with persistent storage; local filesy
 
 CPU target around 4 vCPU/16 GB RAM is provisional, not a purchased/available preset. Remote inference means no dedicated GPU requirement. Account/region/quota/price and exact versions remain TBD before provisioning. [Nebius Compute](https://docs.nebius.com/compute) and [Storage](https://nebius.com/services/storage) are offering references, not deployment evidence.
 
-CI required by multiple contributors: lint, tests, database integration and critical browser flows; failed checks block merge. Pin dependencies/image digests and scan them when packaging. No build pipeline or deploy command is claimed complete.
+CI required by multiple contributors: lint, tests, database integration and critical browser flows; failed checks block merge. The workflow installs Node.js 24.22.1 and the web app from its lockfile, then runs its unit tests, type check, lint and production build before the browser suite. A `frontend` Compose service and `apps/web/Dockerfile` are prepared, not built. Pin dependencies/image digests and scan them when packaging. No build pipeline or deploy command is claimed complete.
 
 Daily encrypted coordinated database/object backups; seven recovery points. Evaluation RPO 24 hours, RTO one business day. Restore to clean isolation and verify document hashes, access and histories before release. Restore tested: **not yet**. PRD ?9 is the rollback source.
 

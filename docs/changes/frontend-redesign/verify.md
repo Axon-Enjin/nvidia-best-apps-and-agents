@@ -33,6 +33,22 @@ Each assertion of the static-UI browser suite and the test that replaces it in t
 | `test_evidence_pages`: manual comparison records a page-2 anchor | `test_web_corrections::test_manual_comparison_records_a_second_page_anchor` |
 | `test_offline_acceptance`: import, discrepancy source, correction handoff and acknowledgement, corrected import, resolve, manual P07/P08, different supervisor acknowledgement, guarded completion, CSV and printable record, denied second account, process restart, loopback-only network | `test_web_acceptance::test_full_review_through_the_web_frontend_with_restart_and_network_guards` |
 
+### Visual review (one batch, one confirmation pass)
+
+Screens: `tests/e2e/test_web_screens.py` writes sign-in, queue, intake, Import with scan confirmation, review (date discrepancy and narrative agreement), correction progress, Complete (blocked and done) and the supervisor acknowledgement view at 1366x768 and 375x812 to `test-results/web/screens/`. Reviewed against the brief and the design skill's checklist (its native-app items such as safe areas and Dynamic Type do not apply to this web app; dark mode is a deliberate departure because the DSD defines a light theme only).
+
+| Finding | Severity | Correction |
+|---|---|---|
+| F1: case header and phase tabs took about 410 px of a 768 px screen; the next action and source text fell below the fold | Material | Header compressed to two lines (identity, inline metadata including AI status); phase tabs one line each; about 250 px |
+| F3: checks that cite whole documents (required documents, values, narrative) highlighted every labelled field | Material | Only checks whose anchors name fields (P01, P04, P05, P08) highlight values; others list the cited pages; covered by `evidence.test.ts` |
+| F4: on a blocked Complete page the exact blockers sat below the full summary | Material | Remaining blockers render directly under the blocked Complete button |
+| F6: at 375 px the documents table broke words inside document names | Material | Status moves under the document on phones; filenames break safely |
+| F7: on phones the scanned original appeared after an 18-row value list, far from the form | Material | Order on phones: form, original, value list; desktop keeps the original beside both |
+| F5: header read "reviewer · reviewer" | Minor | Role shown capitalized after the username |
+| Live region above the site header (found in Task 12) | Material | Rendered at the top of the content column |
+
+Confirmation pass: all screens recaptured after the corrections; every browser test passed afterwards (43 web tests).
+
 ## Correctness
 
 - PENDING.

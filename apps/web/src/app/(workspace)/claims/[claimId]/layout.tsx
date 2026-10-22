@@ -12,7 +12,7 @@ export default async function CaseLayout({ children, params }: { children: React
     <>
       <CaseHeader claim={claim} version={version} review={review} config={config} />
       <PhaseNav claimId={claim.id} statuses={phaseStatus(claim, review)} />
-      <div className="mt-8">{children}</div>
+      <div className="mt-6">{children}</div>
     </>
   );
 }

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { StatusText } from "@/components/ui/status-text";
 import { getCase, getReports } from "@/features/case/case-data";
-import { CompletionSummary } from "@/features/complete/completion-summary";
+import { CompletionSummary, RemainingBlockers } from "@/features/complete/completion-summary";
 import { FinalizeButton } from "@/features/complete/finalize-button";
 import { ReviewRecords } from "@/features/complete/review-records";
 import { READY_STATE } from "@/lib/api-types";
@@ -43,6 +43,8 @@ export default async function CompletePhasePage({ params }: { params: Promise<{ 
           <FinalizeButton claimId={claim.id} revision={claim.revision} bundleId={bundle.bundle_id} ruleVersion={review.rule_version} allowed={review.can_finalize} />
         )}
       </div>
+
+      {ready ? null : <RemainingBlockers claim={claim} review={review} version={version} />}
 
       <CompletionSummary claim={claim} bundle={bundle} review={review} version={version} current={current} />
 

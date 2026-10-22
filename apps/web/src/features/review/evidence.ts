@@ -7,6 +7,10 @@ import type { Check, ConfirmationRequirement, SourceDocument } from "../../lib/a
 
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+// Checks whose anchors name specific fields (profile.py `names=`). Other checks
+// cite whole documents, so highlighting every labelled value there is noise.
+const FIELD_SCOPED = new Set(["P01", "P04", "P05", "P08"]);
+
 export type MarkSource = { documentId: string; type: string; page: number | null };
 export type DifferenceMark = { letter: string; field: string; value: string; sources: MarkSource[] };
 export type Highlight = { value: string; letter: string | null };
@@ -64,8 +68,9 @@ export function evidencePages(
       if (source.page !== null) add(source.documentId, source.page, { value: mark.value, letter: mark.letter });
     }
   }
+  const highlightFields = FIELD_SCOPED.has(check.id);
   for (const anchor of check.anchors) {
-    if (anchor.bundle_id === bundleId) add(anchor.document_id, anchor.page, { value: anchor.value, letter: null });
+    if (anchor.bundle_id === bundleId) add(anchor.document_id, anchor.page, { value: highlightFields ? anchor.value : "", letter: null });
   }
   return [...pages.values()];
 }

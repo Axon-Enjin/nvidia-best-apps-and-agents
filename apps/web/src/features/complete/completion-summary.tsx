@@ -114,8 +114,15 @@ export function CompletionSummary({
         </ul>
       </div>
 
-      <div className="grid gap-2">
-        <h3 className="eyebrow">Remaining blockers</h3>
+    </section>
+  );
+}
+
+/** Exactly what still blocks completion, each linked to where it is resolved. */
+export function RemainingBlockers({ claim, review, version }: { claim: ClaimDetail; review: ReviewState; version: number }) {
+  return (
+    <section aria-labelledby="blockers-heading" className="grid gap-2">
+        <h2 id="blockers-heading" className="eyebrow">Remaining blockers</h2>
         {review.blockers.length ? (
           <ul aria-label="Remaining blockers" className="grid gap-3">
             {review.blockers.map((blocker) => {
@@ -143,7 +150,6 @@ export function CompletionSummary({
         ) : (
           <p className="text-ink-muted">None. Every check and correction is resolved for version {version}.</p>
         )}
-      </div>
-    </section>
+      </section>
   );
 }

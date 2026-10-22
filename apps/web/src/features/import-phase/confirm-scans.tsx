@@ -100,9 +100,10 @@ export function ConfirmScans({ revision, items }: { revision: number; items: Sca
         </div>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(18rem,26rem)_minmax(0,1fr)]">
-        <div className="grid content-start gap-4">
-          <form onSubmit={submit} noValidate className="panel grid gap-4 p-4">
+      {/* Phones read the form, then the original, then the value list; desktop keeps the original beside both. */}
+      <div className="grid gap-6 lg:grid-cols-[minmax(18rem,26rem)_minmax(0,1fr)] lg:grid-rows-[auto_1fr]">
+        <div className="contents">
+          <form onSubmit={submit} noValidate className="panel grid content-start gap-4 p-4 lg:col-start-1 lg:row-start-1">
             <p className="font-semibold">
               {fieldLabel(field)}
               <span className="doc-ref ml-2 font-normal text-ink-muted">reading: {reading || "not read"}</span>
@@ -167,7 +168,7 @@ export function ConfirmScans({ revision, items }: { revision: number; items: Sca
               Confirm value
             </button>
           </form>
-          <div>
+          <div className="order-3 lg:order-none lg:col-start-1 lg:row-start-2">
             <p className="eyebrow">Values to confirm on {label}</p>
             <ul aria-label="Scan values" className="mt-2 divide-y divide-rule-faint border-y border-rule bg-surface">
               {requirement.pending.map((key) => (
@@ -191,7 +192,7 @@ export function ConfirmScans({ revision, items }: { revision: number; items: Sca
 
         </div>
 
-        <figure className="grid content-start gap-2">
+        <figure className="order-2 grid content-start gap-2 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <figcaption className="doc-ref flex flex-wrap items-center justify-between gap-2 border-b border-ink pb-2 uppercase">
             <span>
               {label} · page {anchorPage} · original

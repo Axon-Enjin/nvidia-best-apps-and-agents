@@ -26,7 +26,7 @@ export default async function WorkspaceLayout({ children }: { children: ReactNod
               <div className="ml-auto flex items-center gap-4">
                 <p className="text-sm">
                   <span className="font-semibold">{actor.username}</span>
-                  <span className="text-white/80"> · {actor.roles.join(", ")}</span>
+                  <span className="text-white/80"> · {actor.roles.map((role) => role.charAt(0).toUpperCase() + role.slice(1)).join(", ")}</span>
                 </p>
                 <SignOutButton />
               </div>

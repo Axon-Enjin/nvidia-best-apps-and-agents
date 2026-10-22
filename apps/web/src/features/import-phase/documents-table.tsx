@@ -22,12 +22,12 @@ export function DocumentsTable({ bundle, review }: { bundle: BundleDetail; revie
         Documents in version {bundle.version}
       </h2>
       <div className="overflow-x-auto">
-        <table aria-labelledby="documents-heading" className="w-full min-w-[34rem] border-collapse text-left">
+        <table aria-labelledby="documents-heading" className="w-full border-collapse text-left">
           <thead>
             <tr className="border-b border-ink">
               <th scope="col" className="eyebrow py-2 pr-4">Document</th>
-              <th scope="col" className="eyebrow py-2 pr-4">Pages</th>
-              <th scope="col" className="eyebrow py-2 pr-4">Status</th>
+              <th scope="col" className="eyebrow hidden py-2 pr-4 sm:table-cell">Pages</th>
+              <th scope="col" className="eyebrow hidden py-2 pr-4 sm:table-cell">Status</th>
               <th scope="col" className="eyebrow py-2">Original</th>
             </tr>
           </thead>
@@ -39,10 +39,14 @@ export function DocumentsTable({ bundle, review }: { bundle: BundleDetail; revie
                 <tr key={document.id} className="border-b border-rule-faint align-top">
                   <td className="py-3 pr-4">
                     <p className="font-semibold">{documentLabel(document.type, document.filename)}</p>
-                    <p className="doc-ref text-ink-muted">{document.filename}</p>
+                    <p className="doc-ref break-all text-ink-muted">{document.filename}</p>
+                    <div className="mt-1 sm:hidden">
+                      <StatusText tone={documentStatusTone(status)}>{documentStatusText(status)}</StatusText>
+                      {problems ? <p className="mt-1 text-sm text-ink-muted">{problems}</p> : null}
+                    </div>
                   </td>
-                  <td className="py-3 pr-4 tabular-nums">{document.page_count}</td>
-                  <td className="py-3 pr-4">
+                  <td className="hidden py-3 pr-4 tabular-nums sm:table-cell">{document.page_count}</td>
+                  <td className="hidden py-3 pr-4 sm:table-cell">
                     <StatusText tone={documentStatusTone(status)}>{documentStatusText(status)}</StatusText>
                     {problems ? <p className="mt-1 max-w-md text-sm text-ink-muted">{problems}</p> : null}
                   </td>

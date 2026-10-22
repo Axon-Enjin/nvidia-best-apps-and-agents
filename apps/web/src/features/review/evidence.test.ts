@@ -55,6 +55,13 @@ test("evidencePages lists difference pages first and letters their values", () =
   assert.equal(pages[0]?.document.id, "doc-cf2");
 });
 
+test("checks that cite whole documents list their pages without highlighting every field", () => {
+  const narrative: Check = { ...p05, id: "P07", differences: [], blocking_reasons: ["Record source-backed manual comparison."] };
+  const pages = evidencePages(narrative, documents, [], "b1");
+  assert.equal(pages.length, 7);
+  assert.ok(pages.every((page) => page.highlights.length === 0));
+});
+
 test("a scan awaiting confirmation is cited without highlights", () => {
   const confirmations: ConfirmationRequirement[] = [
     { document_id: "doc-cf2", type: "cf2", status: "needs_confirmation", pending: ["discharge_date"], confirmed: {}, fields: [] },

@@ -1,11 +1,16 @@
 "use client";
 
-import { StatusText } from "@/components/ui/status-text";
+import { StatusText, type Tone } from "@/components/ui/status-text";
 import { checkLabel, checkSeverity, checkStatusText } from "@/features/case/labels";
 import type { Check } from "@/lib/api-types";
 
-function IssueButton({ check, selected, onSelect }: { check: Check; selected: boolean; onSelect: (id: string) => void }) {
-  const severity = checkSeverity(check);
+export function issueStatus(check: Check, openTask: boolean): { tone: Tone; text: string } {
+  if (check.status === "passed" && openTask) return { tone: "attention", text: "Correction to resolve" };
+  return { tone: checkSeverity(check), text: checkStatusText(check) };
+}
+
+function IssueButton({ check, openTask, selected, onSelect }: { check: Check; openTask: boolean; selected: boolean; onSelect: (id: string) => void }) {
+  const status = issueStatus(check, openTask);
   return (
     <button
       type="button"
@@ -18,17 +23,27 @@ function IssueButton({ check, selected, onSelect }: { check: Check; selected: bo
       <span className="font-semibold leading-snug">{checkLabel(check.id)}</span>
       <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
         <span className="doc-ref text-ink-muted">{check.id}</span>
-        <StatusText tone={severity}>{checkStatusText(check)}</StatusText>
+        <StatusText tone={status.tone}>{status.text}</StatusText>
       </span>
     </button>
   );
 }
 
-/** Unresolved issues first; passed checks stay one click away, with their evidence. */
-export function IssueList({ checks, selected, onSelect }: { checks: Check[]; selected: string | null; onSelect: (id: string) => void }) {
+/** Unresolved issues (and open corrections) first; passed checks stay one click away, with their evidence. */
+export function IssueList({
+  checks,
+  openTasks,
+  selected,
+  onSelect,
+}: {
+  checks: Check[];
+  openTasks: ReadonlySet<string>;
+  selected: string | null;
+  onSelect: (id: string) => void;
+}) {
   const actionable = checks.filter((check) => check.id !== "P10");
-  const open = actionable.filter((check) => check.status !== "passed");
-  const passed = actionable.filter((check) => check.status === "passed");
+  const open = actionable.filter((check) => check.status !== "passed" || openTasks.has(check.id));
+  const passed = actionable.filter((check) => !open.includes(check));
   return (
     <div className="grid gap-4">
       <div>
@@ -37,7 +52,7 @@ export function IssueList({ checks, selected, onSelect }: { checks: Check[]; sel
           <ul aria-label="Issues needing attention" className="mt-2 divide-y divide-rule-faint border-y border-rule-faint">
             {open.map((check) => (
               <li key={check.id}>
-                <IssueButton check={check} selected={check.id === selected} onSelect={onSelect} />
+                <IssueButton check={check} openTask={openTasks.has(check.id)} selected={check.id === selected} onSelect={onSelect} />
               </li>
             ))}
           </ul>
@@ -50,7 +65,7 @@ export function IssueList({ checks, selected, onSelect }: { checks: Check[]; sel
         <ul aria-label="Passed checks" className="divide-y divide-rule-faint">
           {passed.map((check) => (
             <li key={check.id}>
-              <IssueButton check={check} selected={check.id === selected} onSelect={onSelect} />
+              <IssueButton check={check} openTask={false} selected={check.id === selected} onSelect={onSelect} />
             </li>
           ))}
         </ul>

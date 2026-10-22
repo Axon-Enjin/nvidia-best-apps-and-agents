@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
 
 import { StatusText } from "@/components/ui/status-text";
-import { checkLabel, checkSeverity, checkStatusText, plainReason } from "@/features/case/labels";
-import type { Check } from "@/lib/api-types";
+import { checkLabel, plainReason } from "@/features/case/labels";
+import type { BundleDetail, Check, ClaimDetail, ReviewState } from "@/lib/api-types";
 
 import { DifferencesTable } from "./differences-table";
 import type { DifferenceMark, EvidencePage } from "./evidence";
+import { issueStatus } from "./issue-list";
+import { hasOpenTask } from "./next-action";
+import { NextActionPanel } from "./next-action-panel";
 
 /** What differs, why it blocks completion, and what happens next for one selected check. */
 export function IssueDetail({
@@ -16,29 +18,32 @@ export function IssueDetail({
   marks,
   pages,
   version,
-  ruleVersion,
-  claimId,
+  claim,
+  bundle,
+  review,
   onViewSource,
-  action,
+  onDirtyChange,
 }: {
   check: Check;
   marks: DifferenceMark[];
   pages: EvidencePage[];
   version: number;
-  ruleVersion: string;
-  claimId: string;
+  claim: ClaimDetail;
+  bundle: BundleDetail;
+  review: ReviewState;
   onViewSource: () => void;
-  action?: ReactNode;
+  onDirtyChange: (dirty: boolean) => void;
 }) {
+  const status = issueStatus(check, hasOpenTask(check.id, review));
   const needsScanConfirmation = pages.some((page) => page.needsConfirmation) && check.status !== "passed";
   return (
     <div className="grid content-start gap-6">
       <header className="grid gap-1.5 border-t-2 border-ink pt-3">
         <p className="eyebrow">
-          Issue · <span className="doc-ref normal-case">{check.id}</span> · rules <span className="doc-ref normal-case">{ruleVersion}</span>
+          Issue · <span className="doc-ref normal-case">{check.id}</span> · rules <span className="doc-ref normal-case">{review.rule_version}</span>
         </p>
         <h2 className="text-[1.375rem]">{checkLabel(check.id)}</h2>
-        <StatusText tone={checkSeverity(check)}>{checkStatusText(check)}</StatusText>
+        <StatusText tone={status.tone}>{status.text}</StatusText>
         <a
           href="#source-evidence"
           onClick={(event) => {
@@ -67,15 +72,15 @@ export function IssueDetail({
       )}
 
       {needsScanConfirmation ? (
-        <section aria-label="Next action" className="grid gap-3 border-t border-rule pt-4">
+        <section aria-label="Next action" className="grid gap-3 border-t-2 border-ink pt-3">
           <h3 className="eyebrow">Next action</h3>
           <p>A cited document is a scan whose values are not confirmed yet. Confirm them against the original first.</p>
-          <Link href={`/claims/${claimId}/import`} className="btn btn-primary justify-self-start no-underline">
+          <Link href={`/claims/${claim.id}/import`} className="btn btn-primary justify-self-start no-underline">
             Confirm scanned values
           </Link>
         </section>
       ) : (
-        action
+        <NextActionPanel check={check} claim={claim} bundle={bundle} review={review} version={version} pages={pages} onDirtyChange={onDirtyChange} />
       )}
     </div>
   );

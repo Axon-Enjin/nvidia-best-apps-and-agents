@@ -8,7 +8,15 @@ type ClaimLike = Pick<ClaimDetail, "current_bundle_id" | "latest" | "state" | "b
 const pendingScanValues = (review: ReviewState | null) =>
   (review?.confirmations ?? []).reduce((sum, requirement) => sum + requirement.pending.length, 0);
 
-const openIssues = (review: ReviewState) => review.checks.filter((check) => check.id !== "P10" && check.status !== "passed").length;
+const CLOSED_TASKS = new Set(["resolved", "cancelled"]);
+
+/** Unresolved checks plus passed checks whose correction still has to be resolved. */
+const openIssues = (review: ReviewState) =>
+  review.checks.filter(
+    (check) =>
+      check.id !== "P10" &&
+      (check.status !== "passed" || review.tasks.some((task) => task.check_id === check.id && !CLOSED_TASKS.has(task.status))),
+  ).length;
 
 const plural = (count: number, one: string, many: string) => `${count} ${count === 1 ? one : many}`;
 
